@@ -93,6 +93,17 @@ def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
             if row_fields[0] == '1':
                 setattr(current_record, row_fields[1].lower(), {})
                 current_tag = row_fields[1].lower()
+        elif pattern_type == 'ARGUMENT':
+            if row_fields[0] == '1':
+                if isinstance(getattr(current_record, row_fields[1].lower()), list):
+                    current_list = getattr(current_record, row_fields[1].lower()) + [row_fields[2]]
+                    setattr(current_record, row_fields[1].lower(), current_list)
+                else:
+                    setattr(current_record, row_fields[1].lower(), row_fields[2])
+            elif row_fields[0] == '2':
+                setattr(current_record, current_tag, {row_fields[1].lower(): row_fields[2]})
+
+    return individuals, families
     
 
 
