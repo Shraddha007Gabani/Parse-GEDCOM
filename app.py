@@ -6,9 +6,10 @@
 
 import re
 import operator
-from typing import List, Optional
-
+from typing import List, Optional, Tuple
 from prettytable import PrettyTable
+from models import Individual, Family
+
 
 TAGS: List[str] = ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM',
                    'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV', 'DATE', 'HEAD', 'TRLR', 'NOTE']
@@ -33,25 +34,6 @@ def get_lines(path) -> List[str]:
     with (file := open(path, "r")):  # close file after opening
         return [line for line in file]
 
-class Family:
-    """ holds a Family record """
-    def __init__(self, _id=None, marr=None, husb=None, wife=None, div=False):
-        """ store Family info """
-        self.id = _id
-        self.marr = marr
-        self.husb = husb
-        self.wife = wife
-        self.chil: List[str] = []
-        self.div: Optional[bool, Dict[str, str]] = div
-
-    def info(self, individuals: List[Individual]):
-        div = 'NA' if self.div is False else self.div['date']
-        chil = 'NA' if len(self.chil) == 0 else self.chil
-        h_name = next(individual.name for individual in individuals if individual.id == self.husb)
-        w_name = next(individual.name for individual in individuals if individual.id == self.wife)
-
-        return [self.id, self.marr['date'], div, self.husb, h_name, self.wife, w_name, chil]
-
 
 def pretty_print(individuals: List[Individual], families: List[Family]) -> None:
     """ prettify the data """
@@ -71,6 +53,7 @@ def pretty_print(individuals: List[Individual], families: List[Family]) -> None:
 
     print("Individuals\n", individual_table, sep="")
     print("Families\n", family_table, sep="")
+
 
 def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
     """ get lines read from a .ged file """
@@ -104,8 +87,6 @@ def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
                 setattr(current_record, current_tag, {row_fields[1].lower(): row_fields[2]})
 
     return individuals, families
-    
-
 
 
 def main():
@@ -113,8 +94,8 @@ def main():
     path: str = 'SSW555-P1-fizgi.ged'
     lines = get_lines(path)  # process the file
     individuals, families = generate_classes(lines)
-    individuals.sort(key=operator.attrgetter('id'))
-    families.sort(key=operator.attrgetter('id'))
+    individuals.sort(key=operator.attrgetter('id'))  # sort Individual class list by ID
+    families.sort(key=operator.attrgetter('id'))  # sort Family class list by ID
     pretty_print(individuals, families)
 
 
