@@ -72,6 +72,18 @@ def pretty_print(individuals: List[Individual], families: List[Family]) -> None:
     print("Individuals\n", individual_table, sep="")
     print("Families\n", family_table, sep="")
 
+def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
+    """ get lines read from a .ged file """
+    individuals: List[Individual] = []
+    families: List[Family] = []
+    current_record: Optional[Individual, Family] = None
+    current_tag: Optional[str] = None
+
+    for line in lines:
+        row_fields: List[str] = line.rstrip("\n").split(' ', 2)
+        pattern_type = pattern_finder(line)
+
+
 
 def main():
     """ the main function to check the data """
