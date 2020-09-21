@@ -82,6 +82,14 @@ def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
     for line in lines:
         row_fields: List[str] = line.rstrip("\n").split(' ', 2)
         pattern_type = pattern_finder(line)
+        if pattern_type == 'ZERO_1':
+            current_record = Individual() if row_fields[2] == 'INDI' else Family()
+            (individuals if isinstance(current_record, Individual) else families)\
+                .append(current_record)
+            current_record.id = row_fields[1]
+        elif pattern_type == 'ZERO_2':
+            pass  # nothing to do with this
+    
 
 
 
