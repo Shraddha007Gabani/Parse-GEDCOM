@@ -89,6 +89,10 @@ def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
             current_record.id = row_fields[1]
         elif pattern_type == 'ZERO_2':
             pass  # nothing to do with this
+        elif pattern_type == 'NO_ARGUMENT':
+            if row_fields[0] == '1':
+                setattr(current_record, row_fields[1].lower(), {})
+                current_tag = row_fields[1].lower()
     
 
 
