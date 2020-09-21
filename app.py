@@ -34,6 +34,27 @@ def get_lines(path) -> List[str]:
         return [line for line in file]
 
 
+class Family:
+    """ holds a Family record """
+
+    def __init__(self, _id=None, marr=None, husb=None, wife=None, div=False):
+        """ store Family info """
+        self.id = _id
+        self.marr = marr
+        self.husb = husb
+        self.wife = wife
+        self.chil: List[str] = []
+        self.div: Optional[bool, Dict[str, str]] = div
+
+    def info(self, individuals: List[Individual]):
+        div = 'NA' if self.div is False else self.div['date']
+        chil = 'NA' if len(self.chil) == 0 else self.chil
+        h_name = next(individual.name for individual in individuals if individual.id == self.husb)
+        w_name = next(individual.name for individual in individuals if individual.id == self.wife)
+
+        return [self.id, self.marr['date'], div, self.husb, h_name, self.wife, w_name, chil]
+
+
 def pretty_print(individuals: List[Individual], families: List[Family]) -> None:
     """ prettify the data """
 
@@ -56,12 +77,13 @@ def pretty_print(individuals: List[Individual], families: List[Family]) -> None:
 
 def main():
     """ the main function to check the data """
-    path: str = 'SSW555-P1-fizgi.ged'
+    path: str = "/Users/nikhilkalyan/Discovering-Anamolies-and-Errors-in-GEDCOM/CFMT.ged"
     lines = get_lines(path)  # process the file
     individuals, families = generate_classes(lines)
     individuals.sort(key=operator.attrgetter('id'))
     families.sort(key=operator.attrgetter('id'))
     pretty_print(individuals, families)
+    print(pattern_finder(lines))
 
 
 if __name__ == '__main__':
