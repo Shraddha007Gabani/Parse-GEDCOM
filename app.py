@@ -6,9 +6,11 @@
 
 import re
 import operator
-from typing import List, Optional
-
+from typing import List, Optional, Tuple
 from prettytable import PrettyTable
+from models import Individual, Family
+import user_stories as us
+
 
 TAGS: List[str] = ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM',
                    'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV', 'DATE', 'HEAD', 'TRLR', 'NOTE']
@@ -72,7 +74,41 @@ def pretty_print(individuals: List[Individual], families: List[Family]) -> None:
         family_table.add_row(family.info(individuals))
 
     print("Individuals\n", individual_table, sep="")
-    print("Families\n", family_table, sep="")
+    print("Families\n", family_table, sep="", end='\n\n')
+
+
+def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
+    """ get lines read from a .ged file """
+    individuals: List[Individual] = []
+    families: List[Family] = []
+    current_record: Optional[Individual, Family] = None
+    current_tag: Optional[str] = None
+
+    for line in lines:
+        row_fields: List[str] = line.rstrip("\n").split(' ', 2)
+        pattern_type = pattern_finder(line)
+        if pattern_type == 'ZERO_1':
+            current_record = Individual() if row_fields[2] == 'INDI' else Family()
+            (individuals if isinstance(current_record, Individual) else families)\
+                .append(current_record)
+            current_record.id = row_fields[1]
+        elif pattern_type == 'ZERO_2':
+            pass  # nothing to do with this
+        elif pattern_type == 'NO_ARGUMENT':
+            if row_fields[0] == '1':
+                setattr(current_record, row_fields[1].lower(), {})
+                current_tag = row_fields[1].lower()
+        elif pattern_type == 'ARGUMENT':
+            if row_fields[0] == '1':
+                if isinstance(getattr(current_record, row_fields[1].lower()), list):
+                    current_list = getattr(current_record, row_fields[1].lower()) + [row_fields[2]]
+                    setattr(current_record, row_fields[1].lower(), current_list)
+                else:
+                    setattr(current_record, row_fields[1].lower(), row_fields[2])
+            elif row_fields[0] == '2':
+                setattr(current_record, current_tag, {row_fields[1].lower(): row_fields[2]})
+
+    return individuals, families
 
 
 def main():
@@ -80,10 +116,17 @@ def main():
     path: str = "/Users/nikhilkalyan/Discovering-Anamolies-and-Errors-in-GEDCOM/CFMT.ged"
     lines = get_lines(path)  # process the file
     individuals, families = generate_classes(lines)
-    individuals.sort(key=operator.attrgetter('id'))
-    families.sort(key=operator.attrgetter('id'))
+    individuals.sort(key=operator.attrgetter('id'))  # sort Individual class list by ID
+    families.sort(key=operator.attrgetter('id'))  # sort Family class list by ID
     pretty_print(individuals, families)
     print(pattern_finder(lines))
+
+    for family in families:  # process user stories
+        us.birth_before_death_of_parents(family, individuals)
+        us.were_parents_over_14(family, individuals)
+        us.fewer_than_15_siblings(family)
+        us.male_last_names(family, individuals)
+        print('')  # new line between families
 
 
 if __name__ == '__main__':
