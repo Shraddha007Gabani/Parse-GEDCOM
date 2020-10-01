@@ -102,6 +102,8 @@ def main():
     for family in families:  # process user stories
         us.birth_before_death_of_parents(family, individuals)
         us.were_parents_over_14(family, individuals)
+        us.fewer_than_15_siblings(family)
+        us.male_last_names(family, individuals)
         print('')  # new line between families
 
 

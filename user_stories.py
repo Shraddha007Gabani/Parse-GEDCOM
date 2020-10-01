@@ -72,3 +72,20 @@ def were_parents_over_14(family: Family, individuals: List[Individual]) -> bool:
         print(f"✘ Family ({family.id}): Wife ({wife_marr_age}) can not be less than 14")
 
     return False
+
+
+def fewer_than_15_siblings(family: Family) -> bool:
+    if len(family.chil) < 15:
+        print(f"✔ Family ({family.id}): Siblings are less than 15")
+        return True
+    else:
+        print(f"✘ Family ({family.id}): Siblings are greater than 15")
+        return False
+
+
+def male_last_names(family: Family, individuals: List[Individual]):
+    ids = [family.husb, family.wife]
+    ids.extend(family.chil)
+    males = [individual for individual in individuals if individual.sex == 'M' and individual.id in ids]
+    names = [male.name.split('/')[1] for male in males]
+    return len(set(names)) == 1
