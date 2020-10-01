@@ -71,3 +71,4 @@ def were_parents_over_14(family: Family, individuals: List[Individual]) -> bool:
     elif wife_marr_age < 14:
         print(f"✘ Family ({family.id}): Wife ({wife_marr_age}) can not be less than 14")
 
+    return False
