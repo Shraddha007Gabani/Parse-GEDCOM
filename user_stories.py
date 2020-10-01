@@ -4,7 +4,7 @@
     python: v3.8.4
 """
 
-from typing import List
+from typing import List, Dict
 from datetime import datetime, timedelta
 from models import Individual, Family
 
@@ -89,7 +89,9 @@ def male_last_names(family: Family, individuals: List[Individual]):
     males = [individual for individual in individuals if individual.sex == 'M' and individual.id in ids]
     names = [male.name.split('/')[1] for male in males]
     return len(set(names)) == 1
-# User story 14 
+
+
+# User story 14
 def verifySiblingsDates(allDates):
     retValue = True
     datesDict = {}
@@ -112,6 +114,7 @@ def verifySiblingsDates(allDates):
                 datesDict[d] = 1
 
     return retValue
+
 
 # User story 13
 def verifySiblingsSpace(allDates):
@@ -136,6 +139,28 @@ def verifySiblingsSpace(allDates):
     return retValue
 
 
-siblingsDates = (datetime.date(1990, 1, 1), datetime.date(1991, 1, 1))
+def checkBigamy(family: Dict):
+    """Method that checks bigamy in the given gedcom data if yes then it pops and update data with no bigamy"""
+    for f in family:
+        if 'HUSB' in family[f]:
+            hus_id = family[f]['HUSB']
+            if 'WIFE' in family[f]:
+                wife_id = family[f]['WIFE']
 
-print(verifySiblingsDates(siblingsDates))
+        wife_count = 0
+        husb_count = 0
+
+        for f in family:
+            if 'HUSB' in family[f]:
+                hus_id2: List = family[f]['HUSB']
+                if hus_id == hus_id2:
+                    husb_count += 1
+                if 'WIFE' in family[f]:
+                    wife_id2: List = family[f]['WIFE']
+                    if wife_id == wife_id2:
+                        wife_count += 1
+            else:
+                continue
+
+
+

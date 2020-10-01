@@ -3,7 +3,7 @@
     date: 30-Sep-2020
     python: v3.8.4
 """
-
+import datetime
 import unittest
 from typing import List
 from models import Individual, Family
@@ -12,6 +12,7 @@ import user_stories as us
 
 class TestApp(unittest.TestCase):
     """ test class of the methods """
+
     def test_were_parents_over_14(self):
         """ test were_parents_over_14 method """
         # husband is 20 and wife is 14 at the marriage date -> Both are over 14 -> True
@@ -174,8 +175,9 @@ class TestApp(unittest.TestCase):
         family.chil = [child1.id, child2.id]
         individuals = [husband, wife, child1, child2]
         self.assertTrue(us.male_last_names(family, individuals))
-     # Test cases of user story 14
-         def test_verifySiblingsDates(self):
+
+    # Test cases of user story 14
+    def test_verifySiblingsDates(self):
         date1 = datetime.date(1990, 1, 1)
         date2 = datetime.date(1991, 1, 1)
         date3 = datetime.date(1992, 1, 1)
@@ -183,7 +185,7 @@ class TestApp(unittest.TestCase):
         date5 = datetime.date(1994, 1, 1)
         date6 = datetime.date(1995, 1, 1)
         siblingsDates = (date1, date2, date3, date4, date5, date6)
-        self.assertTrue(user_stories.verifySiblingsDates(siblingsDates))
+        self.assertTrue(us.verifySiblingsDates(siblingsDates))
 
     def test_verifySiblingsDates(self):
         date1 = datetime.date(1990, 1, 1)
@@ -193,7 +195,7 @@ class TestApp(unittest.TestCase):
         date5 = datetime.date(1994, 1, 1)
         date6 = datetime.date(1995, 1, 1)
         siblingsDates = (date1, date2, date3, date4, date5, date6)
-        self.assertTrue(user_stories.verifySiblingsDates(siblingsDates))
+        self.assertTrue(us.verifySiblingsDates(siblingsDates))
 
     def test_verifySiblingsDates(self):
         date1 = datetime.date(1990, 1, 1)
@@ -203,7 +205,7 @@ class TestApp(unittest.TestCase):
         date5 = datetime.date(1990, 1, 1)
         date6 = datetime.date(1990, 1, 1)
         siblingsDates = (date1, date2, date3, date4, date5, date6)
-        self.assertFalse(user_stories.verifySiblingsDates(siblingsDates))
+        self.assertFalse(us.verifySiblingsDates(siblingsDates))
 
     def test_verifySiblingsDates(self):
         date1 = datetime.date(1990, 1, 2)
@@ -213,41 +215,99 @@ class TestApp(unittest.TestCase):
         date5 = datetime.date(1990, 1, 1)
         date6 = datetime.date(1990, 1, 1)
         siblingsDates = (date1, date2, date3, date4, date5, date6)
-        self.assertFalse(user_stories.verifySiblingsDates(siblingsDates))
+        self.assertFalse(us.verifySiblingsDates(siblingsDates))
+
     # Test cases of user story 13
-         def test_alldifferentDates(self):
+    def test_alldifferentDates(self):
         date1 = datetime.date(1990, 1, 1)
         date2 = datetime.date(1991, 1, 1)
         date3 = datetime.date(1992, 1, 1)
         siblingsDates = (date1, date2, date3)
-        self.assertTrue(user_stories.verifySiblingsSpace(siblingsDates))
+        self.assertTrue(us.verifySiblingsSpace(siblingsDates))
 
     def test_someDifferentDatesSameYear(self):
         date1 = datetime.date(1990, 1, 1)
         date2 = datetime.date(1990, 11, 1)
         date3 = datetime.date(1991, 12, 1)
         siblingsDates = (date1, date2, date3)
-        self.assertTrue(user_stories.verifySiblingsSpace(siblingsDates))
+        self.assertTrue(us.verifySiblingsSpace(siblingsDates))
 
     def test_allSameDates(self):
         date1 = datetime.date(1990, 1, 1)
         date2 = datetime.date(1990, 1, 1)
         date3 = datetime.date(1990, 1, 1)
         siblingsDates = (date1, date2, date3)
-        self.assertFalse(user_stories.verifySiblingsSpace(siblingsDates))
+        self.assertFalse(us.verifySiblingsSpace(siblingsDates))
 
     def test_someWithDayDifference(self):
         date1 = datetime.date(1990, 1, 2)
         date2 = datetime.date(1990, 1, 1)
         date3 = datetime.date(1990, 1, 2)
         siblingsDates = (date1, date2, date3)
-        self.assertFalse(user_stories.verifySiblingsSpace(siblingsDates))
+        self.assertFalse(us.verifySiblingsSpace(siblingsDates))
 
     def test_someWithMonthsDifference(self):
         date1 = datetime.date(1990, 1, 1)
         date2 = datetime.date(1990, 6, 1)
         date3 = datetime.date(1992, 1, 2)
         siblingsDates = (date1, date2, date3)
-        self.assertFalse(user_stories.verifySiblingsSpace(siblingsDates))
+        self.assertFalse(us.verifySiblingsSpace(siblingsDates))
+
+    def test_checkBigamy(self):
+        """Test cases for bigamy"""
+
+        # No Bigamy
+        fam = {'F23':
+                   {'fam': 'F23', 'MARR': '14 FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07', 'CHIL': ['I19', 'I26', 'I30']},
+               'F16': {'fam': 'F16', 'MARR': '12 DEC 2007'}}
+
+        indi = {'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M', 'family': 'F23',
+                        'DEAT': '31 DEC 2013'},
+                'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1960', 'sex': 'F', 'family': 'F23'},
+                'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
+                'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+                'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+                'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
+                'I44': {'id': 'I44', 'name': 'Cersi /Lanister/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'}}
+
+        # bigamy (same husband)
+        fam2 = {'F23':
+                    {'fam': 'F23', 'MARR': '14 FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07', 'CHIL': ['I19', 'I26', 'I30']},
+                'F16': {'fam': 'F16', 'MARR': '12 DEC 2007', 'HUSB': 'I01'}}
+
+        indi2 = {'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M', 'family': 'F23',
+                         'DEAT': '31 DEC 2013'},
+                 'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1960', 'sex': 'F', 'family': 'F23'},
+                 'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
+                 'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+                 'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+                 'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
+                 'I44': {'id': 'I44', 'name': 'Cersi /Lanister/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'}}
+
+        # bigamy (same wife)
+        fam3 = {'F23':
+                    {'fam': 'F23', 'MARR': '14 FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07', 'CHIL': ['I19', 'I26', 'I30']},
+                'F16': {'fam': 'F16', 'MARR': '12 DEC 2007', 'WIFE': 'I07'}}
+
+        indi3 = {'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M', 'family': 'F23',
+                         'DEAT': '31 DEC 2013'},
+                 'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1960', 'sex': 'F', 'family': 'F23'},
+                 'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
+                 'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+                 'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+                 'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
+                 'I44': {'id': 'I44', 'name': 'Cersi /Lanister/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'}}
+
+        us.checkBigamy(fam)
+        self.assertTrue(('I01' in indi))
+        self.assertTrue(('I01' == fam['F23']['HUSB']))
+        us.checkBigamy(fam2)
+        self.assertTrue(('I01' in indi2))
+        self.assertTrue(('I01' in fam2['F23']['HUSB']))
+        us.checkBigamy(fam3)
+        self.assertTrue(('I07' in indi3))
+        self.assertTrue(('WIFE' in fam3['F23']))
+
+
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)
