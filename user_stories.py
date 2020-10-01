@@ -89,3 +89,53 @@ def male_last_names(family: Family, individuals: List[Individual]):
     males = [individual for individual in individuals if individual.sex == 'M' and individual.id in ids]
     names = [male.name.split('/')[1] for male in males]
     return len(set(names)) == 1
+# User story 14 
+def verifySiblingsDates(allDates):
+    retValue = True
+    datesDict = {}
+    for d in allDates:
+        if d in datesDict:
+            datesDict[d] = datesDict.get(d) + 1
+            if datesDict[d] > 5:
+                return False
+        else:  # if we did not find this date, we first check if we have date within day of already found dates
+            found = False
+            for d2 in datesDict:
+                delta = d2 - d
+                if abs(delta.days) < 2:
+                    datesDict[d2] = datesDict.get(d2) + 1
+                    found = True
+                    if datesDict[d2] > 5:
+                        retValue = False
+                        break
+            if not found:
+                datesDict[d] = 1
+
+    return retValue
+
+# User story 13
+def verifySiblingsSpace(allDates):
+    retValue = True
+    datesSet = set()
+    for d in allDates:
+        if d in datesSet:
+            retValue = False
+            break
+        else:
+            found = False
+            for d2 in datesSet:
+                delta = d2 - d
+                if abs(delta.days) > 1 and abs(delta.days) < 280:
+                    retValue = False
+                    break
+            if retValue:
+                datesSet.add(d)
+            else:
+                break
+
+    return retValue
+
+
+siblingsDates = (datetime.date(1990, 1, 1), datetime.date(1991, 1, 1))
+
+print(verifySiblingsDates(siblingsDates))
