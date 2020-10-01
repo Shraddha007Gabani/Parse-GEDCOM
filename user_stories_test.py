@@ -174,7 +174,80 @@ class TestApp(unittest.TestCase):
         family.chil = [child1.id, child2.id]
         individuals = [husband, wife, child1, child2]
         self.assertTrue(us.male_last_names(family, individuals))
+     # Test cases of user story 14
+         def test_verifySiblingsDates(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1991, 1, 1)
+        date3 = datetime.date(1992, 1, 1)
+        date4 = datetime.date(1993, 1, 1)
+        date5 = datetime.date(1994, 1, 1)
+        date6 = datetime.date(1995, 1, 1)
+        siblingsDates = (date1, date2, date3, date4, date5, date6)
+        self.assertTrue(user_stories.verifySiblingsDates(siblingsDates))
 
+    def test_verifySiblingsDates(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1990, 1, 1)
+        date3 = datetime.date(1990, 1, 1)
+        date4 = datetime.date(1993, 1, 1)
+        date5 = datetime.date(1994, 1, 1)
+        date6 = datetime.date(1995, 1, 1)
+        siblingsDates = (date1, date2, date3, date4, date5, date6)
+        self.assertTrue(user_stories.verifySiblingsDates(siblingsDates))
 
+    def test_verifySiblingsDates(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1990, 1, 1)
+        date3 = datetime.date(1990, 1, 1)
+        date4 = datetime.date(1990, 1, 1)
+        date5 = datetime.date(1990, 1, 1)
+        date6 = datetime.date(1990, 1, 1)
+        siblingsDates = (date1, date2, date3, date4, date5, date6)
+        self.assertFalse(user_stories.verifySiblingsDates(siblingsDates))
+
+    def test_verifySiblingsDates(self):
+        date1 = datetime.date(1990, 1, 2)
+        date2 = datetime.date(1990, 1, 1)
+        date3 = datetime.date(1990, 1, 2)
+        date4 = datetime.date(1990, 1, 1)
+        date5 = datetime.date(1990, 1, 1)
+        date6 = datetime.date(1990, 1, 1)
+        siblingsDates = (date1, date2, date3, date4, date5, date6)
+        self.assertFalse(user_stories.verifySiblingsDates(siblingsDates))
+    # Test cases of user story 13
+         def test_alldifferentDates(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1991, 1, 1)
+        date3 = datetime.date(1992, 1, 1)
+        siblingsDates = (date1, date2, date3)
+        self.assertTrue(user_stories.verifySiblingsSpace(siblingsDates))
+
+    def test_someDifferentDatesSameYear(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1990, 11, 1)
+        date3 = datetime.date(1991, 12, 1)
+        siblingsDates = (date1, date2, date3)
+        self.assertTrue(user_stories.verifySiblingsSpace(siblingsDates))
+
+    def test_allSameDates(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1990, 1, 1)
+        date3 = datetime.date(1990, 1, 1)
+        siblingsDates = (date1, date2, date3)
+        self.assertFalse(user_stories.verifySiblingsSpace(siblingsDates))
+
+    def test_someWithDayDifference(self):
+        date1 = datetime.date(1990, 1, 2)
+        date2 = datetime.date(1990, 1, 1)
+        date3 = datetime.date(1990, 1, 2)
+        siblingsDates = (date1, date2, date3)
+        self.assertFalse(user_stories.verifySiblingsSpace(siblingsDates))
+
+    def test_someWithMonthsDifference(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1990, 6, 1)
+        date3 = datetime.date(1992, 1, 2)
+        siblingsDates = (date1, date2, date3)
+        self.assertFalse(user_stories.verifySiblingsSpace(siblingsDates))
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)
