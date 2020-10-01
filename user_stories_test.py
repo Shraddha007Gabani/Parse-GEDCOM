@@ -175,6 +175,95 @@ class TestApp(unittest.TestCase):
         individuals = [husband, wife, child1, child2]
         self.assertTrue(us.male_last_names(family, individuals))
 
+    def test_marriage_before_death(self):
+        
+        husband: Individual = Individual(_id="I0", deat={'date': "1 JAN 2020"})
+        wife: Individual = Individual(_id="I1", deat={'date': "2 JAN 2019"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, marr={'date': "11 FEB 1999"})
+        self.assertTrue(us.marriage_before_death(family, individuals))
+
+        """Husband and wife they both die before their marriage so False (not possible)"""
+        husband: Individual = Individual(_id="I2", deat={'date': "1 JAN 2000"})
+        wife: Individual = Individual(_id="I3", deat={'date': "2 JAN 2000"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, marr={'date': "11 FEB 2001"})
+        self.assertFalse(us.marriage_before_death(family, individuals))
+
+        """ Husband dies before marriage wife is alive so False (not possible)"""
+        husband: Individual = Individual(_id="I4", deat={'date': "1 JAN 2000"})
+        wife: Individual = Individual(_id="I5")
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, marr={'date': "11 FEB 2001"})
+        self.assertFalse(us.marriage_before_death(family, individuals))
+
+        """ Husband dies after marriage and  wife is alive so true"""
+        husband: Individual = Individual(_id="I4", deat={'date': "1 JAN 2002"})
+        wife: Individual = Individual(_id="I5")
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, marr={'date': "11 FEB 2001"})
+        self.assertTrue(us.marriage_before_death(family, individuals))
+
+        """Wife dies before marriage and Husband is alive so False (not possible)"""
+        husband: Individual = Individual(_id="I6")
+        wife: Individual = Individual(_id="I7", deat={'date': "1 JAN 2000"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, marr={'date': "11 FEB 2001"})
+        self.assertFalse(us.marriage_before_death(family, individuals))
+
+        """Wife dies after marriage and Husband is alive so true"""
+        husband: Individual = Individual(_id="I8")
+        wife: Individual = Individual(_id="I9",  deat={'date': "1 JAN 2002"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, marr={'date': "11 FEB 2001"})
+        self.assertTrue(us.marriage_before_death(family, individuals))
+
+
+    def test_divorce_before_death(self):
+            
+            husband: Individual = Individual(_id="I0", deat={'date': "1 JAN 2020"})
+            wife: Individual = Individual(_id="I1", deat={'date': "2 JAN 2019"})
+            individuals: List[Individual] = [husband, wife]
+            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 1999"})
+            self.assertTrue(us.divorce_before_death(family, individuals))
+
+            """Husband and wife they both die before their divorce so False (not possible)"""
+            husband: Individual = Individual(_id="I2", deat={'date': "1 JAN 2000"})
+            wife: Individual = Individual(_id="I3", deat={'date': "2 JAN 2000"})
+            individuals: List[Individual] = [husband, wife]
+            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
+            self.assertFalse(us.divorce_before_death(family, individuals))
+
+            """ Husband dies before divorce wife is alive so False (not possible)"""
+            husband: Individual = Individual(_id="I4", deat={'date': "1 JAN 2000"})
+            wife: Individual = Individual(_id="I5")
+            individuals: List[Individual] = [husband, wife]
+            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
+            self.assertFalse(us.divorce_before_death(family, individuals))
+
+            """ Husband dies after divorce and  wife is alive so true"""
+            husband: Individual = Individual(_id="I4", deat={'date': "1 JAN 2002"})
+            wife: Individual = Individual(_id="I5")
+            individuals: List[Individual] = [husband, wife]
+            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
+            self.assertTrue(us.divorce_before_death(family, individuals))
+
+            """Wife dies before divorce and Husband is alive so False (not possible)"""
+            husband: Individual = Individual(_id="I6")
+            wife: Individual = Individual(_id="I7", deat={'date': "1 JAN 2000"})
+            individuals: List[Individual] = [husband, wife]
+            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
+            self.assertFalse(us.divorce_before_death(family, individuals))
+
+            """Wife dies after divorce and Husband is alive so true"""
+            husband: Individual = Individual(_id="I8")
+            wife: Individual = Individual(_id="I9",  deat={'date': "1 JAN 2002"})
+            individuals: List[Individual] = [husband, wife]
+            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
+            self.assertTrue(us.divorce_before_death(family, individuals))
+
+
+
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

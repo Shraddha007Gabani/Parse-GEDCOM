@@ -92,7 +92,7 @@ def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
 
 def main():
     """ the main function to check the data """
-    path: str = 'SSW555-P1-fizgi.ged'
+    path: str = "C:/Users/0609k/OneDrive/Desktop/555/Github/Parse-GEDCOM/SSW555-P1-fizgi.ged"
     lines = get_lines(path)  # process the file
     individuals, families = generate_classes(lines)
     individuals.sort(key=operator.attrgetter('id'))  # sort Individual class list by ID

@@ -89,3 +89,39 @@ def male_last_names(family: Family, individuals: List[Individual]):
     males = [individual for individual in individuals if individual.sex == 'M' and individual.id in ids]
     names = [male.name.split('/')[1] for male in males]
     return len(set(names)) == 1
+
+def marriage_before_death(family: Family, individuals: List[Individual]) -> bool:
+    """ user story: verify that marrriage before death of either spouse """
+    mrgDate = datetime.strptime(family.marr.get('date'), "%d %b %Y")
+
+    husb = list(filter(lambda x: x.id==family.husb,individuals))[0]
+    wife = list(filter(lambda x: x.id == family.wife,individuals))[0]
+
+    husbandDeathDate = datetime.strptime(husb.deat.get('date'), "%d %b %Y") if husb.deat else None
+    wifeDeathDate = datetime.strptime(wife.deat.get('date'), "%d %b %Y") if wife.deat else None
+
+   
+    if (husbandDeathDate and husbandDeathDate - mrgDate > timedelta(minutes=0)) or (wifeDeathDate and wifeDeathDate - mrgDate > timedelta(minutes=0)):
+        print(f"✔ Family ({family.husb}) and ({family.wife}):Their marriage took place, before either of their death.")
+        return True
+    else: 
+        print(f"✘ Husband ({family.husb}): Wife ({family.wife}) Marriage did not take place before either of their death.")
+        return False
+
+def divorce_before_death(family: Family, individuals: List[Individual]) -> bool:
+    """ user story: verify that divorce before death of either spouse """
+    divdate = datetime.strptime(family.div.get('date'), "%d %b %Y")
+
+    husb = list(filter(lambda x: x.id==family.husb,individuals))[0]
+    wife = list(filter(lambda x: x.id == family.wife,individuals))[0]
+
+    husbandDeathDate = datetime.strptime(husb.deat.get('date'), "%d %b %Y") if husb.deat else None
+    wifeDeathDate = datetime.strptime(wife.deat.get('date'), "%d %b %Y") if wife.deat else None
+
+    
+    if (husbandDeathDate and husbandDeathDate - divdate > timedelta(minutes=0)) or (wifeDeathDate and wifeDeathDate - divdate > timedelta(minutes=0)):
+        print(f"✔ Family ({family.husb}) and ({family.wife}):Their divorce took place, before either of their death.")
+        return True
+    else: 
+        print(f"✘ Husband ({family.husb}) and Wife ({family.wife}): Divorce did not take place before either of their death.")
+        return False
