@@ -1,4 +1,8 @@
-""" Classes to hold the data generated from a given .ged file """
+""" Classes to hold the data generated from a given .ged file
+
+    date: 20-Sep-2020
+    python: v3.8.4
+"""
 
 import datetime
 from datetime import datetime, date

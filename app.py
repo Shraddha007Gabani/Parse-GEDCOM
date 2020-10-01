@@ -9,6 +9,7 @@ import operator
 from typing import List, Optional, Tuple
 from prettytable import PrettyTable
 from models import Individual, Family
+import user_stories as us
 
 
 TAGS: List[str] = ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM',
@@ -52,7 +53,7 @@ def pretty_print(individuals: List[Individual], families: List[Family]) -> None:
         family_table.add_row(family.info(individuals))
 
     print("Individuals\n", individual_table, sep="")
-    print("Families\n", family_table, sep="")
+    print("Families\n", family_table, sep="", end='\n\n')
 
 
 def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
@@ -97,6 +98,11 @@ def main():
     individuals.sort(key=operator.attrgetter('id'))  # sort Individual class list by ID
     families.sort(key=operator.attrgetter('id'))  # sort Family class list by ID
     pretty_print(individuals, families)
+
+    for family in families:  # process user stories
+        us.birth_before_death_of_parents(family, individuals)
+        us.were_parents_over_14(family, individuals)
+        print('')  # new line between families
 
 
 if __name__ == '__main__':
