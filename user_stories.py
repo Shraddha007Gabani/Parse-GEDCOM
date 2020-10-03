@@ -4,7 +4,7 @@
     python: v3.8.4
 """
 
-from typing import List
+from typing import List, Dict, TextIO
 from datetime import datetime, timedelta
 from models import Individual, Family
 
@@ -90,38 +90,105 @@ def male_last_names(family: Family, individuals: List[Individual]):
     names = [male.name.split('/')[1] for male in males]
     return len(set(names)) == 1
 
+
 def marriage_before_death(family: Family, individuals: List[Individual]) -> bool:
     """ user story: verify that marrriage before death of either spouse """
     mrgDate = datetime.strptime(family.marr.get('date'), "%d %b %Y")
 
-    husb = list(filter(lambda x: x.id==family.husb,individuals))[0]
-    wife = list(filter(lambda x: x.id == family.wife,individuals))[0]
+    husb = list(filter(lambda x: x.id == family.husb, individuals))[0]
+    wife = list(filter(lambda x: x.id == family.wife, individuals))[0]
 
     husbandDeathDate = datetime.strptime(husb.deat.get('date'), "%d %b %Y") if husb.deat else None
     wifeDeathDate = datetime.strptime(wife.deat.get('date'), "%d %b %Y") if wife.deat else None
 
-   
-    if (husbandDeathDate and husbandDeathDate - mrgDate > timedelta(minutes=0)) or (wifeDeathDate and wifeDeathDate - mrgDate > timedelta(minutes=0)):
+    if (husbandDeathDate and husbandDeathDate - mrgDate > timedelta(minutes=0)) or (
+            wifeDeathDate and wifeDeathDate - mrgDate > timedelta(minutes=0)):
         print(f"✔ Family ({family.husb}) and ({family.wife}):Their marriage took place, before either of their death.")
         return True
-    else: 
-        print(f"✘ Husband ({family.husb}): Wife ({family.wife}) Marriage did not take place before either of their death.")
+    else:
+        print(
+            f"✘ Husband ({family.husb}): Wife ({family.wife}) Marriage did not take place before either of their death.")
         return False
+
 
 def divorce_before_death(family: Family, individuals: List[Individual]) -> bool:
     """ user story: verify that divorce before death of either spouse """
     divdate = datetime.strptime(family.div.get('date'), "%d %b %Y")
 
-    husb = list(filter(lambda x: x.id==family.husb,individuals))[0]
-    wife = list(filter(lambda x: x.id == family.wife,individuals))[0]
+    husb = list(filter(lambda x: x.id == family.husb, individuals))[0]
+    wife = list(filter(lambda x: x.id == family.wife, individuals))[0]
 
     husbandDeathDate = datetime.strptime(husb.deat.get('date'), "%d %b %Y") if husb.deat else None
     wifeDeathDate = datetime.strptime(wife.deat.get('date'), "%d %b %Y") if wife.deat else None
 
-    
-    if (husbandDeathDate and husbandDeathDate - divdate > timedelta(minutes=0)) or (wifeDeathDate and wifeDeathDate - divdate > timedelta(minutes=0)):
+    if (husbandDeathDate and husbandDeathDate - divdate > timedelta(minutes=0)) or (
+            wifeDeathDate and wifeDeathDate - divdate > timedelta(minutes=0)):
         print(f"✔ Family ({family.husb}) and ({family.wife}):Their divorce took place, before either of their death.")
         return True
-    else: 
-        print(f"✘ Husband ({family.husb}) and Wife ({family.wife}): Divorce did not take place before either of their death.")
+    else:
+        print(
+            f"✘ Husband ({family.husb}) and Wife ({family.wife}): Divorce did not take place before either of their death.")
         return False
+    
+
+def checkBigamy(family: Dict):
+    """Method that checks bigamy in the given gedcom data if yes then it pops and update data with no bigamy"""
+    for f in family:
+        if 'HUSB' in family[f]:
+            hus_id = family[f]['HUSB']
+            if 'WIFE' in family[f]:
+                wife_id = family[f]['WIFE']
+
+        wife_count = 0
+        husb_count = 0
+
+        for f in family:
+            if 'HUSB' in family[f]:
+                hus_id2: List = family[f]['HUSB']
+                if hus_id == hus_id2:
+                    husb_count += 1
+                if 'WIFE' in family[f]:
+                    wife_id2: List = family[f]['WIFE']
+                    if wife_id == wife_id2:
+                        wife_count += 1
+            else:
+                continue
+
+
+def getAge(born):
+    """returns age of individual"""
+    born = datetime.strptime(born, '%d %b %Y')
+    today = datetime.today()
+    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+
+
+def checkForOldParents(fam: Dict, ind: Dict, file: TextIO):
+    """check the age of individuals and return boolean value if there are old parents in given data false otherwise"""
+    result: bool = True
+    for f in fam:
+        if "CHIL" in fam[f]:
+            wife: str = "0"
+            husb: str = "0"
+            if "HUSB" in fam[f]:
+                husb: str = fam[f]["HUSB"]
+            if "WIFE" in fam[f]:
+                wife:str = fam[f]["WIFE"]
+            wifeAge: int = 0
+            husbAge: int = 0
+            if wife in ind and "BIRT" in ind[wife]:
+                wifeAge: Union[int, bool] = getAge(ind[wife]["BIRT"])
+            if husb in ind and "BIRT" in ind[husb]:
+                husbAge: Union[int, bool] = getAge(ind[husb]["BIRT"])
+            for c in fam[f]["CHIL"]:
+                childAge: int = 0
+                if "BIRT" in ind[c]:
+                    childAge: Union[int, bool] = getAge(ind[c]["BIRT"])
+                if wifeAge - childAge > 60:  # throw wife error
+                    file.write(
+                        "ERROR US12: Mother " + wife + " is older than their child, " + c + " by over 60 years\n")
+                    result: bool = False
+                if husbAge - childAge > 80:  # throw husb error
+                    file.write(
+                        "ERROR US12: Father " + husb + " is older than their child, " + c + " by over 80 years\n")
+                    result: bool = False
+    return result
