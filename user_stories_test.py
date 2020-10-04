@@ -218,6 +218,13 @@ class TestApp(unittest.TestCase):
         family: Family = Family(husb=husband.id, wife=wife.id, marr={'date': "11 FEB 2001"})
         self.assertTrue(us.marriage_before_death(family, individuals))
 
+        """ Husband and wife they both are alive no daeth date is found so false"""
+        husband: Individual = Individual(_id="I10")
+        wife: Individual = Individual(_id="I11")
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, marr={'date': "11 FEB 2002"})
+        self.assertFalse(us.marriage_before_death(family, individuals))
+
 
     def test_divorce_before_death(self):
             
@@ -262,6 +269,14 @@ class TestApp(unittest.TestCase):
             family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
             self.assertTrue(us.divorce_before_death(family, individuals))
 
+            """ Husband and wife they both are alive no divorce date is found so false"""
+            husband: Individual = Individual(_id="I10")
+            wife: Individual = Individual(_id="I11")
+            individuals: List[Individual] = [husband, wife]
+            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2002"})
+            self.assertFalse(us.divorce_before_death(family, individuals))
+
+       
     def test_checkForOldParents(self):
         """Test cases for checking parents are old or not US12"""
         f = open("Output.txt", "a+")
