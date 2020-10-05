@@ -375,6 +375,47 @@ class TestApp(unittest.TestCase):
         self.assertTrue(('I07' in indi3))
         self.assertTrue(('WIFE' in fam3['F23']))
 
+    def test_birth_before_marriage_of_parents(self):
+        individual = Individual(_id="I20", birt={'date': "11 nov 2008"})
+        family =Family(_id="I21" , marr={'date':"10 jan 2008"}, div= {'date':"15 JAN 2009"}) 
+        self.assertTrue(us.birth_before_marriage_of_parents(family, individual))
+
+        individual = Individual(_id="I20", birt={'date': "11 nov 2009"})
+        family =Family(_id="I21" , marr={'date':"10 may 2008"}, div= {'date':"15 jul 2008"}) 
+        self.assertFalse(us.birth_before_marriage_of_parents(family, individual))
+
+        individual = Individual(_id="I20", birt={'date': "12  dec 2009"})
+        family =Family(_id="I21" , marr={'date':"11 may 2008"}, div= {'date':"15 sep 2008"}) 
+        self.assertFalse(us.birth_before_marriage_of_parents(family, individual))
+
+        individual = Individual(_id="I20", birt={'date': "12  dec 2009"})
+        family =Family(_id="I21" , marr={'date':"11 may 2009"}, div= {'date':"15 sep 2009"}) 
+        self.assertTrue(us.birth_before_marriage_of_parents(family, individual))
+
+
+
+    def test_less_than_150(self):
+        individual = Individual(birt={'date': "20 Mar 1985"})
+        individual.deat = {'date': "15 Aug 2008"}
+        self.assertTrue(us.less_than_150(individual))
+
+        individual = Individual(birt={'date': "15 JAN 2000"})
+        self.assertTrue(us.less_than_150(individual))
+
+        individual = Individual(birt={'date': "15 Feb 2012"})
+        individual.deat = {'date': "21 JAN 2000"}
+        self.assertFalse(us.less_than_150(individual))
+
+        individual = Individual(birt={'date': "15 JAN 1500"})
+        self.assertFalse(us.less_than_150(individual))
+
+        individual = Individual(birt={'date': "15 JAN 2006"})
+        individual.deat = {'date': "15 JAN 1200"}
+        self.assertFalse(us.less_than_150(individual))
+
+
+    
+
 
 
 if __name__ == '__main__':
