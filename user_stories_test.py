@@ -429,7 +429,62 @@ class TestApp(unittest.TestCase):
         Indi = Individual(_id="I23",birt={'date': "15 JAN 2020"}) ##Birth date is before current date so result is true
         self.assertTrue(us.birth(Indi))
 
+    def test_Birth_before_death(self):
+        individual = Individual(_id='I20',birt={'date': "15 JAN 1995"})
+        individual.deat = {'date': "15 JAN 1994"}
+        self.assertFalse(us.Birth_before_death(individual))
 
+        individual = Individual(_id='I21',birt={'date': "15 JAN 1995"})
+        individual.deat = {'date': "15 JAN 1996"}
+        self.assertTrue(us.Birth_before_death(individual))
+
+        individual = Individual(_id='I22',birt={'date': "25 DEC 1996"})
+        individual.deat = {'date': "26 DEC 1996"}
+        self.assertTrue(us.Birth_before_death(individual))
+
+        individual = Individual(_id='I23',birt={'date': "26 dec 1995"})
+        individual.deat = {'date': "25 dec 1995"}
+        self.assertFalse(us.Birth_before_death(individual))
+
+        individual = Individual(_id='I24',birt={'date': "25 JAN 1996"})
+        individual.deat = {'date': "25 dec 1997"}
+        self.assertTrue(us.Birth_before_death(individual))
+
+        individual = Individual(_id='I25',birt={'date': "26 JAN 1997"})
+        individual.deat = {'date': "25 dec 1996"}
+        self.assertFalse(us.Birth_before_death(individual))
+
+        individual = Individual(_id='I26',birt={'date': "26 JAN 1997"})
+        self.assertTrue(us.Birth_before_death(individual))
+        
+
+    def test_marriage_before_divorce(self):
+        family = Family(_id='I20', marr={'date': "15 JAN 1995"})
+        family.div = {'date': "15 JAN 1994"}
+        self.assertFalse(us.marriage_before_divorce(family))
+
+        family = Family(_id='I21',marr={'date': "15 JAN 1995"})
+        family.div = {'date': "15 JAN 1996"}
+        self.assertTrue(us.marriage_before_divorce(family))
+
+        family = Family(_id='I22',marr={'date': "25 DEC 1996"})
+        family.div = {'date': "26 dec 1996"}
+        self.assertTrue(us.marriage_before_divorce(family))
+
+        family = Family(_id='I23',marr={'date': "26 DEC 1996"})
+        family.div = {'date': "25 dec 1996"}
+        self.assertFalse(us.marriage_before_divorce(family))
+
+        family = Family(_id='I24',marr={'date': "25 jan 1996"})
+        family.div = {'date': "25 dec 1997"}
+        self.assertTrue(us.marriage_before_divorce(family))
+
+        family = Family(_id='I25',marr={'date': "26 jan 1997"})
+        family.div = {'date': "25 dec 1996"}
+        self.assertFalse(us.marriage_before_divorce(family))
+
+        family = Family(_id='I26',marr={'date': "26 jan 1997"})
+        self.assertTrue(us.marriage_before_divorce(family))
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)
