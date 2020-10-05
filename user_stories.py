@@ -193,3 +193,43 @@ def checkForOldParents(fam: Dict, ind: Dict, file: TextIO):
                         "ERROR US12: Father " + husb + " is older than their child, " + c + " by over 80 years\n")
                     result: bool = False
     return result
+
+def birth_before_marriage_of_parents(family: Family, individuals: List[Individual]) -> bool:
+    """ user story: verify that divorce before death of either spouse """
+    mrgdate = datetime.strptime(family.marr.get('date'), "%d %b %Y")
+    divdate = datetime.strptime(family.div.get('date'), "%d %b %Y")
+    birthdate_child = datetime.strptime(individuals.birt.get('date'), "%d %b %Y")
+
+    if family.marr:
+        if birthdate_child - mrgdate > timedelta(minutes=0) and birthdate_child - divdate < timedelta(days=275):
+            print(f"({family.id}) : birth_before_marriage_of_parents")
+            return True
+        else:
+            print(f"({family.id}) : not birth_before_marriage_of_parents")
+            return False
+    else:
+        print(f"({family.id}) : marrige is not happen")
+        return False
+
+def less_than_150(individual: Individual) -> bool:
+    birth_date: datetime = datetime.strptime(individual.birt['date'], "%d %b %Y")
+    current_date: datetime = datetime.now()
+    years_150 = timedelta(days=54750)
+
+    if individual.deat:
+        death_date: datetime = datetime.strptime(individual.deat['date'], "%d %b %Y")
+        if birth_date - death_date > timedelta(days=0):
+            print(f"✘ individual ({individual.id}): The person's age is grater than 150 ")
+            return False
+        elif death_date - birth_date < years_150:
+            print(f"✔ individual ({individual.id}): The person's age is less than 150 ")
+            return True
+
+    else:
+        if current_date - birth_date < years_150:
+            print(f"✔ individual ({individual.id}): The person's age is less than 150 ")
+            return True
+
+    print(f"✘ individual ({individual.id}): The person's age is not than than 150 ")
+    
+    return False
