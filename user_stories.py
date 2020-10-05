@@ -233,3 +233,58 @@ def less_than_150(individual: Individual) -> bool:
     print(f"✘ individual ({individual.id}): The person's age is not than than 150 ")
     
     return False
+
+today: datetime = datetime.now()
+year=timedelta(minutes=0)
+def marriage(family: Family) -> bool:
+  
+    if family.marr:
+        marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y")
+        if today - marr_date > timedelta(minutes=0):
+            print(f"✔ ({family.id}): marrige take place before current date ")
+            return True
+        else:
+            print(f"✘ ({family.id}): marrige didn't take place before current date ")
+
+    else:
+        print(f"✘ ({family.id}): marrige didn't take place ")
+
+
+def divo(family: Family) -> bool:
+    if family.div:
+        div_date: datetime = datetime.strptime(family.div['date'], "%d %b %Y")
+        if today - div_date > timedelta(minutes=0):
+            print(f"✔ ({family.id}): divorce take place before current date ")
+            return True
+        else:
+            print(f"✘ ({family.id}): divorce didn't take place before current date ")
+
+    else:
+        print(f"✘ ({family.id}): divorce didn't take place ")
+
+def birth(indi : Individual) -> bool:
+    if indi.birt:
+        birt_date: datetime = datetime.strptime(indi.birt['date'], "%d %b %Y")
+        if today - birt_date > timedelta(minutes=0):
+            print(f"✔ ({indi.id}): birth take place before current date ")
+            return True
+        else:
+            print(f"✘ ({indi.id}): birth didn't take place before current date ")
+
+    else:
+        print(f"✘ ({indi.id}): birth didn't take place ")
+
+def death(indi : Individual) -> bool:
+    if indi.deat:
+        death_date: datetime = datetime.strptime(indi.deat['date'], "%d %b %Y")
+        if today - death_date > timedelta(minutes=0):
+            print(f"✔ ({indi.id}): death take place before current date ")
+            return True
+        else:
+            print(f"✘ ({indi.id}): death didn't take place before current date ")
+
+    else:
+        print(f"✘ ({indi.id}): death didn't take place ")
+
+    
+

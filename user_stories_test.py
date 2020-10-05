@@ -413,8 +413,21 @@ class TestApp(unittest.TestCase):
         individual.deat = {'date': "15 JAN 1200"}
         self.assertFalse(us.less_than_150(individual))
 
+    def test_dates_before_current(self):
+        family = Family(_id = "I21",marr={'date': "15 JAN 2019"}) ##marrige date is before current date so result is true 
+        self.assertTrue(us.marriage(family))
 
-    
+        family = Family(_id="I22", div={'date': "15 JAN 2020"}) ##divorse date is before current date so result is true
+        self.assertTrue(us.divo(family))
+
+        Indi = Individual(_id="I23", birt={'date': "15 JAN 2021"}) ##Birth date is after current date so result is false
+        self.assertFalse(us.birth(Indi))
+
+        Indi = Individual(_id="I24",deat={'date': "15 JAN 2021"}) ##death date is after current date so result is false
+        self.assertFalse(us.death(Indi))
+
+        Indi = Individual(_id="I23",birt={'date': "15 JAN 2020"}) ##Birth date is before current date so result is true
+        self.assertTrue(us.birth(Indi))
 
 
 
