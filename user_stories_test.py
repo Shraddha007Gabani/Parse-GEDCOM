@@ -426,7 +426,7 @@ class TestApp(unittest.TestCase):
         Indi = Individual(_id="I24",deat={'date': "15 JAN 2021"}) ##death date is after current date so result is false
         self.assertFalse(us.death(Indi))
 
-        Indi = Individual(_id="I23",birt={'date': "15 JAN 2020"}) ##Birth date is before current date so result is true
+        Indi = Individual(_id="I26",birt={'date': "15 JAN 2020"}) ##Birth date is before current date so result is true
         self.assertTrue(us.birth(Indi))
 
     def test_Birth_before_death(self):
@@ -485,6 +485,27 @@ class TestApp(unittest.TestCase):
 
         family = Family(_id='I26',marr={'date': "26 jan 1997"})
         self.assertTrue(us.marriage_before_divorce(family))
+
+    def test_Birth_before_mrg(self):
+        indi = Individual(_id = "I20" , birt = {'date': "15 JAN 2020"})
+        family = Family(marr={'date': "15 JAN 2019"}) ##marrige date is before birth date so result is fasle 
+        self.assertFalse(us.Birth_before_mrg(family,indi))
+
+        indi = Individual(_id = "I21" , birt = {'date': "5 JUL 2000"})
+        family = Family(marr={'date': "1 JAN 2010"}) ##marrige date is after birth date so result is true 
+        self.assertTrue(us.Birth_before_mrg(family,indi))
+
+        indi = Individual(_id = "I22" , birt = {'date': "7 JUN 2000"})
+        family = Family(marr={'date': "9 JAN 1995"}) ##marrige date is before birth date so result is false 
+        self.assertFalse(us.Birth_before_mrg(family,indi))
+
+        indi = Individual(_id = "I23" , birt = {'date': "15 MAY 1989"})
+        family = Family(marr={'date': "15 FEB 2000"}) ##marrige date is after birth date so result is true 
+        self.assertTrue(us.Birth_before_mrg(family,indi))
+
+        indi = Individual(_id = "I24" , birt = {'date': "15 JAN 2020"})
+        family = Family(marr=None) ##marriage is not take place so result is by default true 
+        self.assertTrue(us.Birth_before_mrg(family,indi))
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

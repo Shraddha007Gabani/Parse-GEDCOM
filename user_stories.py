@@ -286,6 +286,22 @@ def death(indi : Individual) -> bool:
     else:
         print(f"✘ ({indi.id}): death didn't take place ")
 
+def Birth_before_mrg(family:Family,individuals:Individual) -> bool:
+    birth_date: datetime = datetime.strptime(individuals.birt['date'], "%d %b %Y") # get the merrage date
+
+    if family.marr: # condition for the divorce 
+        marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y")
+        if marr_date - birth_date > timedelta(minutes=0):
+            print(f"✔ ({individuals.id}):birth is before mrg")
+            return True
+        else:
+            print(f"✘ ({individuals.id}):birth is not before mrg")
+            False
+    else:
+        print(f"✘ ({individuals.id}):no mrg")
+        return True
+
+
 def marriage_before_divorce(family: Family) -> bool:
     marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y") # get the merriage date
 
