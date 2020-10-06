@@ -92,19 +92,12 @@ def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
 
 def main():
     """ the main function to check the data """
-    path: str = "C:/Users/0609k/OneDrive/Desktop/555/Github/Parse-GEDCOM/SSW555-P1-fizgi.ged"
+    path: str = "SSW555-P1-fizgi.ged"
     lines = get_lines(path)  # process the file
     individuals, families = generate_classes(lines)
     individuals.sort(key=operator.attrgetter('id'))  # sort Individual class list by ID
     families.sort(key=operator.attrgetter('id'))  # sort Family class list by ID
     pretty_print(individuals, families)
-
-    for family in families:  # process user stories
-        us.birth_before_death_of_parents(family, individuals)
-        us.were_parents_over_14(family, individuals)
-        us.fewer_than_15_siblings(family)
-        us.male_last_names(family, individuals)
-        print('')  # new line between families
 
 
 if __name__ == '__main__':

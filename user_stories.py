@@ -4,7 +4,7 @@
     python: v3.8.4
 """
 
-from typing import List, Dict, TextIO
+from typing import List, Dict, TextIO, Union
 from datetime import datetime, timedelta
 from models import Individual, Family
 
@@ -110,8 +110,6 @@ def marriage_before_death(family: Family, individuals: List[Individual]) -> bool
         return False
 
 
-
-
 def divorce_before_death(family: Family, individuals: List[Individual]) -> bool:
     """ user story: verify that divorce before death of either spouse """
     divdate = datetime.strptime(family.div.get('date'), "%d %b %Y")
@@ -122,18 +120,20 @@ def divorce_before_death(family: Family, individuals: List[Individual]) -> bool:
     husbandDeathDate = datetime.strptime(husb.deat.get('date'), "%d %b %Y") if husb.deat else None
     wifeDeathDate = datetime.strptime(wife.deat.get('date'), "%d %b %Y") if wife.deat else None
 
-    
-    if (husbandDeathDate and husbandDeathDate - divdate > timedelta(minutes=0)) or (wifeDeathDate and wifeDeathDate - divdate > timedelta(minutes=0)):
-        print(f"✔ Family ({family.husb}) and ({family.wife}):Their divorce took place, before either of their death, So the condition is valid.")
+    if (husbandDeathDate and husbandDeathDate - divdate > timedelta(minutes=0)) \
+            or (wifeDeathDate and wifeDeathDate - divdate > timedelta(minutes=0)):
+        print(f"✔ Family ({family.husb}) and ({family.wife}): Their divorce took place, "
+              f"before either of their death, So the condition is valid.")
         return True
     else: 
-        print(f"✘ Husband ({family.husb}) and Wife ({family.wife}): Divorce did not take place before either of their death, So that is not valid.")
+        print(f"✘ Husband ({family.husb}) and Wife ({family.wife}): Divorce did not take place "
+              f"before either of their death, So that is not valid.")
         return False
 
-    
 
 def checkBigamy(family: Dict):
-    """Method that checks bigamy in the given gedcom data if yes then it pops and update data with no bigamy"""
+    """Method that checks bigamy in the given gedcom data
+    if yes then it pops and update data with no bigamy"""
     for f in family:
         if 'HUSB' in family[f]:
             hus_id = family[f]['HUSB']
@@ -164,7 +164,8 @@ def getAge(born):
 
 
 def checkForOldParents(fam: Dict, ind: Dict, file: TextIO):
-    """check the age of individuals and return boolean value if there are old parents in given data false otherwise"""
+    """check the age of individuals and return boolean value
+    if there are old parents in given data false otherwise"""
     result: bool = True
     for f in fam:
         if "CHIL" in fam[f]:
@@ -194,6 +195,7 @@ def checkForOldParents(fam: Dict, ind: Dict, file: TextIO):
                     result: bool = False
     return result
 
+
 def birth_before_marriage_of_parents(family: Family, individuals: List[Individual]) -> bool:
     """ user story: verify that divorce before death of either spouse """
     mrgdate = datetime.strptime(family.marr.get('date'), "%d %b %Y")
@@ -210,6 +212,7 @@ def birth_before_marriage_of_parents(family: Family, individuals: List[Individua
     else:
         print(f"({family.id}) : marrige is not happen")
         return False
+
 
 def less_than_150(individual: Individual) -> bool:
     birth_date: datetime = datetime.strptime(individual.birt['date'], "%d %b %Y")
@@ -234,8 +237,11 @@ def less_than_150(individual: Individual) -> bool:
     
     return False
 
+
 today: datetime = datetime.now()
-year=timedelta(minutes=0)
+year: timedelta = timedelta(minutes=0)
+
+
 def marriage(family: Family) -> bool:
   
     if family.marr:
@@ -262,6 +268,7 @@ def divo(family: Family) -> bool:
     else:
         print(f"✘ ({family.id}): divorce didn't take place ")
 
+
 def birth(indi : Individual) -> bool:
     if indi.birt:
         birt_date: datetime = datetime.strptime(indi.birt['date'], "%d %b %Y")
@@ -273,6 +280,7 @@ def birth(indi : Individual) -> bool:
 
     else:
         print(f"✘ ({indi.id}): birth didn't take place ")
+
 
 def death(indi : Individual) -> bool:
     if indi.deat:
@@ -286,8 +294,9 @@ def death(indi : Individual) -> bool:
     else:
         print(f"✘ ({indi.id}): death didn't take place ")
 
-def Birth_before_mrg(family:Family,individuals:Individual) -> bool:
-    birth_date: datetime = datetime.strptime(individuals.birt['date'], "%d %b %Y") # get the merrage date
+
+def birth_before_mrg(family: Family, individuals: Individual) -> bool:
+    birth_date: datetime = datetime.strptime(individuals.birt['date'], "%d %b %Y")
 
     if family.marr: # condition for the divorce 
         marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y")
@@ -296,14 +305,14 @@ def Birth_before_mrg(family:Family,individuals:Individual) -> bool:
             return True
         else:
             print(f"✘ ({individuals.id}):birth is not before mrg")
-            False
+            return False
     else:
         print(f"✘ ({individuals.id}):no mrg")
         return True
 
 
 def marriage_before_divorce(family: Family) -> bool:
-    marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y") # get the merriage date
+    marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y") # get the marriage date
 
     if family.div: # condition for the divorce 
         div_date: datetime = datetime.strptime(family.div['date'], "%d %b %Y")
@@ -316,22 +325,19 @@ def marriage_before_divorce(family: Family) -> bool:
     else:
         print(f"({family.id}):There is no divorce")
         return True
-    
-def Birth_before_death(individuals:Individual) -> bool:
-    birth_date: datetime = datetime.strptime(individuals.birt['date'], "%d %b %Y") # get the merrage date
 
-    if individuals.deat: # condition for the divorce 
+
+def birth_before_death(individuals:Individual) -> bool:
+    birth_date: datetime = datetime.strptime(individuals.birt['date'], "%d %b %Y")
+
+    if individuals.deat:  # condition for the divorce
         deat_date: datetime = datetime.strptime(individuals.deat['date'], "%d %b %Y")
         if deat_date - birth_date > timedelta(minutes=0):
             print(f"({individuals.id}):birth is before death")
             return True
         else:
             print(f"({individuals.id}):birth can not take place not before death")
-            False
+            return False
     else:
         print(f"({individuals.id}):no death")
         return True
-
-
-    
-
