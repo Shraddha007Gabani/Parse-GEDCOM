@@ -325,6 +325,8 @@ def marriage_before_divorce(family: Family) -> bool:
     else:
         print(f"({family.id}):There is no divorce")
         return True
+
+
 # US14 no more than 5 siblings born the same day
 def verifySiblingsDates(allDates):
     retValue = True
@@ -372,9 +374,8 @@ def verifySiblingsSpace(allDates):
     return retValue
 
 
-siblingsDates = (datetime.date(1990, 1, 1), datetime.date(1991, 1, 1))
-
-print(verifySiblingsDates(siblingsDates))
+# siblingsDates = (datetime.date(1990, 1, 1), datetime.date(1991, 1, 1))
+# print(verifySiblingsDates(siblingsDates))
 
 
 def birth_before_death(individuals:Individual) -> bool:
@@ -391,3 +392,36 @@ def birth_before_death(individuals:Individual) -> bool:
     else:
         print(f"({individuals.id}):no death")
         return True
+
+
+def correct_gender_for_role(family: Family, individuals: List[Individual]) -> bool:
+    """ US21: verify that Husband in family is male and wife in family is female """
+    husb_gender = next(ind.sex for ind in individuals if ind.id == family.husb)
+    wife_gender = next(ind.sex for ind in individuals if ind.id == family.wife)
+
+    if husb_gender == 'M' and wife_gender == 'F':
+        print(f"✔ Family ({family.id}): Both parents have the correct gender for the role")
+        return True
+
+    if husb_gender == 'F' and wife_gender == 'M':
+        print(f"✘ Family ({family.id}): Husband should be Male and Wife should be Female")
+    elif husb_gender == 'F':
+        print(f"✘ Family ({family.id}): Husband should be Male")
+    elif wife_gender == 'M':
+        print(f"✘ Family ({family.id}): Wife should be Female")
+
+    return False
+
+
+def unique_ids(families: List[Family], individuals: List[Individual]) -> bool:
+    """ US22: verify that All individual IDs are unique and all family IDs are unique """
+    ids = [family.id for family in families] + [individual.id for individual in individuals]
+
+    recurrent_ids = list(set([_id for _id in ids if ids.count(_id) > 1]))
+
+    if len(recurrent_ids) > 0:
+        print(f"✘ ID check: Recurrent ids detected", recurrent_ids)
+        return False
+
+    print(f"✔ ID check: No recurrent ids detected")
+    return True

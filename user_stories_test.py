@@ -3,9 +3,11 @@
     date: 30-Sep-2020
     python: v3.8.4
 """
-
+import datetime
 import unittest
 from typing import List, Dict
+
+import user_stories
 from models import Individual, Family
 import user_stories as us
 
@@ -225,7 +227,6 @@ class TestApp(unittest.TestCase):
         family: Family = Family(husb=husband.id, wife=wife.id, marr={'date': "11 FEB 2002"})
         self.assertFalse(us.marriage_before_death(family, individuals))
 
-
     def test_divorce_before_death(self):
             
             husband: Individual = Individual(_id="I0", deat={'date': "1 JAN 2020"})
@@ -276,7 +277,6 @@ class TestApp(unittest.TestCase):
             family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2002"})
             self.assertFalse(us.divorce_before_death(family, individuals))
 
-       
     def test_checkForOldParents(self):
         """Test cases for checking parents are old or not US12"""
         f = open("Output.txt", "a+")
@@ -392,8 +392,6 @@ class TestApp(unittest.TestCase):
         family = Family(_id="I21" , marr={'date': "11 may 2009"}, div= {'date':"15 sep 2009"})
         self.assertTrue(us.birth_before_marriage_of_parents(family, individual))
 
-
-
     def test_less_than_150(self):
         individual = Individual(birt={'date': "20 Mar 1985"})
         individual.deat = {'date': "15 Aug 2008"}
@@ -506,7 +504,7 @@ class TestApp(unittest.TestCase):
         indi = Individual(_id="I24", birt={'date': "15 JAN 2020"})
         family = Family(marr=None)  # marriage is not take place so result is by default true
         self.assertTrue(us.birth_before_mrg(family, indi))
-    #US 014 test case
+
     def test_verifySiblingsDates(self):
         date1 = datetime.date(1990, 1, 1)
         date2 = datetime.date(1991, 1, 1)
@@ -517,7 +515,6 @@ class TestApp(unittest.TestCase):
         siblingsDates = (date1, date2, date3, date4, date5, date6)
         self.assertTrue(user_stories.verifySiblingsDates(siblingsDates))
 
-    def test_verifySiblingsDates(self):
         date1 = datetime.date(1990, 1, 1)
         date2 = datetime.date(1990, 1, 1)
         date3 = datetime.date(1990, 1, 1)
@@ -527,7 +524,6 @@ class TestApp(unittest.TestCase):
         siblingsDates = (date1, date2, date3, date4, date5, date6)
         self.assertTrue(user_stories.verifySiblingsDates(siblingsDates))
 
-    def test_verifySiblingsDates(self):
         date1 = datetime.date(1990, 1, 1)
         date2 = datetime.date(1990, 1, 1)
         date3 = datetime.date(1990, 1, 1)
@@ -537,7 +533,6 @@ class TestApp(unittest.TestCase):
         siblingsDates = (date1, date2, date3, date4, date5, date6)
         self.assertFalse(user_stories.verifySiblingsDates(siblingsDates))
 
-    def test_verifySiblingsDates(self):
         date1 = datetime.date(1990, 1, 2)
         date2 = datetime.date(1990, 1, 1)
         date3 = datetime.date(1990, 1, 2)
@@ -547,8 +542,6 @@ class TestApp(unittest.TestCase):
         siblingsDates = (date1, date2, date3, date4, date5, date6)
         self.assertFalse(user_stories.verifySiblingsDates(siblingsDates))
 
-
-# US13 test cases
     def test_alldifferentDates(self):
         date1 = datetime.date(1990, 1, 1)
         date2 = datetime.date(1991, 1, 1)
@@ -584,7 +577,71 @@ class TestApp(unittest.TestCase):
         siblingsDates = (date1, date2, date3)
         self.assertFalse(user_stories.verifySiblingsSpace(siblingsDates))
 
+    def test_correct_gender_for_role(self):
+        """ test correct_gender_for_role method """
+        # husband is Male, wife is Female
+        husband: Individual = Individual(_id="I0", sex='M')
+        wife: Individual = Individual(_id="I1", sex='F')
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id='F0', husb=husband.id, wife=wife.id)
+        self.assertTrue(us.correct_gender_for_role(family, individuals))
 
+        # husband is Male, wife is Male
+        husband: Individual = Individual(_id="I0", sex='M')
+        wife: Individual = Individual(_id="I1", sex='M')
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id='F1', husb=husband.id, wife=wife.id)
+        self.assertFalse(us.correct_gender_for_role(family, individuals))
+
+        # husband is Female, wife is Female
+        husband: Individual = Individual(_id="I0", sex='F')
+        wife: Individual = Individual(_id="I1", sex='F')
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id='F2', husb=husband.id, wife=wife.id)
+        self.assertFalse(us.correct_gender_for_role(family, individuals))
+
+        # husband is Female, wife is Male
+        husband: Individual = Individual(_id="I0", sex='F')
+        wife: Individual = Individual(_id="I1", sex='M')
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id='F3', husb=husband.id, wife=wife.id)
+        self.assertFalse(us.correct_gender_for_role(family, individuals))
+
+    def test_unique_ids(self):
+        """ test unique_ids method """
+        husband1: Individual = Individual(_id="I0")
+        wife1: Individual = Individual(_id="I1")
+        child1: Individual = Individual(_id="I2")
+        child2: Individual = Individual(_id="I3")
+        family1: Family = Family(_id='F0', husb=husband1.id, wife=wife1.id)
+
+        husband2: Individual = Individual(_id="I4")
+        wife2: Individual = Individual(_id="I5")
+        child3: Individual = Individual(_id="I6")
+        child4: Individual = Individual(_id="I7")
+        family2: Family = Family(_id='F1', husb=husband2.id, wife=wife2.id)
+
+        individuals = [husband1, wife1, husband2, wife2, child1, child2, child3, child4]
+        families = [family1, family2]
+
+        self.assertTrue(us.unique_ids(families, individuals))
+
+        husband1: Individual = Individual(_id="I0")
+        wife1: Individual = Individual(_id="I1")
+        child1: Individual = Individual(_id="I3")
+        child2: Individual = Individual(_id="I3")
+        family1: Family = Family(_id='F0', husb=husband1.id, wife=wife1.id)
+
+        husband2: Individual = Individual(_id="I4")
+        wife2: Individual = Individual(_id="I5")
+        child3: Individual = Individual(_id="I6")
+        child4: Individual = Individual(_id="I7")
+        family2: Family = Family(_id='F0', husb=husband2.id, wife=wife2.id)
+
+        individuals = [husband1, wife1, husband2, wife2, child1, child2, child3, child4]
+        families = [family1, family2]
+
+        self.assertFalse(us.unique_ids(families, individuals))
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)
