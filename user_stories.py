@@ -4,7 +4,7 @@
     python: v3.8.4
 """
 
-from typing import List, Dict, TextIO
+from typing import List, Dict, TextIO, Union
 from datetime import datetime, timedelta
 from models import Individual, Family
 
