@@ -103,11 +103,12 @@ def marriage_before_death(family: Family, individuals: List[Individual]) -> bool
 
     if (husbandDeathDate and husbandDeathDate - mrgDate > timedelta(minutes=0)) or (
             wifeDeathDate and wifeDeathDate - mrgDate > timedelta(minutes=0)):
-        print(f"✔ Family ({family.husb}) and ({family.wife}):Their marriage took place, before either of their death.")
+        print(
+            f"✔ Family ({family.husb}) and ({family.wife}):Their marriage took place, before either of their death, So the condition is valid.")
         return True
     else:
         print(
-            f"✘ Husband ({family.husb}): Wife ({family.wife}) Marriage did not take place before either of their death.")
+            f"✘ Husband ({family.husb}): Wife ({family.wife}) Marriage did not take place before either of their death, So that is not valid.")
         return False
 
 
@@ -121,18 +122,20 @@ def divorce_before_death(family: Family, individuals: List[Individual]) -> bool:
     husbandDeathDate = datetime.strptime(husb.deat.get('date'), "%d %b %Y") if husb.deat else None
     wifeDeathDate = datetime.strptime(wife.deat.get('date'), "%d %b %Y") if wife.deat else None
 
-    if (husbandDeathDate and husbandDeathDate - divdate > timedelta(minutes=0)) or (
-            wifeDeathDate and wifeDeathDate - divdate > timedelta(minutes=0)):
-        print(f"✔ Family ({family.husb}) and ({family.wife}):Their divorce took place, before either of their death.")
+    if (husbandDeathDate and husbandDeathDate - divdate > timedelta(minutes=0)) \
+            or (wifeDeathDate and wifeDeathDate - divdate > timedelta(minutes=0)):
+        print(f"✔ Family ({family.husb}) and ({family.wife}): Their divorce took place, "
+              f"before either of their death, So the condition is valid.")
         return True
     else:
-        print(
-            f"✘ Husband ({family.husb}) and Wife ({family.wife}): Divorce did not take place before either of their death.")
+        print(f"✘ Husband ({family.husb}) and Wife ({family.wife}): Divorce did not take place "
+              f"before either of their death, So that is not valid.")
         return False
-    
+
 
 def checkBigamy(family: Dict):
-    """Method that checks bigamy in the given gedcom data if yes then it pops and update data with no bigamy"""
+    """Method that checks bigamy in the given gedcom data
+    if yes then it pops and update data with no bigamy"""
     for f in family:
         if 'HUSB' in family[f]:
             hus_id = family[f]['HUSB']
@@ -163,7 +166,8 @@ def getAge(born):
 
 
 def checkForOldParents(fam: Dict, ind: Dict, file: TextIO):
-    """check the age of individuals and return boolean value if there are old parents in given data false otherwise"""
+    """check the age of individuals and return boolean value
+    if there are old parents in given data false otherwise"""
     result: bool = True
     for f in fam:
         if "CHIL" in fam[f]:
@@ -172,7 +176,7 @@ def checkForOldParents(fam: Dict, ind: Dict, file: TextIO):
             if "HUSB" in fam[f]:
                 husb: str = fam[f]["HUSB"]
             if "WIFE" in fam[f]:
-                wife:str = fam[f]["WIFE"]
+                wife: str = fam[f]["WIFE"]
             wifeAge: int = 0
             husbAge: int = 0
             if wife in ind and "BIRT" in ind[wife]:
@@ -192,3 +196,251 @@ def checkForOldParents(fam: Dict, ind: Dict, file: TextIO):
                         "ERROR US12: Father " + husb + " is older than their child, " + c + " by over 80 years\n")
                     result: bool = False
     return result
+
+
+def birth_before_marriage_of_parents(family: Family, individuals: List[Individual]) -> bool:
+    """ user story: verify that divorce before death of either spouse """
+    mrgdate = datetime.strptime(family.marr.get('date'), "%d %b %Y")
+    divdate = datetime.strptime(family.div.get('date'), "%d %b %Y")
+    birthdate_child = datetime.strptime(individuals.birt.get('date'), "%d %b %Y")
+
+    if family.marr:
+        if birthdate_child - mrgdate > timedelta(minutes=0) and birthdate_child - divdate < timedelta(days=275):
+            print(f"({family.id}) : birth_before_marriage_of_parents")
+            return True
+        else:
+            print(f"({family.id}) : not birth_before_marriage_of_parents")
+            return False
+    else:
+        print(f"({family.id}) : marrige is not happen")
+        return False
+
+
+def less_than_150(individual: Individual) -> bool:
+    birth_date: datetime = datetime.strptime(individual.birt['date'], "%d %b %Y")
+    current_date: datetime = datetime.now()
+    years_150 = timedelta(days=54750)
+
+    if individual.deat:
+        death_date: datetime = datetime.strptime(individual.deat['date'], "%d %b %Y")
+        if birth_date - death_date > timedelta(days=0):
+            print(f"✘ individual ({individual.id}): The person's age is grater than 150 ")
+            return False
+        elif death_date - birth_date < years_150:
+            print(f"✔ individual ({individual.id}): The person's age is less than 150 ")
+            return True
+
+    else:
+        if current_date - birth_date < years_150:
+            print(f"✔ individual ({individual.id}): The person's age is less than 150 ")
+            return True
+
+    print(f"✘ individual ({individual.id}): The person's age is not than than 150 ")
+
+    return False
+
+
+today: datetime = datetime.now()
+year: timedelta = timedelta(minutes=0)
+
+
+def marriage(family: Family) -> bool:
+    if family.marr:
+        marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y")
+        if today - marr_date > timedelta(minutes=0):
+            print(f"✔ ({family.id}): marrige take place before current date ")
+            return True
+        else:
+            print(f"✘ ({family.id}): marrige didn't take place before current date ")
+
+    else:
+        print(f"✘ ({family.id}): marrige didn't take place ")
+
+
+def divo(family: Family) -> bool:
+    if family.div:
+        div_date: datetime = datetime.strptime(family.div['date'], "%d %b %Y")
+        if today - div_date > timedelta(minutes=0):
+            print(f"✔ ({family.id}): divorce take place before current date ")
+            return True
+        else:
+            print(f"✘ ({family.id}): divorce didn't take place before current date ")
+
+    else:
+        print(f"✘ ({family.id}): divorce didn't take place ")
+
+
+def birth(indi: Individual) -> bool:
+    if indi.birt:
+        birt_date: datetime = datetime.strptime(indi.birt['date'], "%d %b %Y")
+        if today - birt_date > timedelta(minutes=0):
+            print(f"✔ ({indi.id}): birth take place before current date ")
+            return True
+        else:
+            print(f"✘ ({indi.id}): birth didn't take place before current date ")
+
+    else:
+        print(f"✘ ({indi.id}): birth didn't take place ")
+
+
+def death(indi: Individual) -> bool:
+    if indi.deat:
+        death_date: datetime = datetime.strptime(indi.deat['date'], "%d %b %Y")
+        if today - death_date > timedelta(minutes=0):
+            print(f"✔ ({indi.id}): death take place before current date ")
+            return True
+        else:
+            print(f"✘ ({indi.id}): death didn't take place before current date ")
+
+    else:
+        print(f"✘ ({indi.id}): death didn't take place ")
+
+
+def birth_before_mrg(family: Family, individuals: Individual) -> bool:
+    birth_date: datetime = datetime.strptime(individuals.birt['date'], "%d %b %Y")
+
+    if family.marr:  # condition for the divorce
+        marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y")
+        if marr_date - birth_date > timedelta(minutes=0):
+            print(f"✔ ({individuals.id}):birth is before mrg")
+            return True
+        else:
+            print(f"✘ ({individuals.id}):birth is not before mrg")
+            return False
+    else:
+        print(f"✘ ({individuals.id}):no mrg")
+        return True
+
+
+def marriage_before_divorce(family: Family) -> bool:
+    marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y")  # get the marriage date
+
+    if family.div:  # condition for the divorce
+        div_date: datetime = datetime.strptime(family.div['date'], "%d %b %Y")
+        if div_date - marr_date > timedelta(minutes=0):
+            print(f"Individual:({family.id}):marriage is before divorce")
+            return True
+        else:
+            print(f"({family.id}):marriage can not take place before divorce")
+            return False
+    else:
+        print(f"({family.id}):There is no divorce")
+        return True
+
+
+# US14 no more than 5 siblings born the same day
+def verifySiblingsDates(allDates):
+    retValue = True
+    datesDict = {}
+    for d in allDates:
+        if d in datesDict:
+            datesDict[d] = datesDict.get(d) + 1
+            if datesDict[d] > 5:
+                return False
+        else:  # if we did not find this date, we first check if we have date within day of already found dates
+            found = False
+            for d2 in datesDict:
+                delta = d2 - d
+                if abs(delta.days) < 2:
+                    datesDict[d2] = datesDict.get(d2) + 1
+                    found = True
+                    if datesDict[d2] > 5:
+                        retValue = False
+                        break
+            if not found:
+                datesDict[d] = 1
+
+    return retValue
+
+
+# US13 Sbiling space
+def verifySiblingsSpace(allDates):
+    retValue = True
+    datesSet = set()
+    for d in allDates:
+        if d in datesSet:
+            retValue = False
+            break
+        else:
+            found = False
+            for d2 in datesSet:
+                delta = d2 - d
+                if abs(delta.days) > 1 and abs(delta.days) < 280:
+                    retValue = False
+                    break
+            if retValue:
+                datesSet.add(d)
+            else:
+                break
+
+    return retValue
+
+
+# siblingsDates = (datetime.date(1990, 1, 1), datetime.date(1991, 1, 1))
+# print(verifySiblingsDates(siblingsDates))
+
+
+def birth_before_death(individuals: Individual) -> bool:
+    birth_date: datetime = datetime.strptime(individuals.birt['date'], "%d %b %Y")
+
+    if individuals.deat:  # condition for the divorce
+        deat_date: datetime = datetime.strptime(individuals.deat['date'], "%d %b %Y")
+        if deat_date - birth_date > timedelta(minutes=0):
+            print(f"({individuals.id}):birth is before death")
+            return True
+        else:
+            print(f"({individuals.id}):birth can not take place not before death")
+            return False
+    else:
+        print(f"({individuals.id}):no death")
+        return True
+
+
+def correct_gender_for_role(family: Family, individuals: List[Individual]) -> bool:
+    """ US21: verify that Husband in family is male and wife in family is female """
+    husb_gender = next(ind.sex for ind in individuals if ind.id == family.husb)
+    wife_gender = next(ind.sex for ind in individuals if ind.id == family.wife)
+
+    if husb_gender == 'M' and wife_gender == 'F':
+        print(f"✔ Family ({family.id}): Both parents have the correct gender for the role")
+        return True
+
+    if husb_gender == 'F' and wife_gender == 'M':
+        print(f"✘ Family ({family.id}): Husband should be Male and Wife should be Female")
+    elif husb_gender == 'F':
+        print(f"✘ Family ({family.id}): Husband should be Male")
+    elif wife_gender == 'M':
+        print(f"✘ Family ({family.id}): Wife should be Female")
+
+    return False
+
+
+def unique_ids(families: List[Family], individuals: List[Individual]) -> bool:
+    """ US22: verify that All individual IDs are unique and all family IDs are unique """
+    ids = [family.id for family in families] + [individual.id for individual in individuals]
+
+    recurrent_ids = list(set([_id for _id in ids if ids.count(_id) > 1]))
+
+    if len(recurrent_ids) > 0:
+        print(f"✘ ID check: Recurrent ids detected", recurrent_ids)
+        return False
+
+    print(f"✔ ID check: No recurrent ids detected")
+    return True
+
+
+def individual_ages(individuals: List[Individual]):
+    list_of_ages = []
+    for individual in individuals:
+        list_of_ages.append(individual.age())
+    print("List of individual age -", list_of_ages)
+    return list_of_ages
+
+
+def order_sibling_by_age(family: Family, individuals: List[Individual]):
+    children = []
+    for child in family.chil:
+        children.append(next(ind for ind in individuals if ind.id == child))
+    children.sort(key=lambda x: x.age(), reverse=True)
+    print(f"Family[{family.id}] age of sibling in descending order " + " ".join([str(child.age()) for child in children]))
+    return children

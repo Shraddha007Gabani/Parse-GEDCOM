@@ -3,15 +3,18 @@
     date: 30-Sep-2020
     python: v3.8.4
 """
-
+import datetime
 import unittest
 from typing import List, Dict
+
+import user_stories
 from models import Individual, Family
 import user_stories as us
 
 
 class TestApp(unittest.TestCase):
     """ test class of the methods """
+
     def test_were_parents_over_14(self):
         """ test were_parents_over_14 method """
         # husband is 20 and wife is 14 at the marriage date -> Both are over 14 -> True
@@ -176,7 +179,6 @@ class TestApp(unittest.TestCase):
         self.assertTrue(us.male_last_names(family, individuals))
 
     def test_marriage_before_death(self):
-        
         husband: Individual = Individual(_id="I0", deat={'date': "1 JAN 2020"})
         wife: Individual = Individual(_id="I1", deat={'date': "2 JAN 2019"})
         individuals: List[Individual] = [husband, wife]
@@ -213,54 +215,66 @@ class TestApp(unittest.TestCase):
 
         """Wife dies after marriage and Husband is alive so true"""
         husband: Individual = Individual(_id="I8")
-        wife: Individual = Individual(_id="I9",  deat={'date': "1 JAN 2002"})
+        wife: Individual = Individual(_id="I9", deat={'date': "1 JAN 2002"})
         individuals: List[Individual] = [husband, wife]
         family: Family = Family(husb=husband.id, wife=wife.id, marr={'date': "11 FEB 2001"})
         self.assertTrue(us.marriage_before_death(family, individuals))
 
+        """ Husband and wife they both are alive no daeth date is found so false"""
+        husband: Individual = Individual(_id="I10")
+        wife: Individual = Individual(_id="I11")
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, marr={'date': "11 FEB 2002"})
+        self.assertFalse(us.marriage_before_death(family, individuals))
 
     def test_divorce_before_death(self):
-            
-            husband: Individual = Individual(_id="I0", deat={'date': "1 JAN 2020"})
-            wife: Individual = Individual(_id="I1", deat={'date': "2 JAN 2019"})
-            individuals: List[Individual] = [husband, wife]
-            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 1999"})
-            self.assertTrue(us.divorce_before_death(family, individuals))
+        husband: Individual = Individual(_id="I0", deat={'date': "1 JAN 2020"})
+        wife: Individual = Individual(_id="I1", deat={'date': "2 JAN 2019"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 1999"})
+        self.assertTrue(us.divorce_before_death(family, individuals))
 
-            """Husband and wife they both die before their divorce so False (not possible)"""
-            husband: Individual = Individual(_id="I2", deat={'date': "1 JAN 2000"})
-            wife: Individual = Individual(_id="I3", deat={'date': "2 JAN 2000"})
-            individuals: List[Individual] = [husband, wife]
-            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
-            self.assertFalse(us.divorce_before_death(family, individuals))
+        """Husband and wife they both die before their divorce so False (not possible)"""
+        husband: Individual = Individual(_id="I2", deat={'date': "1 JAN 2000"})
+        wife: Individual = Individual(_id="I3", deat={'date': "2 JAN 2000"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
+        self.assertFalse(us.divorce_before_death(family, individuals))
 
-            """ Husband dies before divorce wife is alive so False (not possible)"""
-            husband: Individual = Individual(_id="I4", deat={'date': "1 JAN 2000"})
-            wife: Individual = Individual(_id="I5")
-            individuals: List[Individual] = [husband, wife]
-            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
-            self.assertFalse(us.divorce_before_death(family, individuals))
+        """ Husband dies before divorce wife is alive so False (not possible)"""
+        husband: Individual = Individual(_id="I4", deat={'date': "1 JAN 2000"})
+        wife: Individual = Individual(_id="I5")
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
+        self.assertFalse(us.divorce_before_death(family, individuals))
 
-            """ Husband dies after divorce and  wife is alive so true"""
-            husband: Individual = Individual(_id="I4", deat={'date': "1 JAN 2002"})
-            wife: Individual = Individual(_id="I5")
-            individuals: List[Individual] = [husband, wife]
-            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
-            self.assertTrue(us.divorce_before_death(family, individuals))
+        """ Husband dies after divorce and  wife is alive so true"""
+        husband: Individual = Individual(_id="I4", deat={'date': "1 JAN 2002"})
+        wife: Individual = Individual(_id="I5")
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
+        self.assertTrue(us.divorce_before_death(family, individuals))
 
-            """Wife dies before divorce and Husband is alive so False (not possible)"""
-            husband: Individual = Individual(_id="I6")
-            wife: Individual = Individual(_id="I7", deat={'date': "1 JAN 2000"})
-            individuals: List[Individual] = [husband, wife]
-            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
-            self.assertFalse(us.divorce_before_death(family, individuals))
+        """Wife dies before divorce and Husband is alive so False (not possible)"""
+        husband: Individual = Individual(_id="I6")
+        wife: Individual = Individual(_id="I7", deat={'date': "1 JAN 2000"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
+        self.assertFalse(us.divorce_before_death(family, individuals))
 
-            """Wife dies after divorce and Husband is alive so true"""
-            husband: Individual = Individual(_id="I8")
-            wife: Individual = Individual(_id="I9",  deat={'date': "1 JAN 2002"})
-            individuals: List[Individual] = [husband, wife]
-            family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
-            self.assertTrue(us.divorce_before_death(family, individuals))
+        """Wife dies after divorce and Husband is alive so true"""
+        husband: Individual = Individual(_id="I8")
+        wife: Individual = Individual(_id="I9", deat={'date': "1 JAN 2002"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2001"})
+        self.assertTrue(us.divorce_before_death(family, individuals))
+
+        """ Husband and wife they both are alive no divorce date is found so false"""
+        husband: Individual = Individual(_id="I10")
+        wife: Individual = Individual(_id="I11")
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(husb=husband.id, wife=wife.id, div={'date': "11 FEB 2002"})
+        self.assertFalse(us.divorce_before_death(family, individuals))
 
     def test_checkForOldParents(self):
         """Test cases for checking parents are old or not US12"""
@@ -360,6 +374,327 @@ class TestApp(unittest.TestCase):
         self.assertTrue(('I07' in indi3))
         self.assertTrue(('WIFE' in fam3['F23']))
 
+    def test_birth_before_marriage_of_parents(self):
+        individual = Individual(_id="I20", birt={'date': "11 nov 2008"})
+        family = Family(_id="I21", marr={'date': "10 jan 2008"}, div={'date': "15 JAN 2009"})
+        self.assertTrue(us.birth_before_marriage_of_parents(family, individual))
+
+        individual = Individual(_id="I20", birt={'date': "11 nov 2009"})
+        family = Family(_id="I21", marr={'date': "10 may 2008"}, div={'date': "15 jul 2008"})
+        self.assertFalse(us.birth_before_marriage_of_parents(family, individual))
+
+        individual = Individual(_id="I20", birt={'date': "12  dec 2009"})
+        family = Family(_id="I21", marr={'date': "11 may 2008"}, div={'date': "15 sep 2008"})
+        self.assertFalse(us.birth_before_marriage_of_parents(family, individual))
+
+        individual = Individual(_id="I20", birt={'date': "12  dec 2009"})
+        family = Family(_id="I21", marr={'date': "11 may 2009"}, div={'date': "15 sep 2009"})
+        self.assertTrue(us.birth_before_marriage_of_parents(family, individual))
+
+    def test_less_than_150(self):
+        individual = Individual(birt={'date': "20 Mar 1985"})
+        individual.deat = {'date': "15 Aug 2008"}
+        self.assertTrue(us.less_than_150(individual))
+
+        individual = Individual(birt={'date': "15 JAN 2000"})
+        self.assertTrue(us.less_than_150(individual))
+
+        individual = Individual(birt={'date': "15 Feb 2012"})
+        individual.deat = {'date': "21 JAN 2000"}
+        self.assertFalse(us.less_than_150(individual))
+
+        individual = Individual(birt={'date': "15 JAN 1500"})
+        self.assertFalse(us.less_than_150(individual))
+
+        individual = Individual(birt={'date': "15 JAN 2006"})
+        individual.deat = {'date': "15 JAN 1200"}
+        self.assertFalse(us.less_than_150(individual))
+
+    def test_dates_before_current(self):
+        family = Family(_id="I21", marr={'date': "15 JAN 2019"})  ##marrige date is before
+        # current date so result is true
+        self.assertTrue(us.marriage(family))
+
+        family = Family(_id="I22", div={'date': "15 JAN 2020"})  ##divorse date is before current date so result is true
+        self.assertTrue(us.divo(family))
+
+        Indi = Individual(_id="I23",
+                          birt={'date': "15 JAN 2021"})  ##Birth date is after current date so result is false
+        self.assertFalse(us.birth(Indi))
+
+        Indi = Individual(_id="I24",
+                          deat={'date': "15 JAN 2021"})  ##death date is after current date so result is false
+        self.assertFalse(us.death(Indi))
+
+        Indi = Individual(_id="I26",
+                          birt={'date': "15 JAN 2020"})  ##Birth date is before current date so result is true
+        self.assertTrue(us.birth(Indi))
+
+    def test_Birth_before_death(self):
+        individual = Individual(_id='I20', birt={'date': "15 JAN 1995"})
+        individual.deat = {'date': "15 JAN 1994"}
+        self.assertFalse(us.birth_before_death(individual))
+
+        individual = Individual(_id='I21', birt={'date': "15 JAN 1995"})
+        individual.deat = {'date': "15 JAN 1996"}
+        self.assertTrue(us.birth_before_death(individual))
+
+        individual = Individual(_id='I22', birt={'date': "25 DEC 1996"})
+        individual.deat = {'date': "26 DEC 1996"}
+        self.assertTrue(us.birth_before_death(individual))
+
+        individual = Individual(_id='I23', birt={'date': "26 dec 1995"})
+        individual.deat = {'date': "25 dec 1995"}
+        self.assertFalse(us.birth_before_death(individual))
+
+        individual = Individual(_id='I24', birt={'date': "25 JAN 1996"})
+        individual.deat = {'date': "25 dec 1997"}
+        self.assertTrue(us.birth_before_death(individual))
+
+        individual = Individual(_id='I25', birt={'date': "26 JAN 1997"})
+        individual.deat = {'date': "25 dec 1996"}
+        self.assertFalse(us.birth_before_death(individual))
+
+        individual = Individual(_id='I26', birt={'date': "26 JAN 1997"})
+        self.assertTrue(us.birth_before_death(individual))
+
+    def test_marriage_before_divorce(self):
+        family = Family(_id='I20', marr={'date': "15 JAN 1995"})
+        family.div = {'date': "15 JAN 1994"}
+        self.assertFalse(us.marriage_before_divorce(family))
+
+        family = Family(_id='I21', marr={'date': "15 JAN 1995"})
+        family.div = {'date': "15 JAN 1996"}
+        self.assertTrue(us.marriage_before_divorce(family))
+
+        family = Family(_id='I22', marr={'date': "25 DEC 1996"})
+        family.div = {'date': "26 dec 1996"}
+        self.assertTrue(us.marriage_before_divorce(family))
+
+        family = Family(_id='I23', marr={'date': "26 DEC 1996"})
+        family.div = {'date': "25 dec 1996"}
+        self.assertFalse(us.marriage_before_divorce(family))
+
+        family = Family(_id='I24', marr={'date': "25 jan 1996"})
+        family.div = {'date': "25 dec 1997"}
+        self.assertTrue(us.marriage_before_divorce(family))
+
+        family = Family(_id='I25', marr={'date': "26 jan 1997"})
+        family.div = {'date': "25 dec 1996"}
+        self.assertFalse(us.marriage_before_divorce(family))
+
+        family = Family(_id='I26', marr={'date': "26 jan 1997"})
+        self.assertTrue(us.marriage_before_divorce(family))
+
+    def test_Birth_before_mrg(self):
+        indi = Individual(_id="I20", birt={'date': "15 JAN 2020"})
+        family = Family(marr={'date': "15 JAN 2019"})  # marrige date is before birth date so result is fasle
+        self.assertFalse(us.birth_before_mrg(family, indi))
+
+        indi = Individual(_id="I21", birt={'date': "5 JUL 2000"})
+        family = Family(marr={'date': "1 JAN 2010"})  # marrige date is after birth date so result is true
+        self.assertTrue(us.birth_before_mrg(family, indi))
+
+        indi = Individual(_id="I22", birt={'date': "7 JUN 2000"})
+        family = Family(marr={'date': "9 JAN 1995"})  # marrige date is before birth date so result is false
+        self.assertFalse(us.birth_before_mrg(family, indi))
+
+        indi = Individual(_id="I23", birt={'date': "15 MAY 1989"})
+        family = Family(marr={'date': "15 FEB 2000"})  # marrige date is after birth date so result is true
+        self.assertTrue(us.birth_before_mrg(family, indi))
+
+        indi = Individual(_id="I24", birt={'date': "15 JAN 2020"})
+        family = Family(marr=None)  # marriage is not take place so result is by default true
+        self.assertTrue(us.birth_before_mrg(family, indi))
+
+    def test_verifySiblingsDates(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1991, 1, 1)
+        date3 = datetime.date(1992, 1, 1)
+        date4 = datetime.date(1993, 1, 1)
+        date5 = datetime.date(1994, 1, 1)
+        date6 = datetime.date(1995, 1, 1)
+        siblingsDates = (date1, date2, date3, date4, date5, date6)
+        self.assertTrue(user_stories.verifySiblingsDates(siblingsDates))
+
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1990, 1, 1)
+        date3 = datetime.date(1990, 1, 1)
+        date4 = datetime.date(1993, 1, 1)
+        date5 = datetime.date(1994, 1, 1)
+        date6 = datetime.date(1995, 1, 1)
+        siblingsDates = (date1, date2, date3, date4, date5, date6)
+        self.assertTrue(user_stories.verifySiblingsDates(siblingsDates))
+
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1990, 1, 1)
+        date3 = datetime.date(1990, 1, 1)
+        date4 = datetime.date(1990, 1, 1)
+        date5 = datetime.date(1990, 1, 1)
+        date6 = datetime.date(1990, 1, 1)
+        siblingsDates = (date1, date2, date3, date4, date5, date6)
+        self.assertFalse(user_stories.verifySiblingsDates(siblingsDates))
+
+        date1 = datetime.date(1990, 1, 2)
+        date2 = datetime.date(1990, 1, 1)
+        date3 = datetime.date(1990, 1, 2)
+        date4 = datetime.date(1990, 1, 1)
+        date5 = datetime.date(1990, 1, 1)
+        date6 = datetime.date(1990, 1, 1)
+        siblingsDates = (date1, date2, date3, date4, date5, date6)
+        self.assertFalse(user_stories.verifySiblingsDates(siblingsDates))
+
+    def test_alldifferentDates(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1991, 1, 1)
+        date3 = datetime.date(1992, 1, 1)
+        siblingsDates = (date1, date2, date3)
+        self.assertTrue(user_stories.verifySiblingsSpace(siblingsDates))
+
+    def test_someDifferentDatesSameYear(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1990, 11, 1)
+        date3 = datetime.date(1991, 12, 1)
+        siblingsDates = (date1, date2, date3)
+        self.assertTrue(user_stories.verifySiblingsSpace(siblingsDates))
+
+    def test_allSameDates(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1990, 1, 1)
+        date3 = datetime.date(1990, 1, 1)
+        siblingsDates = (date1, date2, date3)
+        self.assertFalse(user_stories.verifySiblingsSpace(siblingsDates))
+
+    def test_someWithDayDifference(self):
+        date1 = datetime.date(1990, 1, 2)
+        date2 = datetime.date(1990, 1, 1)
+        date3 = datetime.date(1990, 1, 2)
+        siblingsDates = (date1, date2, date3)
+        self.assertFalse(user_stories.verifySiblingsSpace(siblingsDates))
+
+    def test_someWithMonthsDifference(self):
+        date1 = datetime.date(1990, 1, 1)
+        date2 = datetime.date(1990, 6, 1)
+        date3 = datetime.date(1992, 1, 2)
+        siblingsDates = (date1, date2, date3)
+        self.assertFalse(user_stories.verifySiblingsSpace(siblingsDates))
+
+    def test_correct_gender_for_role(self):
+        """ test correct_gender_for_role method """
+        # husband is Male, wife is Female
+        husband: Individual = Individual(_id="I0", sex='M')
+        wife: Individual = Individual(_id="I1", sex='F')
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id='F0', husb=husband.id, wife=wife.id)
+        self.assertTrue(us.correct_gender_for_role(family, individuals))
+
+        # husband is Male, wife is Male
+        husband: Individual = Individual(_id="I0", sex='M')
+        wife: Individual = Individual(_id="I1", sex='M')
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id='F1', husb=husband.id, wife=wife.id)
+        self.assertFalse(us.correct_gender_for_role(family, individuals))
+
+        # husband is Female, wife is Female
+        husband: Individual = Individual(_id="I0", sex='F')
+        wife: Individual = Individual(_id="I1", sex='F')
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id='F2', husb=husband.id, wife=wife.id)
+        self.assertFalse(us.correct_gender_for_role(family, individuals))
+
+        # husband is Female, wife is Male
+        husband: Individual = Individual(_id="I0", sex='F')
+        wife: Individual = Individual(_id="I1", sex='M')
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id='F3', husb=husband.id, wife=wife.id)
+        self.assertFalse(us.correct_gender_for_role(family, individuals))
+
+    def test_unique_ids(self):
+        """ test unique_ids method """
+        husband1: Individual = Individual(_id="I0")
+        wife1: Individual = Individual(_id="I1")
+        child1: Individual = Individual(_id="I2")
+        child2: Individual = Individual(_id="I3")
+        family1: Family = Family(_id='F0', husb=husband1.id, wife=wife1.id)
+
+        husband2: Individual = Individual(_id="I4")
+        wife2: Individual = Individual(_id="I5")
+        child3: Individual = Individual(_id="I6")
+        child4: Individual = Individual(_id="I7")
+        family2: Family = Family(_id='F1', husb=husband2.id, wife=wife2.id)
+
+        individuals = [husband1, wife1, husband2, wife2, child1, child2, child3, child4]
+        families = [family1, family2]
+
+        self.assertTrue(us.unique_ids(families, individuals))
+
+        husband1: Individual = Individual(_id="I0")
+        wife1: Individual = Individual(_id="I1")
+        child1: Individual = Individual(_id="I3")
+        child2: Individual = Individual(_id="I3")
+        family1: Family = Family(_id='F0', husb=husband1.id, wife=wife1.id)
+
+        husband2: Individual = Individual(_id="I4")
+        wife2: Individual = Individual(_id="I5")
+        child3: Individual = Individual(_id="I6")
+        child4: Individual = Individual(_id="I7")
+        family2: Family = Family(_id='F0', husb=husband2.id, wife=wife2.id)
+
+        individuals = [husband1, wife1, husband2, wife2, child1, child2, child3, child4]
+        families = [family1, family2]
+
+        self.assertFalse(us.unique_ids(families, individuals))
+
+    def test_order_sibling_by_age(self):
+        child1: Individual = Individual(_id="I2", birt={'date': "14 OCT 2010"})
+        child2: Individual = Individual(_id="I22", birt={'date': "24 OCT 2019"})
+        child3: Individual = Individual(_id="I222", birt={'date': "30 OCT 2015"})
+        child4: Individual = Individual(_id="I2222", birt={'date': "5 OCT 2009"})
+        child5: Individual = Individual(_id="I22222", birt={'date': "6 OCT 2005"})
+        individuals: List[Individual] = [child1, child2, child3, child4, child5]
+        family: Family = Family(_id="F0")
+        family.chil.extend([child1.id, child2.id, child3.id, child4.id, child5.id])
+        self.assertEqual(us.order_sibling_by_age(family, individuals),
+                         [child5, child4, child1, child3, child2])
+
+        child1: Individual = Individual(_id="I3", birt={'date': "1 OCT 2016"})
+        child2: Individual = Individual(_id="I4", birt={'date': "2 OCT 2015"})
+        child3: Individual = Individual(_id="I5", birt={'date': "3 OCT 2014"})
+        child4: Individual = Individual(_id="I6", birt={'date': "4 OCT 2013"})
+        child5: Individual = Individual(_id="I7", birt={'date': "5 OCT 2012"})
+        individuals: List[Individual] = [child1, child2, child3, child4, child5]
+        family: Family = Family(_id="F0")
+        family.chil.extend([child1.id, child2.id, child3.id, child4.id, child5.id])
+        self.assertEqual(us.order_sibling_by_age(family, individuals),
+                         [child5, child4, child3, child2, child1])
+
+    def test_individual_ages(self):
+        indi1: Individual = Individual(birt={'date': "14 OCT 1990"})
+        indi2: Individual = Individual(birt={'date': "24 OCT 1991"})
+        indi3: Individual = Individual(birt={'date': "4 OCT 1992"})
+        indi4: Individual = Individual(birt={'date': "5 OCT 1993"})
+        indi5: Individual = Individual(birt={'date': "6 OCT 2000"})
+        indi6: Individual = Individual(birt={'date': "7 OCT 1999"})
+        individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5, indi6]
+        self.assertEqual(us.individual_ages(individuals), [30, 29, 28, 27, 20, 21])
+
+        indi1: Individual = Individual(birt={'date': "1 OCT 2000"})
+        indi2: Individual = Individual(birt={'date': "2 OCT 2001"})
+        indi3: Individual = Individual(birt={'date': "3 OCT 2002"})
+        indi4: Individual = Individual(birt={'date': "4 OCT 2003"})
+        indi5: Individual = Individual(birt={'date': "5 OCT 2004"})
+        indi6: Individual = Individual(birt={'date': "6 OCT 2005"})
+        individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5, indi6]
+        self.assertEqual(us.individual_ages(individuals), [20, 19, 18, 17, 16, 15])
+
+        indi1: Individual = Individual(birt={'date': "14 OCT 2016"})
+        indi2: Individual = Individual(birt={'date': "24 OCT 2015"})
+        indi3: Individual = Individual(birt={'date': "4 OCT 2014"})
+        indi4: Individual = Individual(birt={'date': "5 OCT 2013"})
+        indi5: Individual = Individual(birt={'date': "6 OCT 2012"})
+        indi6: Individual = Individual(birt={'date': "7 OCT 2011"})
+        individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5, indi6]
+        self.assertEqual(us.individual_ages(individuals), [4, 5, 6, 7, 8, 9])
 
 
 if __name__ == '__main__':
