@@ -3,10 +3,16 @@
     date: 30-Sep-2020
     python: v3.8.4
 """
-
+import operator
 from typing import List, Dict, TextIO, Union
 from datetime import datetime, timedelta
 from models import Individual, Family
+from app import get_lines, generate_classes, findParents, checkIfSiblings
+
+lines = get_lines('SSW555-P1-fizgi.ged')
+individuals, families = generate_classes(lines)
+individuals.sort(key=operator.attrgetter('id'))
+families.sort(key=operator.attrgetter('id'))
 
 
 def birth_before_death_of_parents(family: Family, individuals: List[Individual]) -> bool:
@@ -442,5 +448,43 @@ def order_sibling_by_age(family: Family, individuals: List[Individual]):
     for child in family.chil:
         children.append(next(ind for ind in individuals if ind.id == child))
     children.sort(key=lambda x: x.age(), reverse=True)
-    print(f"Family[{family.id}] age of sibling in descending order " + " ".join([str(child.age()) for child in children]))
+    print(
+        f"Family[{family.id}] age of sibling in descending order " + " ".join([str(child.age()) for child in children]))
     return children
+
+
+def firstCousinShouldNotMarry() -> List:
+    """ check if parents of husband and spouse. If parents are siblings in each others families then first cousins.
+    Return """
+
+    listFam: List = families
+
+    individualError: List = []
+
+    for fam in listFam:
+        if fam.husb != 'NA' and fam.wife != 'NA':
+            husbParents: str = findParents(fam.husb, listFam)
+            wifeParents: str = findParents(fam.wife, listFam)
+            if husbParents and wifeParents:
+                siblings: bool = checkIfSiblings(husbParents, wifeParents, listFam)
+                if siblings:
+                    individualError.append(fam)
+    return individualError
+
+
+def auntsAndUncle() -> List:
+    listFam: List = families
+
+    individualError: List = []
+    for fam in listFam:
+        if fam.husb != 'NA' and fam.wife != 'NA':
+            husbParents: str = findParents(fam.husb, listFam)
+            wifeParents: str = findParents(fam.wife, listFam)
+            if husbParents and wifeParents:
+                hSiblings: bool = checkIfSiblings(husbParents, fam, listFam)
+                wSiblings: bool = checkIfSiblings(wifeParents, fam, listFam)
+                if hSiblings:
+                    individualError.append(fam)
+                elif wSiblings:
+                    individualError.append(fam)
+    return individualError
