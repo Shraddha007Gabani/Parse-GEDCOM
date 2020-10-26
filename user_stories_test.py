@@ -696,6 +696,22 @@ class TestApp(unittest.TestCase):
         individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5, indi6]
         self.assertEqual(us.individual_ages(individuals), [4, 5, 6, 7, 8, 9])
 
+    def test_firstCousinShouldNotMarry(self):
+        """Test Cases for User Story 19"""
+        errorList: List = us.firstCousinShouldNotMarry()
+        for fam in errorList:
+            print(
+                "ERROR: FAMILY: US19: In Family id " + fam.id + " Husband " + fam.husb + "Married to first cousin, "
+                                                                                         "Wife " + fam.wife)
+        self.assertTrue(len(errorList) == 0, "US19: No first cousins are married!")
+
+    def test_auntsAndUncle(self):
+        errorList: List = us.auntsAndUncle()
+        for fam in errorList:
+            print("ERROR: FAMILY: US20: " + fam.id + " Marriage is between Aunt/Uncle and Niece/Nephew!")
+        self.assertTrue(len(errorList) == 0,
+                        "US20: Marriages are correct and no one is married to an Aunt or Uncle!")
+
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

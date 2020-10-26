@@ -11,7 +11,6 @@ from prettytable import PrettyTable
 from models import Individual, Family
 import user_stories as us
 
-
 TAGS: List[str] = ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM',
                    'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV', 'DATE', 'HEAD', 'TRLR', 'NOTE']
 
@@ -68,7 +67,7 @@ def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
         pattern_type = pattern_finder(line)
         if pattern_type == 'ZERO_1':
             current_record = Individual() if row_fields[2] == 'INDI' else Family()
-            (individuals if isinstance(current_record, Individual) else families)\
+            (individuals if isinstance(current_record, Individual) else families) \
                 .append(current_record)
             current_record.id = row_fields[1]
         elif pattern_type == 'ZERO_2':
@@ -88,6 +87,42 @@ def generate_classes(lines: List[str]) -> Tuple[List[Individual], List[Family]]:
                 setattr(current_record, current_tag, {row_fields[1].lower(): row_fields[2]})
 
     return individuals, families
+
+
+def findParents(id: int, listFam: List) -> str:
+    found: str = ""
+    for fam in listFam:
+        if id in fam.chil:
+            found: str = fam
+            break
+    return found
+
+
+def checkIfSiblings(fam1: List, fam2: List, listFam: List) -> bool:
+    """just makes sure siblings aren't married, if they are return false"""
+    if fam1.id == fam2.id:
+        return False
+    husb1fam: str = findParents(fam1.husb, listFam)
+    husb2fam: str = findParents(fam2.husb, listFam)
+    wife1fam: str = findParents(fam1.wife, listFam)
+    wife2fam: str = findParents(fam2.wife, listFam)
+
+    if husb1fam:
+        if husb2fam:
+            if husb1fam.id == husb2fam.id:
+                return True
+        elif wife2fam:
+            if husb1fam.id == wife2fam.id:
+                return True
+    elif wife1fam:
+        if husb2fam:
+            if wife1fam.id == husb2fam.id:
+                return True
+        elif wife2fam:
+            if wife1fam.id == wife2fam.id:
+                return True
+
+    return False
 
 
 def main():
