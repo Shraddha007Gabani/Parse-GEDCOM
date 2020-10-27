@@ -8,8 +8,8 @@ import unittest
 from typing import List, Dict
 
 import user_stories
-from models import Individual, Family
 import user_stories as us
+from models import Individual, Family
 
 
 class TestApp(unittest.TestCase):
@@ -711,6 +711,32 @@ class TestApp(unittest.TestCase):
             print("ERROR: FAMILY: US20: " + fam.id + " Marriage is between Aunt/Uncle and Niece/Nephew!")
         self.assertTrue(len(errorList) == 0,
                         "US20: Marriages are correct and no one is married to an Aunt or Uncle!")
+
+
+    def test_hasMultipleBirths(self):
+        birthdate1 = datetime.now()
+        birthdate2 = datetime(2009, 10, 5, 18, 00)
+        self.assertFalse(user_stories.hasMultipleBirths([birthdate1, birthdate2]))
+
+
+    def test_hasMultipleBirths(self):
+        birthdate1 = datetime.datetime.now()
+        birthdate2 = datetime.datetime.now()
+        birthdate3 = datetime.datetime(2009, 10, 5, 18, 00)
+        self.assertTrue(user_stories.hasMultipleBirths([birthdate1, birthdate2, birthdate3]))
+
+
+    def test_isSingleAliveOver30(self):
+        ind = user_stories.isSingleAliveOver30()
+        # ind.age = 31
+        ind.alive = True
+        self.assertTrue(ind)
+
+
+    def test_isSingleAliveOver30(self):
+        ind = user_stories.isSingleAliveOver30()
+
+        self.assertFalse(ind)
 
 
 if __name__ == '__main__':
