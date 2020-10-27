@@ -444,3 +444,38 @@ def order_sibling_by_age(family: Family, individuals: List[Individual]):
     children.sort(key=lambda x: x.age(), reverse=True)
     print(f"Family[{family.id}] age of sibling in descending order " + " ".join([str(child.age()) for child in children]))
     return children
+
+def hasMultipleBirths(siblingDates):
+    retValue = True
+    datesDict = {}
+    for d in siblingDates:
+        if d in datesDict:
+            datesDict[d] = datesDict.get(d) + 1
+        else:  # if we did not find this date, we first check if we have date within day of already found dates
+            found = False
+            for d2 in datesDict:
+                delta = d2 - d
+                if (abs(delta.days) < 2):
+                    datesDict[d2] = datesDict.get(d2) + 1
+                    found = True
+            if not found:
+                datesDict[d] = 1
+    for birthDate in datesDict.keys():
+        if datesDict[birthDate] > 1:
+            return birthDate.strftime('%d %b %Y')
+    return False
+
+
+# US 031
+
+def isSingleAliveOver30():
+    retValue = False
+    age = -1
+    alive = False
+    spouse = []
+    try:
+        retValue = int(age) > 30 and alive and len(spouse) == 0
+    except:
+        retValue = False
+
+    return retValue

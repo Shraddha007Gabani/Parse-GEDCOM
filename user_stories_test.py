@@ -4,6 +4,7 @@
     python: v3.8.4
 """
 import datetime
+#from datetime import datetime
 import unittest
 from typing import List, Dict
 
@@ -695,6 +696,28 @@ class TestApp(unittest.TestCase):
         indi6: Individual = Individual(birt={'date': "7 OCT 2011"})
         individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5, indi6]
         self.assertEqual(us.individual_ages(individuals), [4, 5, 6, 7, 8, 9])
+
+    def test_hasMultipleBirths(self):
+        birthdate1 = datetime.now()
+        birthdate2 = datetime(2009, 10, 5, 18, 00)
+        self.assertFalse(user_stories.hasMultipleBirths([birthdate1, birthdate2]))
+
+    def test_hasMultipleBirths(self):
+        birthdate1 = datetime.datetime.now()
+        birthdate2 = datetime.datetime.now()
+        birthdate3 = datetime.datetime(2009, 10, 5, 18, 00)
+        self.assertTrue(user_stories.hasMultipleBirths([birthdate1, birthdate2, birthdate3]))
+
+    def test_isSingleAliveOver30(self):
+        ind = user_stories.isSingleAliveOver30()
+        # ind.age = 31
+        ind.alive = True
+        self. assertTrue(ind)
+
+    def test_isSingleAliveOver30(self):
+        ind = user_stories.isSingleAliveOver30()
+
+        self.assertFalse(ind)
 
 
 if __name__ == '__main__':

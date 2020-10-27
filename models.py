@@ -17,7 +17,7 @@ class Individual:
         self.name = name
         self.sex = sex
         self.birt: Optional[Dict[str, str]] = birt
-        self.alive = alive
+        self.alive = False
         self.deat: Optional[bool, Dict[str, str]] = deat
         self.famc: List[str] = []
         self.fams: List[str] = []
