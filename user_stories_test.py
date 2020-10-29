@@ -738,6 +738,90 @@ class TestApp(unittest.TestCase):
 
         self.assertFalse(ind)
 
+    #User_Story_Testcases_17
+    def test_no_parents_marry_child(self):
+        
+        """All have unique ids so no inter marriage in family so true"""
+        husband = "I0"
+        wife="I1"
+        child="I2"
+        families: List[Family] = [husband,wife,[child]]
+        self.assertTrue(us.no_parents_marry_child(families))
+
+        """All have unique ids so no inter marriage in family so true"""
+        husband = "I21"
+        wife="I22"
+        child="I23"
+        families: List[Family] = [husband,wife,[child]]
+        self.assertTrue(us.no_parents_marry_child(families))
+
+        """ Husband(father) and child have same ids so not allowed so False"""
+        husband = "I17"
+        wife="I18"
+        child="I17"
+        families: List[Family] = [husband,wife,[child]]
+        self.assertFalse(us.no_parents_marry_child(families))
+
+        """ Wife(Mother) and child have same ids so not allowed so False"""
+        husband = "I17"
+        wife="I18"
+        child="I18"
+        families: List[Family] = [husband,wife,[child]]
+        self.assertFalse(us.no_parents_marry_child(families))
+
+
+        """All three have same ids not allowed so False"""
+        husband = "I7"
+        wife="I7"
+        child="I7"
+        families: List[Family] = [husband,wife,[child]]
+        self.assertFalse(us.no_parents_marry_child(families))
+
+
+    #User_Story_Testcases_18
+    def test_no_sibilings_can_marry(self):
+        
+        """All have unique ids so no inter marriage in family so true"""
+        husband = "I0"
+        wife="I1"
+        child1="I2"
+        child2="I3"
+        families: List[Family] = [husband,wife,[child1],[child2]]
+        self.assertTrue(us.no_sibilings_can_marry(families))
+
+        """All have unique ids so no inter marriage in family so true"""
+        husband = "I17"
+        wife="I18"
+        child1="I19"
+        child2="I20"
+        families: List[Family] = [husband,wife,[child1],[child2]]
+        self.assertTrue(us.no_sibilings_can_marry(families))
+
+        """ Husband(father) and child have same ids so not allowed so False""" #Cousins Family
+        husband = "I0"
+        wife="I1"
+        child1="I4"
+        child2="I0"
+        families: List[Family] = [husband,wife,[child1],[child2]]
+        self.assertFalse(us.no_sibilings_can_marry(families))
+
+        """ Wife(Mother) and child have same ids so not allowed so False""" #Cousins family
+        husband = "I21"
+        wife="I22"
+        child1="I22"
+        child2="I23"
+        families: List[Family] = [husband,wife,[child1],[child2]]
+        self.assertFalse(us.no_sibilings_can_marry(families))
+
+        """ Sibilings marry with each other so False"""
+        husband = "I21"
+        wife="I25"
+        child1="I26"
+        child2="I26"
+        families: List[Family] = [husband,wife,[child1],[child2]]
+        self.assertFalse(us.no_sibilings_can_marry(families))
+
+
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

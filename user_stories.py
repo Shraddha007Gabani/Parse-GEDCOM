@@ -524,3 +524,27 @@ def isSingleAliveOver30():
 
     return retValue
 
+#US_17
+def no_parents_marry_child(families: List[Family]):
+    parent_pairs = families[:2]
+    for child in families[2]:
+        if child in parent_pairs: # If their ids are not same that means that they have not married each other
+            print("✘ In family such type of marriages cannot take place where parents marry their.")
+            return False #if their ids match means they have married which is not true So it returns False
+        else:
+            print("✔ In Family such marriages are allowed and valid.")
+            return True
+
+#US_18
+def no_sibilings_can_marry(families: List[Family]):
+    parent_pairs = families[:4]
+    for child1 in families[2]:
+        for child2 in families[3]:
+            if child1 in parent_pairs or child2 in parent_pairs or child1 in child2:# If their ids are not same that means that they have not married each other
+                print("✘ In family such type of marriages cannot take place where sibilings marry each other.")
+                return False #if their ids match means they have married which is not true So it returns False
+            else:
+                print("✔ In Family such marriages are allowed and valid.")
+                return True 
+
+
