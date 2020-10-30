@@ -686,6 +686,28 @@ def validateCorrespondingRecords(individualDict, familyDict):
     return oneForOneFamilyIndividualRecords(individualDict, familyDict) and errors == 0
 
 
+#UserStory 25
+def are_child_names_unique(family: Family, individuals):
+
+
+    children = map(lambda x: individuals.get(x),family.chil)
+    childInfoSet = set()
+
+    for child in children:
+        fname = child.name.split(' ')[0]
+        bdate = child.birt
+        if (fname,bdate) in childInfoSet:
+            print("✘ children having same name or birth day date in the family")
+            return False
+        childInfoSet.add((fname,bdate))
+    print("✔ children name nad birth day date is unique")
+    return True
+
+
+
+
+
+
 
 
 

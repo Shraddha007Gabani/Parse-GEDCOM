@@ -851,6 +851,90 @@ class TestApp(unittest.TestCase):
         famDict[fam._id] = fam
         individualDict = {}
         self.assertFalse(us.validateCorrespondingRecords(individualDict, famDict))
+    
+    #Test cases for user story 25
+    def test_first_names_unique(self):
+     
+        father_1 = Individual()
+        father_1._id = "F1"
+        father_1.name = "James Jonas Jamison"
+
+        mother_1 = Individual()
+        mother_1._id = "M1"
+        mother_1.name = "Janet Judy Jamison"
+
+        # Generation 2 - Children
+        child_1 = Individual()
+        child_1._id = "C1"
+        child_1.name = "Jacob Jarad Jamison"
+
+        child_2 = Individual()
+        child_2._id = "C2"
+        child_2.name = "Jessica Joyce Jamison"
+
+        child_3 = Individual()
+        child_3._id = "C3"
+        child_3.name = "Jenny Jackson Jamison"
+
+        # Family
+        family_1 = Family()
+        family_1._id = "G1F1"
+        family_1.husb = father_1._id
+        family_1.wife = mother_1._id
+        family_1.chil.append(child_1._id)
+        family_1.chil.append(child_2._id)
+        family_1.chil.append(child_3._id)
+
+        individuals_dict = {}
+        individuals_dict[child_1._id] = child_1
+        individuals_dict[child_2._id] = child_2
+        individuals_dict[child_3._id] = child_3
+        self.assertTrue(us.are_child_names_unique(family_1, individuals_dict))
+        
+
+    
+        father_1 = Individual()
+        father_1._id = "F1"
+        father_1.name = "James Jonas Jamison"
+        father_1.birt = "1 JAN 1910"
+
+        mother_1 = Individual()
+        mother_1._id = "M1"
+        mother_1.name = "Janet Judy Jamison"
+        mother_1.birt = "1 feb 1920"
+
+        # Generation 2 - Children
+        child_1 = Individual()
+        child_1._id = "C1"
+        child_1.name = "Jacob Jarad Jamison"
+        child_1.birt = "3 feb 1955"
+
+        child_2 = Individual()
+        child_2._id = "C2"
+        child_2.name = "Jacob J Jamison"
+        child_2.birt = "3 feb 1955"
+
+        child_3 = Individual()
+        child_3._id = "C3"
+        child_3.name = "Jenny Jackson Jamison"
+        child_3.birt = "3 feb 1960"
+
+        # Family 
+        family_1 = Family()
+        family_1._id = "G1F1"
+        family_1.husb = father_1._id
+        family_1.wife = mother_1._id
+        family_1.chil.append(child_1._id)
+        family_1.chil.append(child_2._id)
+        family_1.chil.append(child_3._id)
+
+        individuals_dict = {}
+        individuals_dict[child_1._id] = child_1
+        individuals_dict[child_2._id] = child_2
+        individuals_dict[child_3._id] = child_3
+
+        self.assertFalse(us.are_child_names_unique(family_1, individuals_dict))
+        
 
 
 if __name__ == '__main__':
