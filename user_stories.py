@@ -703,7 +703,32 @@ def are_child_names_unique(family: Family, individuals):
     print("✔ children name nad birth day date is unique")
     return True
 
+def deceased(individuals: List[Individual]):
+    deceased_list = []
+    for individual in individuals:
+        if individual.deat is not False:
+            deceased_list.append(individual.name)
 
+    for i in deceased_list:
+        print(f"{i} :  is deaceaed person in the family")
+    return deceased_list
+
+
+def living_marr(families: List[Family], individuals: List[Individual]):
+    living_mrr_list_d = []
+    indi = [indi.id for indi in individuals if indi.alive]
+
+    idf = [family.id for family in families if not family.div]
+
+    for i in indi:
+        if i in idf:
+            living_mrr_list_d.append(i)
+
+    for i in living_mrr_list_d:
+        print(f"{i} :  is married and alive in the family")
+            
+
+    return living_mrr_list_d
 
 
 

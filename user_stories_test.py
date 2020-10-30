@@ -934,6 +934,39 @@ class TestApp(unittest.TestCase):
         individuals_dict[child_3._id] = child_3
 
         self.assertFalse(us.are_child_names_unique(family_1, individuals_dict))
+
+    def test_deceased(self):
+        indi1: Individual = Individual(name="John Doe1",
+                                       birt={'date': "14 OCT 1990"}, deat={'date': "14 OCT 1991"})
+        indi2: Individual = Individual(name="John Doe2", birt={'date': "14 OCT 1990"})
+        indi3: Individual = Individual(name="John Doe3",
+                                       birt={'date': "14 OCT 1990"}, deat={'date': "4 OCT 1994"})
+        indi4: Individual = Individual(name="John Doe4", birt={'date': "14 OCT 1990"})
+        indi5: Individual = Individual(name="John Doe5", birt={'date': "14 OCT 1990"})
+        individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5]
+        self.assertEqual(us.deceased(individuals), ["John Doe1", "John Doe3"])
+
+
+    def test_living_marr(self):
+        indi1: Individual = Individual(_id="I1", name="John Doe1", alive=False)
+        family1: Family = Family(_id="I1", marr={"14 OCT 1992"})
+
+        indi2: Individual = Individual(_id="I2", name="John Doe2", alive=False)
+        family2: Family = Family(_id="I2", marr={"14 OCT 1992"})
+
+        indi3: Individual = Individual(_id="I3", name="John Doe3")
+        family3: Family = Family(_id="I3", marr={"14 OCT 1991"}, div={"14 OCT 1990"})
+
+        indi4: Individual = Individual(_id="I4", name="John Doe3")
+        family4: Family = Family(_id="I4", marr={"14 OCT 1992"})
+
+        indi5: Individual = Individual(_id="I5", name="John Doe5")
+        family5: Family = Family(_id="I5", marr={"14 OCT 1992"}, div={"14 OCT 1995"})
+
+        individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5]
+        fam: List[Family] = [family1, family2, family3, family4, family5]
+        self.assertEqual(us.living_marr(fam, individuals), ["I4"])
+
         
 
 
