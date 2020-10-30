@@ -841,6 +841,17 @@ class TestApp(unittest.TestCase):
         families: List[Family] = [fam1, fam2, fam3, fam4, fam5]
         self.assertEqual(us.uniqueFamilyBySpouses(families), [["I2", "John Doe1", "jennifer Doe1", "14 OCT 1993"]])
 
+ 
+    #Test case for User Story 26
+    def test_FamilyChildDoesNotExist(self):
+        fam = Family()
+        fam._id = "@FAM"
+        fam.chil.append("@testchild")
+        famDict = {}
+        famDict[fam._id] = fam
+        individualDict = {}
+        self.assertFalse(us.validateCorrespondingRecords(individualDict, famDict))
+
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

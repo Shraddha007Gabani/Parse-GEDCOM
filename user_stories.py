@@ -583,6 +583,111 @@ def AreIndividualsUnique(individuals: List[Individual]):
     print(same_data)
     return same_data
 
+#User Story 26
+def validateFamilyRoles(fam: Family, individuals: List[Individual]) -> bool:
+    if fam.husb not in individuals:
+        if fam.wife not in individuals:
+            return False
+    if fam.husb in individuals:
+        hus = individuals[fam.husb]
+        l1= len(fam.chil)
+        l2=len(hus.chil)
+        if l1 == l2 and not childrenExistInFamily(hus.chil, fam.chil):
+            return False
+        else:
+            return False
+    if fam.wife in individuals:
+        wife = individuals[fam.wife]
+        l3=len(fam.chil)
+        l4=len(wife.chil)
+        if l3 == l4 and not childrenExistInFamily(wife.chil, fam.chil):
+            return False
+        else:
+            return False
+
+    return familyMembersExist(fam, individuals)
+
+
+def childrenExistInFamily(parentsChildren, familyChildren):
+    for parentChild in parentsChildren:
+        childFound = False
+        for familyChild in familyChildren:
+            if familyChild == parentChild:
+                childFound = True
+                break
+        if childFound == False:
+            return False
+    return True
+
+
+def validSpouseExists(individId, spouseId, familyDict):
+    spouseFound = False
+    spouseFound=[True for i in sorted(familyDict.keys()) if (familyDict[i].husbandId == individId and spouseId == familyDict[i].wifeId) or (familyDict[i].wifeId == individId and spouseId == familyDict[i].husbandId)]
+    return spouseFound
+
+
+def isIndividualInFamily(individualId, family):
+    if family.husbandId == individualId or family.wifeId == individualId:
+        return True
+    [True for childId in family.children if childId == individualId]
+    return False
+
+
+def familyMembersExist(family, individualDict):
+    if family.husb not in individualDict or family.wifeId not in individualDict:
+        return False
+    [False for childId in family.children if individualDict.get(childId) is None]
+    return True
+
+
+def oneForOneFamilyIndividualRecords(individualDict, familyDict):
+    missingIndividuals = []
+    for i in sorted(individualDict.keys()):
+        indi = individualDict[i]
+        indiExists = False
+        indiExists = [True for j in sorted(familyDict.keys()) if isIndividualInFamily(indi.id, familyDict[j])]
+        if indiExists == False:
+            print(f"✘  ({indi.id}): individual is not exit in the familt member")
+            missingIndividuals.append(indi.id)
+    missedFamilies = []
+    for i in sorted(familyDict.keys()):
+        fam = familyDict[i]
+        if not familyMembersExist(fam, individualDict):
+            print(f"✘  ({fam.id}): family member is not part of individual")
+            missedFamilies.append(fam.id)
+    l_1=len(missingIndividuals)
+    l_2=len(missedFamilies)
+    if l_1 < 1:
+        if  l_2 < 1:
+            return True
+    else:
+        return False
+
+
+# Final code for user story 26
+def validateCorrespondingRecords(individualDict, familyDict):
+    err = 0
+    for i in sorted(individualDict.keys()):
+        individ = individualDict[i]
+        if len(individ.spouse) > 0:
+            s_Count = 0
+            s_Count = [s_Count + 1 for spouseId in individ.spouse if validSpouseExists(individ.id, spouseId, familyDict)]
+            l_1=len(individ.spouse)
+            if s_Count != l_1:
+                err += 1
+                print(f"✘  ({individ.id}): spouse is not in family")
+
+        if len(individ.children) > 0:
+            childrenFoundInFamily = False
+            childrenFoundInFamily =[True for j in sorted(familyDict.keys()) if childrenExistInFamily(individ.children, familyDict[j].children)]
+            if childrenFoundInFamily == False:
+                errors = errors + 1
+                print(f"✘  ({individ.id}): childer is not part of family member")
+    return oneForOneFamilyIndividualRecords(individualDict, familyDict) and errors == 0
+
+
+
+
 
 
 
