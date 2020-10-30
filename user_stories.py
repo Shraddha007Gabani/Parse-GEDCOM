@@ -510,6 +510,25 @@ def hasMultipleBirths(siblingDates):
     return False
 
 
+#US24 Uniqye families by spouses - No more than one family with the same spouses by name and the same marriage date
+def uniqueFamilyBySpouses(families: List[Family]):
+    names_marr = {}
+    same_data = []
+    for family in families:
+        if (family.husb, family.wife) in names_marr:
+            if names_marr[family.husb, family.wife] == family.marr["date"]:
+                same_data.append([family.id, family.husb, family.wife, family.marr["date"]])
+                print(f"✘ Family ({family.id}): duplicate family having same data")
+                
+        else:
+            names_marr[family.husb, family.wife] = family.marr["date"]
+            print(f"✔ Family ({family.id}): No duplicate family having same data")
+            
+    print("Duplicate family: ")
+    print(same_data)
+    return same_data
+
+
 # US 031
 
 def isSingleAliveOver30():
@@ -546,5 +565,26 @@ def no_sibilings_can_marry(families: List[Family]):
             else:
                 print("✔ In Family such marriages are allowed and valid.")
                 return True 
+
+
+#US23 Unique name and birth date - No more than one individual with the same name and birth date
+def AreIndividualsUnique(individuals: List[Individual]):
+    names_bdays = {}
+    same_data = []
+    for individual in individuals:
+        if individual.name in names_bdays:
+            if names_bdays[individual.name] == individual.birt["date"]:
+                same_data.append([individual.id, individual.name, individual.birt["date"]])
+                print(f"✘ Individual ({individual.id}): duplicate individual having same name and birth_date")
+        else:
+            names_bdays[individual.name] = individual.birt["date"]
+            print(f"✔ Individual ({individual.id}): No duplicate individual having same name and birth_date")
+
+    print(same_data)
+    return same_data
+
+
+
+
 
 
