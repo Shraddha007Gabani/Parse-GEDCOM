@@ -822,24 +822,24 @@ class TestApp(unittest.TestCase):
         self.assertFalse(us.no_sibilings_can_marry(families))
 
 
-        def test_AreIndividualsUnique(self):
-            indi1: Individual = Individual(_id="I1", name="John Doe", birt={'date': "14 OCT 1990"})
-            indi2: Individual = Individual(_id="I2", name="John Doe", birt={'date': "14 OCT 1990"})
-            indi3: Individual = Individual(_id="I3", name="Nidhi Patel", birt={'date': "1 OCT 1998"})
-            indi4: Individual = Individual(_id="I4", name="Patrik Kim", birt={'date': "4 NOV 2000"})
-            indi5: Individual = Individual(_id="I5", name="John Hill", birt={'date': "11 JAN 2010"})
-            individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5]
-            self.assertEqual(us.AreIndividualsUnique(individuals), [["I2", "John Doe", "14 OCT 1990"]])
+    def test_AreIndividualsUnique(self):
+        indi1: Individual = Individual(_id="I1", name="John Doe", birt={'date': "14 OCT 1990"})
+        indi2: Individual = Individual(_id="I2", name="John Doe", birt={'date': "14 OCT 1990"})
+        indi3: Individual = Individual(_id="I3", name="Nidhi Patel", birt={'date': "1 OCT 1998"})
+        indi4: Individual = Individual(_id="I4", name="Patrik Kim", birt={'date': "4 NOV 2000"})
+        indi5: Individual = Individual(_id="I5", name="John Hill", birt={'date': "11 JAN 2010"})
+        individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5]
+        self.assertEqual(us.AreIndividualsUnique(individuals), [["I2", "John Doe", "14 OCT 1990"]])
 
 
-        def test_uniqueFamilyBySpouses(self):
-            fam1: Family = Family(_id="I1", husb="John Doe1",wife="jennifer Doe1", marr={'date': "14 OCT 1993"})
-            fam2: Family = Family(_id="I2", husb="John Doe1",wife="jennifer Doe1", marr={'date': "14 OCT 1993"})
-            fam3: Family = Family(_id="I3", husb="Anurag Kim",wife="Emma Green", marr={'date': "1 OCT 1998"})
-            fam4: Family = Family(_id="I4", husb="Shrey Hill",wife="Olivia Kim", marr={'date': "4 NOV 2000"})
-            fam5: Family = Family(_id="I5", husb="Parthik Smith",wife="Sophia Taylor", marr={'date': "11 JAN 2010"})
-            families: List[Family] = [fam1, fam2, fam3, fam4, fam5]
-            self.assertEqual(us.uniqueFamilyBySpouses(families), [["I2", "John Doe1", "jennifer Doe1", "14 OCT 1993"]])
+    def test_uniqueFamilyBySpouses(self):
+        fam1: Family = Family(_id="I1", husb="John Doe1",wife="jennifer Doe1", marr={'date': "14 OCT 1993"})
+        fam2: Family = Family(_id="I2", husb="John Doe1",wife="jennifer Doe1", marr={'date': "14 OCT 1993"})
+        fam3: Family = Family(_id="I3", husb="Anurag Kim",wife="Emma Green", marr={'date': "1 OCT 1998"})
+        fam4: Family = Family(_id="I4", husb="Shrey Hill",wife="Olivia Kim", marr={'date': "4 NOV 2000"})
+        fam5: Family = Family(_id="I5", husb="Parthik Smith",wife="Sophia Taylor", marr={'date': "11 JAN 2010"})
+        families: List[Family] = [fam1, fam2, fam3, fam4, fam5]
+        self.assertEqual(us.uniqueFamilyBySpouses(families), [["I2", "John Doe1", "jennifer Doe1", "14 OCT 1993"]])
 
 
 if __name__ == '__main__':
