@@ -712,6 +712,51 @@ class TestApp(unittest.TestCase):
         self.assertTrue(len(errorList) == 0,
                         "US20: Marriages are correct and no one is married to an Aunt or Uncle!")
 
+    def test_reject_illegal_dates(self):
+        """ Test cases for US42 --- Reject Illegal date"""
+        self.assertTrue(us.reject_illegal_dates('2/10/2020'), True)
+        self.assertTrue(us.reject_illegal_dates('6/30/2020'), True)
+
+        self.assertFalse(us.reject_illegal_dates('2/30/2020'), False)
+        self.assertFalse(us.reject_illegal_dates('6/32/2020'), False)
+
+    def testPartialDates(self):
+        fam3: Dict = {'F23':
+                          {'fam': 'F23', 'MARR': '14 FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07',
+                           'CHIL': ['I19', 'I26', 'I30']},
+                      'F16': {'fam': 'F16', 'MARR': '12 DEC 2007', 'WIFE': 'I07'}}
+        indi3: Dict = {
+            'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M', 'family': 'F23',
+                    'DEAT': '31 DEC 2013'},
+            'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1960', 'sex': 'F',
+                    'family': 'F23'},
+            'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
+            'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+            'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+            'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
+            'I44': {'id': 'I44', 'name': 'Cersi /Lanister/', 'BIRT': '13 FEB 1981', 'sex': 'F',
+                    'family': 'F23'}}
+        fam: Dict = {'F23':
+                         {'fam': 'F23', 'MARR': 'FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07',
+                          'CHIL': ['I19', 'I26', 'I30']},
+                     'F16': {'fam': 'F16', 'MARR': '12 DEC 2007'}}
+
+        indi: Dict = {
+            'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 1960', 'sex': 'M', 'family': 'F23',
+                    'DEAT': '31 DEC 2013'},
+            'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1960', 'sex': 'F',
+                    'family': 'F23'},
+            'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 1981', 'sex': 'M', 'family': 'F23'},
+            'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+            'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+            'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 1981', 'sex': 'M', 'family': 'F23'},
+            'I44': {'id': 'I44', 'name': 'Cersi /Lanister/', 'BIRT': '13 FEB 1981', 'sex': 'F',
+                    'family': 'F23'}}
+
+        self.assertEqual(us.partialDates(indi, fam),
+                         ['US41: All Dates Made Valid:', [['I01', '10 15 1960'], ['I01', '31 DEC 2013'], ['I19', '10 13 1981'], ['I32', '10 13 1981']], [['F23', '10 FEB 1980']]])
+        self.assertEqual(us.partialDates(indi3, fam3), ['US41: All Dates Already Valid'])
+
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)
