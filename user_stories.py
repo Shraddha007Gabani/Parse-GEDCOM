@@ -689,7 +689,6 @@ def validateCorrespondingRecords(individualDict, familyDict):
 #UserStory 25
 def are_child_names_unique(family: Family, individuals):
 
-
     children = map(lambda x: individuals.get(x),family.chil)
     childInfoSet = set()
 
@@ -702,6 +701,7 @@ def are_child_names_unique(family: Family, individuals):
         childInfoSet.add((fname,bdate))
     print("✔ children name nad birth day date is unique")
     return True
+
 
 def deceased(individuals: List[Individual]):
     deceased_list = []
@@ -726,15 +726,64 @@ def living_marr(families: List[Family], individuals: List[Individual]):
 
     for i in living_mrr_list_d:
         print(f"{i} :  is married and alive in the family")
-            
 
     return living_mrr_list_d
 
 
+def aunt_uncle_birth_year(families: List[Family], individuals: List[Individual]):
+    """ US47: verify that aunts and uncles birth year are not same """
+
+    def get_aunts_and_uncles(family: Family):
+        aunt_list = []
+        uncle_list = []
+
+        try:
+            husb_sibling_ids = next(fam for fam in families if family.husb in fam.chil).chil
+        except StopIteration:
+            husb_sibling_ids = []
+
+        if family.husb in husb_sibling_ids:
+            husb_sibling_ids.remove(family.husb)
+
+        try:
+            wife_sibling_ids = next(fam for fam in families if family.wife in fam.chil).chil
+        except StopIteration:
+            wife_sibling_ids = []
+
+        if family.wife in wife_sibling_ids:
+            wife_sibling_ids.remove(family.wife)
+
+        for husb_sibling_id in husb_sibling_ids:
+            husb_sibling = next(ind for ind in individuals if ind.id == husb_sibling_id)
+            (aunt_list if husb_sibling.sex == 'F' else uncle_list).append(husb_sibling)
+
+        for wife_sibling_id in wife_sibling_ids:
+            wife_sibling = next(ind for ind in individuals if ind.id == wife_sibling_id)
+            (aunt_list if wife_sibling.sex == 'F' else uncle_list).append(wife_sibling)
+
+        return aunt_list, uncle_list
+
+    same_aunt_uncle = []
+    for fam in families:
+        aunt_list, uncle_list = get_aunts_and_uncles(fam)
+        for aunt in aunt_list:
+            for uncle in uncle_list:
+                if aunt.birt['date'][-4:] == uncle.birt['date'][-4:]:
+                    same_aunt_uncle.append((aunt.id, uncle.id))
+                    print(f"Aunt({aunt.id}) and Uncle({uncle.id}) can not have the same birth year")
+
+    return same_aunt_uncle
 
 
+def all_dead_people(individuals: List[Individual]):
+    """ US48: verify that aunts and uncles birth year are not same """
+    dead_list = []
+    for individual in individuals:
+        if individual.deat is not False:
+            dead_list.append(individual.name)
 
-
+    print(f"List of all dead people: {dead_list}")
+    return dead_list
 
 
 

@@ -283,25 +283,36 @@ class TestApp(unittest.TestCase):
                          {'fam': 'F23', 'MARR': '14 FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07',
                           'CHIL': ['I19', 'I26', 'I30']},
                      'F16': {'fam': 'F16', 'MARR': '12 DEC 2007'}}
-        fam2: Dict = {'F23': {'fam': 'F23', 'MARR': '14 FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07', 'CHIL': ['I19']}}
+        fam2: Dict = {'F23': {'fam': 'F23', 'MARR': '14 FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07',
+                              'CHIL': ['I19']}}
 
-        ind1: Dict = {'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1900', 'sex': 'M', 'family': 'F23',
-                              'DEAT': '31 DEC 2013'},
-                      'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1902', 'sex': 'F',
+        ind1: Dict = {'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1900', 'sex': 'M',
                               'family': 'F23',
                               'DEAT': '31 DEC 2013'},
-                      'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1999', 'sex': 'M', 'family': 'F23',
+                      'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1902',
+                              'sex': 'F',
+                              'family': 'F23',
+                              'DEAT': '31 DEC 2013'},
+                      'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1999',
+                              'sex': 'M', 'family': 'F23',
                               'DEAT': '31 DEC 2013'}}
 
-        ind2: Dict = {'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M', 'family': 'F23',
+        ind2: Dict = {'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M',
+                              'family': 'F23',
                               'DEAT': '31 DEC 2013'},
-                      'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1960', 'sex': 'F',
+                      'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1960',
+                              'sex': 'F',
                               'family': 'F23'},
-                      'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
-                      'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
-                      'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
-                      'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
-                      'I44': {'id': 'I44', 'name': 'Cersi /Lanister/', 'BIRT': '13 FEB 1981', 'sex': 'F',
+                      'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981',
+                              'sex': 'M', 'family': 'F23'},
+                      'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981',
+                              'sex': 'F', 'family': 'F23'},
+                      'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F',
+                              'family': 'F23'},
+                      'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M',
+                              'family': 'F23'},
+                      'I44': {'id': 'I44', 'name': 'Cersi /Lanister/', 'BIRT': '13 FEB 1981',
+                              'sex': 'F',
                               'family': 'F23'}}
 
         self.assertTrue(us.checkForOldParents(fam, ind2, f))
@@ -317,14 +328,19 @@ class TestApp(unittest.TestCase):
                      'F16': {'fam': 'F16', 'MARR': '12 DEC 2007'}}
 
         indi: Dict = {
-            'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M', 'family': 'F23',
+            'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M',
+                    'family': 'F23',
                     'DEAT': '31 DEC 2013'},
             'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1960', 'sex': 'F',
                     'family': 'F23'},
-            'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
-            'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
-            'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
-            'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
+            'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'M',
+                    'family': 'F23'},
+            'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F',
+                    'family': 'F23'},
+            'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F',
+                    'family': 'F23'},
+            'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M',
+                    'family': 'F23'},
             'I44': {'id': 'I44', 'name': 'Cersi /Lanister/', 'BIRT': '13 FEB 1981', 'sex': 'F',
                     'family': 'F23'}}
 
@@ -335,14 +351,19 @@ class TestApp(unittest.TestCase):
                       'F16': {'fam': 'F16', 'MARR': '12 DEC 2007', 'HUSB': 'I01'}}
 
         indi2: Dict = {
-            'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M', 'family': 'F23',
+            'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M',
+                    'family': 'F23',
                     'DEAT': '31 DEC 2013'},
             'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1960', 'sex': 'F',
                     'family': 'F23'},
-            'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
-            'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
-            'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
-            'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
+            'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'M',
+                    'family': 'F23'},
+            'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F',
+                    'family': 'F23'},
+            'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F',
+                    'family': 'F23'},
+            'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M',
+                    'family': 'F23'},
             'I44': {'id': 'I44', 'name': 'Cersi /Lanister/', 'BIRT': '13 FEB 1981', 'sex': 'F',
                     'family': 'F23'}}
 
@@ -353,14 +374,19 @@ class TestApp(unittest.TestCase):
                       'F16': {'fam': 'F16', 'MARR': '12 DEC 2007', 'WIFE': 'I07'}}
 
         indi3: Dict = {
-            'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M', 'family': 'F23',
+            'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 JUL 1960', 'sex': 'M',
+                    'family': 'F23',
                     'DEAT': '31 DEC 2013'},
             'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1960', 'sex': 'F',
                     'family': 'F23'},
-            'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
-            'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
-            'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
-            'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M', 'family': 'F23'},
+            'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'M',
+                    'family': 'F23'},
+            'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F',
+                    'family': 'F23'},
+            'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F',
+                    'family': 'F23'},
+            'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 FEB 1981', 'sex': 'M',
+                    'family': 'F23'},
             'I44': {'id': 'I44', 'name': 'Cersi /Lanister/', 'BIRT': '13 FEB 1981', 'sex': 'F',
                     'family': 'F23'}}
 
@@ -415,19 +441,23 @@ class TestApp(unittest.TestCase):
         # current date so result is true
         self.assertTrue(us.marriage(family))
 
-        family = Family(_id="I22", div={'date': "15 JAN 2020"})  ##divorse date is before current date so result is true
+        family = Family(_id="I22", div={
+            'date': "15 JAN 2020"})  ##divorse date is before current date so result is true
         self.assertTrue(us.divo(family))
 
         Indi = Individual(_id="I23",
-                          birt={'date': "15 JAN 2021"})  ##Birth date is after current date so result is false
+                          birt={
+                              'date': "15 JAN 2021"})  ##Birth date is after current date so result is false
         self.assertFalse(us.birth(Indi))
 
         Indi = Individual(_id="I24",
-                          deat={'date': "15 JAN 2021"})  ##death date is after current date so result is false
+                          deat={
+                              'date': "15 JAN 2021"})  ##death date is after current date so result is false
         self.assertFalse(us.death(Indi))
 
         Indi = Individual(_id="I26",
-                          birt={'date': "15 JAN 2020"})  ##Birth date is before current date so result is true
+                          birt={
+                              'date': "15 JAN 2020"})  ##Birth date is before current date so result is true
         self.assertTrue(us.birth(Indi))
 
     def test_Birth_before_death(self):
@@ -488,19 +518,23 @@ class TestApp(unittest.TestCase):
 
     def test_Birth_before_mrg(self):
         indi = Individual(_id="I20", birt={'date': "15 JAN 2020"})
-        family = Family(marr={'date': "15 JAN 2019"})  # marrige date is before birth date so result is fasle
+        family = Family(
+            marr={'date': "15 JAN 2019"})  # marrige date is before birth date so result is fasle
         self.assertFalse(us.birth_before_mrg(family, indi))
 
         indi = Individual(_id="I21", birt={'date': "5 JUL 2000"})
-        family = Family(marr={'date': "1 JAN 2010"})  # marrige date is after birth date so result is true
+        family = Family(
+            marr={'date': "1 JAN 2010"})  # marrige date is after birth date so result is true
         self.assertTrue(us.birth_before_mrg(family, indi))
 
         indi = Individual(_id="I22", birt={'date': "7 JUN 2000"})
-        family = Family(marr={'date': "9 JAN 1995"})  # marrige date is before birth date so result is false
+        family = Family(
+            marr={'date': "9 JAN 1995"})  # marrige date is before birth date so result is false
         self.assertFalse(us.birth_before_mrg(family, indi))
 
         indi = Individual(_id="I23", birt={'date': "15 MAY 1989"})
-        family = Family(marr={'date': "15 FEB 2000"})  # marrige date is after birth date so result is true
+        family = Family(
+            marr={'date': "15 FEB 2000"})  # marrige date is after birth date so result is true
         self.assertTrue(us.birth_before_mrg(family, indi))
 
         indi = Individual(_id="I24", birt={'date': "15 JAN 2020"})
@@ -708,16 +742,15 @@ class TestApp(unittest.TestCase):
     def test_auntsAndUncle(self):
         errorList: List = us.auntsAndUncle()
         for fam in errorList:
-            print("ERROR: FAMILY: US20: " + fam.id + " Marriage is between Aunt/Uncle and Niece/Nephew!")
+            print(
+                "ERROR: FAMILY: US20: " + fam.id + " Marriage is between Aunt/Uncle and Niece/Nephew!")
         self.assertTrue(len(errorList) == 0,
                         "US20: Marriages are correct and no one is married to an Aunt or Uncle!")
-
 
     def test_hasMultipleBirths(self):
         birthdate1 = datetime.now()
         birthdate2 = datetime(2009, 10, 5, 18, 00)
         self.assertFalse(user_stories.hasMultipleBirths([birthdate1, birthdate2]))
-
 
     def test_hasMultipleBirths(self):
         birthdate1 = datetime.datetime.now()
@@ -725,102 +758,97 @@ class TestApp(unittest.TestCase):
         birthdate3 = datetime.datetime(2009, 10, 5, 18, 00)
         self.assertTrue(user_stories.hasMultipleBirths([birthdate1, birthdate2, birthdate3]))
 
-
     def test_isSingleAliveOver30(self):
         ind = user_stories.isSingleAliveOver30()
         # ind.age = 31
         ind.alive = True
         self.assertTrue(ind)
 
-
     def test_isSingleAliveOver30(self):
         ind = user_stories.isSingleAliveOver30()
 
         self.assertFalse(ind)
 
-    #User_Story_Testcases_17
+    # User_Story_Testcases_17
     def test_no_parents_marry_child(self):
-        
+
         """All have unique ids so no inter marriage in family so true"""
         husband = "I0"
-        wife="I1"
-        child="I2"
-        families: List[Family] = [husband,wife,[child]]
+        wife = "I1"
+        child = "I2"
+        families: List[Family] = [husband, wife, [child]]
         self.assertTrue(us.no_parents_marry_child(families))
 
         """All have unique ids so no inter marriage in family so true"""
         husband = "I21"
-        wife="I22"
-        child="I23"
-        families: List[Family] = [husband,wife,[child]]
+        wife = "I22"
+        child = "I23"
+        families: List[Family] = [husband, wife, [child]]
         self.assertTrue(us.no_parents_marry_child(families))
 
         """ Husband(father) and child have same ids so not allowed so False"""
         husband = "I17"
-        wife="I18"
-        child="I17"
-        families: List[Family] = [husband,wife,[child]]
+        wife = "I18"
+        child = "I17"
+        families: List[Family] = [husband, wife, [child]]
         self.assertFalse(us.no_parents_marry_child(families))
 
         """ Wife(Mother) and child have same ids so not allowed so False"""
         husband = "I17"
-        wife="I18"
-        child="I18"
-        families: List[Family] = [husband,wife,[child]]
+        wife = "I18"
+        child = "I18"
+        families: List[Family] = [husband, wife, [child]]
         self.assertFalse(us.no_parents_marry_child(families))
-
 
         """All three have same ids not allowed so False"""
         husband = "I7"
-        wife="I7"
-        child="I7"
-        families: List[Family] = [husband,wife,[child]]
+        wife = "I7"
+        child = "I7"
+        families: List[Family] = [husband, wife, [child]]
         self.assertFalse(us.no_parents_marry_child(families))
 
-
-    #User_Story_Testcases_18
+    # User_Story_Testcases_18
     def test_no_sibilings_can_marry(self):
-        
+
         """All have unique ids so no inter marriage in family so true"""
         husband = "I0"
-        wife="I1"
-        child1="I2"
-        child2="I3"
-        families: List[Family] = [husband,wife,[child1],[child2]]
+        wife = "I1"
+        child1 = "I2"
+        child2 = "I3"
+        families: List[Family] = [husband, wife, [child1], [child2]]
         self.assertTrue(us.no_sibilings_can_marry(families))
 
         """All have unique ids so no inter marriage in family so true"""
         husband = "I17"
-        wife="I18"
-        child1="I19"
-        child2="I20"
-        families: List[Family] = [husband,wife,[child1],[child2]]
+        wife = "I18"
+        child1 = "I19"
+        child2 = "I20"
+        families: List[Family] = [husband, wife, [child1], [child2]]
         self.assertTrue(us.no_sibilings_can_marry(families))
 
-        """ Husband(father) and child have same ids so not allowed so False""" #Cousins Family
+        """ Husband(father) and child have same ids so not allowed so False"""  # Cousins Family
         husband = "I0"
-        wife="I1"
-        child1="I4"
-        child2="I0"
-        families: List[Family] = [husband,wife,[child1],[child2]]
+        wife = "I1"
+        child1 = "I4"
+        child2 = "I0"
+        families: List[Family] = [husband, wife, [child1], [child2]]
         self.assertFalse(us.no_sibilings_can_marry(families))
 
-        """ Wife(Mother) and child have same ids so not allowed so False""" #Cousins family
+        """ Wife(Mother) and child have same ids so not allowed so False"""  # Cousins family
         husband = "I21"
-        wife="I22"
-        child1="I22"
-        child2="I23"
-        families: List[Family] = [husband,wife,[child1],[child2]]
+        wife = "I22"
+        child1 = "I22"
+        child2 = "I23"
+        families: List[Family] = [husband, wife, [child1], [child2]]
         self.assertFalse(us.no_sibilings_can_marry(families))
 
         """ Sibilings marry with each other so False"""
         husband = "I21"
-        wife="I25"
-        child1="I26"
-        child2="I26"
-        families: List[Family] = [husband,wife,[child1],[child2]]
+        wife = "I25"
+        child1 = "I26"
+        child2 = "I26"
+        families: List[Family] = [husband, wife, [child1], [child2]]
         self.assertFalse(us.no_sibilings_can_marry(families))
-
 
     def test_AreIndividualsUnique(self):
         indi1: Individual = Individual(_id="I1", name="John Doe", birt={'date': "14 OCT 1990"})
@@ -831,18 +859,22 @@ class TestApp(unittest.TestCase):
         individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5]
         self.assertEqual(us.AreIndividualsUnique(individuals), [["I2", "John Doe", "14 OCT 1990"]])
 
-
     def test_uniqueFamilyBySpouses(self):
-        fam1: Family = Family(_id="I1", husb="John Doe1",wife="jennifer Doe1", marr={'date': "14 OCT 1993"})
-        fam2: Family = Family(_id="I2", husb="John Doe1",wife="jennifer Doe1", marr={'date': "14 OCT 1993"})
-        fam3: Family = Family(_id="I3", husb="Anurag Kim",wife="Emma Green", marr={'date': "1 OCT 1998"})
-        fam4: Family = Family(_id="I4", husb="Shrey Hill",wife="Olivia Kim", marr={'date': "4 NOV 2000"})
-        fam5: Family = Family(_id="I5", husb="Parthik Smith",wife="Sophia Taylor", marr={'date': "11 JAN 2010"})
+        fam1: Family = Family(_id="I1", husb="John Doe1", wife="jennifer Doe1",
+                              marr={'date': "14 OCT 1993"})
+        fam2: Family = Family(_id="I2", husb="John Doe1", wife="jennifer Doe1",
+                              marr={'date': "14 OCT 1993"})
+        fam3: Family = Family(_id="I3", husb="Anurag Kim", wife="Emma Green",
+                              marr={'date': "1 OCT 1998"})
+        fam4: Family = Family(_id="I4", husb="Shrey Hill", wife="Olivia Kim",
+                              marr={'date': "4 NOV 2000"})
+        fam5: Family = Family(_id="I5", husb="Parthik Smith", wife="Sophia Taylor",
+                              marr={'date': "11 JAN 2010"})
         families: List[Family] = [fam1, fam2, fam3, fam4, fam5]
-        self.assertEqual(us.uniqueFamilyBySpouses(families), [["I2", "John Doe1", "jennifer Doe1", "14 OCT 1993"]])
+        self.assertEqual(us.uniqueFamilyBySpouses(families),
+                         [["I2", "John Doe1", "jennifer Doe1", "14 OCT 1993"]])
 
- 
-    #Test case for User Story 26
+    # Test case for User Story 26
     def test_FamilyChildDoesNotExist(self):
         fam = Family()
         fam._id = "@FAM"
@@ -851,10 +883,10 @@ class TestApp(unittest.TestCase):
         famDict[fam._id] = fam
         individualDict = {}
         self.assertFalse(us.validateCorrespondingRecords(individualDict, famDict))
-    
-    #Test cases for user story 25
+
+    # Test cases for user story 25
     def test_first_names_unique(self):
-     
+
         father_1 = Individual()
         father_1._id = "F1"
         father_1.name = "James Jonas Jamison"
@@ -890,9 +922,7 @@ class TestApp(unittest.TestCase):
         individuals_dict[child_2._id] = child_2
         individuals_dict[child_3._id] = child_3
         self.assertTrue(us.are_child_names_unique(family_1, individuals_dict))
-        
 
-    
         father_1 = Individual()
         father_1._id = "F1"
         father_1.name = "James Jonas Jamison"
@@ -946,7 +976,6 @@ class TestApp(unittest.TestCase):
         individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5]
         self.assertEqual(us.deceased(individuals), ["John Doe1", "John Doe3"])
 
-
     def test_living_marr(self):
         indi1: Individual = Individual(_id="I1", name="John Doe1", alive=False)
         family1: Family = Family(_id="I1", marr={"14 OCT 1992"})
@@ -967,7 +996,36 @@ class TestApp(unittest.TestCase):
         fam: List[Family] = [family1, family2, family3, family4, family5]
         self.assertEqual(us.living_marr(fam, individuals), ["I4"])
 
-        
+    def test_aunt_uncle_birth_year(self):
+        """ test aunt_uncle_birth_year method """
+        husband: Individual = Individual(_id="I0", birt={'date': "19 SEP 1995"}, sex='M')
+        wife: Individual = Individual(_id="I1", birt={'date': "3 JAN 2000"}, sex='F')
+        family0: Family = Family(_id="F0", husb=husband.id, wife=wife.id)
+
+        uncle: Individual = Individual(_id="I2", birt={'date': "19 SEP 2001"}, sex='M')
+        family1: Family = Family(_id="F1")
+        family1.chil = [husband.id, uncle.id]
+
+        aunt: Individual = Individual(_id="I13", birt={'date': "3 JAN 2001"}, sex='F')
+        family2: Family = Family(_id="F2", husb=husband.id, wife=wife.id)
+        family2.chil = [wife.id, aunt.id]
+
+        individuals: List[Individual] = [husband, wife, aunt, uncle]
+        families: List[Family] = [family0, family1, family2]
+
+        self.assertEqual(us.aunt_uncle_birth_year(families, individuals), [('I13', 'I2')])
+
+    def test_all_dead_people(self):
+        """ test test_all_dead_people method """
+        indi1: Individual = Individual(name="Name /Surname/ 1",
+                                       birt={'date': "14 OCT 1990"}, deat={'date': "14 OCT 1991"})
+        indi2: Individual = Individual(name="Name /Surname/ 2", birt={'date': "14 OCT 1990"})
+        indi3: Individual = Individual(name="Name /Surname/ 3",
+                                       birt={'date': "14 OCT 1990"}, deat={'date': "4 OCT 1994"})
+        indi4: Individual = Individual(name="Name /Surname/ 4", birt={'date': "14 OCT 1990"})
+        indi5: Individual = Individual(name="Name /Surname/ 5", birt={'date': "14 OCT 1990"})
+        individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5]
+        self.assertEqual(us.all_dead_people(individuals), ["Name /Surname/ 1", "Name /Surname/ 3"])
 
 
 if __name__ == '__main__':
