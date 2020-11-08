@@ -841,5 +841,28 @@ def partialDates(individual: Dict, family: Dict) -> List[str]:
     return fixedDates
 
 
+#US39 List of all upcoming anniversaries - List all living couples whose marriage anniversaries occur in the next 30 days
+def List_anniversary(families: List[Family]):
+    today: datetime = datetime.now()   
+    print(today) 
+    anniv_list = []
+    for family in families:
+        if family.marr is not None:
+            if family.marr:
+                marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y")
+                marr_date = datetime(today.year, marr_date.month, marr_date.day)
+                upcoming_ann = (marr_date - today).days 
+                if upcoming_ann <= 30 and upcoming_ann >= 0:
+                    anniv_list.append([family.id, family.husb, family.wife, family.marr["date"]])
+                    print(f"✔ Family ({family.id}): Anniversary is in upcoming days")
+                else:
+                    print(f"✘ Family ({family.id}): Anniversaery is not in upcoming days")
+        else:
+            print(f"✘ Family ({family.id}): marrige didn't take place ")
+
+    print("List of couple who have Upcoming anniversary: ")
+    print(anniv_list)
+    return anniv_list
+
 
 
