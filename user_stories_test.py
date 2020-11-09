@@ -437,19 +437,23 @@ class TestApp(unittest.TestCase):
         self.assertFalse(us.less_than_150(individual))
 
     def test_dates_before_current(self):
-        family = Family(_id="I21", marr={'date': "15 JAN 2019"})  ##marrige date is before current date so result is true
+        family = Family(_id="I21",
+                        marr={'date': "15 JAN 2019"})  ##marrige date is before current date so result is true
         self.assertTrue(us.marriage(family))
 
         family = Family(_id="I22", div={'date': "15 JAN 2020"})  ##divorse date is before current date so result is true
         self.assertTrue(us.divo(family))
 
-        Indi = Individual(_id="I23",birt={'date': "15 JAN 2021"})  ##Birth date is after current date so result is false
+        Indi = Individual(_id="I23",
+                          birt={'date': "15 JAN 2021"})  ##Birth date is after current date so result is false
         self.assertFalse(us.birth(Indi))
 
-        Indi = Individual(_id="I24",deat={'date': "15 JAN 2021"})  ##death date is after current date so result is false
+        Indi = Individual(_id="I24",
+                          deat={'date': "15 JAN 2021"})  ##death date is after current date so result is false
         self.assertFalse(us.death(Indi))
 
-        Indi = Individual(_id="I26",birt={'date': "15 JAN 2020"})  ##Birth date is before current date so result is true
+        Indi = Individual(_id="I26",
+                          birt={'date': "15 JAN 2020"})  ##Birth date is before current date so result is true
         self.assertTrue(us.birth(Indi))
 
     def test_Birth_before_death(self):
@@ -1027,7 +1031,6 @@ class TestApp(unittest.TestCase):
         self.assertFalse(us.reject_illegal_dates('2/30/2020'), False)
         self.assertFalse(us.reject_illegal_dates('6/32/2020'), False)
 
-
     def testPartialDates(self):
         fam3: Dict = {'F23':
                           {'fam': 'F23', 'MARR': '14 FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07',
@@ -1068,14 +1071,31 @@ class TestApp(unittest.TestCase):
         self.assertEqual(us.partialDates(indi3, fam3), ['US41: All Dates Already Valid'])
 
     def test_List_anniversary(self):
-        fam1: Family = Family(_id="I1", husb="John Doe1",wife="jennifer Doe1", marr={'date': "1 NOV 2019"})
-        fam2: Family = Family(_id="I2", husb="Woody Bing",wife="Billy Smith", marr={'date': "9 NOV 2019"})
-        fam3: Family = Family(_id="I3", husb="Anurag Kim",wife="Emma Green", marr={'date': "30 NOV 1978"})
-        fam4: Family = Family(_id="I4", husb="Shrey Hill",wife="Olivia Kim", marr={'date': "1 DEC 2019"})
-        fam5: Family = Family(_id="I5", husb="Parthik Smith",wife="Sophia Taylor", marr={'date': "2 NOV 2020"})
-        fam6: family = Family(_id="I6", husb="Kamron Geller",wife="Katrina Green")
+        fam1: Family = Family(_id="I1", husb="John Doe1", wife="jennifer Doe1", marr={'date': "1 NOV 2019"})
+        fam2: Family = Family(_id="I2", husb="Woody Bing", wife="Billy Smith", marr={'date': "9 NOV 2019"})
+        fam3: Family = Family(_id="I3", husb="Anurag Kim", wife="Emma Green", marr={'date': "30 NOV 1978"})
+        fam4: Family = Family(_id="I4", husb="Shrey Hill", wife="Olivia Kim", marr={'date': "1 DEC 2019"})
+        fam5: Family = Family(_id="I5", husb="Parthik Smith", wife="Sophia Taylor", marr={'date': "2 NOV 2020"})
+        fam6: family = Family(_id="I6", husb="Kamron Geller", wife="Katrina Green")
         families: List[Family] = [fam1, fam2, fam3, fam4, fam5, fam6]
         self.assertTrue(us.List_anniversary(families))
+
+    def test_marriage_date_and_child(self):
+        indi1: Individual = Individual(_id="C1", name="John Doe1", birt={'date': "3 FEB 2001"})
+        indi2: Individual = Individual(_id="C2", name="Ohn Oka", birt={'date': "3 JAN 2001"})
+        family1: Family = Family(_id="M1")
+        family1.chil = [indi1.id, indi2.id]
+        family1.marr = {'date': "3 JAN 2001"}
+        individuals: List[Individual] = [indi1, indi2]
+        self.assertEqual(us.marriage_date_and_child(family1, individuals), ['C2'])
+
+    def test_grandparents_marriage_and_grandchildren_marriage(self):
+        indi1: Individual = Individual(_id="C1", name="Nino Doe1", birt={'date': "3 FEB 1001"})
+        indi2: Individual = Individual(_id="C2", name="Nina Oka", birt={'date': "3 JAN 2001"})
+        family: Family = Family(_id='F1', husb=indi1.id, wife=indi2.id)
+        individuals: List[Individual] = [indi1, indi2]
+        families: List[Family] = [family]
+        self.assertEqual(us.grandparents_marriage_and_grandchildren_birthday(families, individuals), ['F1'])
 
 
 if __name__ == '__main__':

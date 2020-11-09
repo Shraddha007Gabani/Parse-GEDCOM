@@ -489,6 +489,7 @@ def auntsAndUncle() -> List:
                     individualError.append(fam)
     return individualError
 
+
 def hasMultipleBirths(siblingDates):
     retValue = True
     datesDict = {}
@@ -510,7 +511,7 @@ def hasMultipleBirths(siblingDates):
     return False
 
 
-#US24 Uniqye families by spouses - No more than one family with the same spouses by name and the same marriage date
+# US24 Uniqye families by spouses - No more than one family with the same spouses by name and the same marriage date
 def uniqueFamilyBySpouses(families: List[Family]):
     names_marr = {}
     same_data = []
@@ -519,11 +520,11 @@ def uniqueFamilyBySpouses(families: List[Family]):
             if names_marr[family.husb, family.wife] == family.marr["date"]:
                 same_data.append([family.id, family.husb, family.wife, family.marr["date"]])
                 print(f"✘ Family ({family.id}): duplicate family having same data")
-                
+
         else:
             names_marr[family.husb, family.wife] = family.marr["date"]
             print(f"✔ Family ({family.id}): No duplicate family having same data")
-            
+
     print("Duplicate family: ")
     print(same_data)
     return same_data
@@ -543,31 +544,34 @@ def isSingleAliveOver30():
 
     return retValue
 
-#US_17
+
+# US_17
 def no_parents_marry_child(families: List[Family]):
     parent_pairs = families[:2]
     for child in families[2]:
-        if child in parent_pairs: # If their ids are not same that means that they have not married each other
+        if child in parent_pairs:  # If their ids are not same that means that they have not married each other
             print("✘ In family such type of marriages cannot take place where parents marry their.")
-            return False #if their ids match means they have married which is not true So it returns False
+            return False  # if their ids match means they have married which is not true So it returns False
         else:
             print("✔ In Family such marriages are allowed and valid.")
             return True
 
-#US_18
+
+# US_18
 def no_sibilings_can_marry(families: List[Family]):
     parent_pairs = families[:4]
     for child1 in families[2]:
         for child2 in families[3]:
-            if child1 in parent_pairs or child2 in parent_pairs or child1 in child2:# If their ids are not same that means that they have not married each other
+            if child1 in parent_pairs or child2 in parent_pairs or child1 in child2:  # If their ids are not same that means that they have not married each other
                 print("✘ In family such type of marriages cannot take place where sibilings marry each other.")
-                return False #if their ids match means they have married which is not true So it returns False
+                return False  # if their ids match means they have married which is not true So it returns False
             else:
                 print("✔ In Family such marriages are allowed and valid.")
-                return True 
+                return True
+
+            # US23 Unique name and birth date - No more than one individual with the same name and birth date
 
 
-#US23 Unique name and birth date - No more than one individual with the same name and birth date
 def AreIndividualsUnique(individuals: List[Individual]):
     names_bdays = {}
     same_data = []
@@ -583,23 +587,24 @@ def AreIndividualsUnique(individuals: List[Individual]):
     print(same_data)
     return same_data
 
-#User Story 26
+
+# User Story 26
 def validateFamilyRoles(fam: Family, individuals: List[Individual]) -> bool:
     if fam.husb not in individuals:
         if fam.wife not in individuals:
             return False
     if fam.husb in individuals:
         hus = individuals[fam.husb]
-        l1= len(fam.chil)
-        l2=len(hus.chil)
+        l1 = len(fam.chil)
+        l2 = len(hus.chil)
         if l1 == l2 and not childrenExistInFamily(hus.chil, fam.chil):
             return False
         else:
             return False
     if fam.wife in individuals:
         wife = individuals[fam.wife]
-        l3=len(fam.chil)
-        l4=len(wife.chil)
+        l3 = len(fam.chil)
+        l4 = len(wife.chil)
         if l3 == l4 and not childrenExistInFamily(wife.chil, fam.chil):
             return False
         else:
@@ -622,7 +627,9 @@ def childrenExistInFamily(parentsChildren, familyChildren):
 
 def validSpouseExists(individId, spouseId, familyDict):
     spouseFound = False
-    spouseFound=[True for i in sorted(familyDict.keys()) if (familyDict[i].husbandId == individId and spouseId == familyDict[i].wifeId) or (familyDict[i].wifeId == individId and spouseId == familyDict[i].husbandId)]
+    spouseFound = [True for i in sorted(familyDict.keys()) if
+                   (familyDict[i].husbandId == individId and spouseId == familyDict[i].wifeId) or (
+                               familyDict[i].wifeId == individId and spouseId == familyDict[i].husbandId)]
     return spouseFound
 
 
@@ -655,10 +662,10 @@ def oneForOneFamilyIndividualRecords(individualDict, familyDict):
         if not familyMembersExist(fam, individualDict):
             print(f"✘  ({fam.id}): family member is not part of individual")
             missedFamilies.append(fam.id)
-    l_1=len(missingIndividuals)
-    l_2=len(missedFamilies)
+    l_1 = len(missingIndividuals)
+    l_2 = len(missedFamilies)
     if l_1 < 1:
-        if  l_2 < 1:
+        if l_2 < 1:
             return True
     else:
         return False
@@ -671,34 +678,35 @@ def validateCorrespondingRecords(individualDict, familyDict):
         individ = individualDict[i]
         if len(individ.spouse) > 0:
             s_Count = 0
-            s_Count = [s_Count + 1 for spouseId in individ.spouse if validSpouseExists(individ.id, spouseId, familyDict)]
-            l_1=len(individ.spouse)
+            s_Count = [s_Count + 1 for spouseId in individ.spouse if
+                       validSpouseExists(individ.id, spouseId, familyDict)]
+            l_1 = len(individ.spouse)
             if s_Count != l_1:
                 err += 1
                 print(f"✘  ({individ.id}): spouse is not in family")
 
         if len(individ.children) > 0:
             childrenFoundInFamily = False
-            childrenFoundInFamily =[True for j in sorted(familyDict.keys()) if childrenExistInFamily(individ.children, familyDict[j].children)]
+            childrenFoundInFamily = [True for j in sorted(familyDict.keys()) if
+                                     childrenExistInFamily(individ.children, familyDict[j].children)]
             if childrenFoundInFamily == False:
                 errors = errors + 1
                 print(f"✘  ({individ.id}): childer is not part of family member")
     return oneForOneFamilyIndividualRecords(individualDict, familyDict) and errors == 0
 
 
-#UserStory 25
+# UserStory 25
 def are_child_names_unique(family: Family, individuals):
-
-    children = map(lambda x: individuals.get(x),family.chil)
+    children = map(lambda x: individuals.get(x), family.chil)
     childInfoSet = set()
 
     for child in children:
         fname = child.name.split(' ')[0]
         bdate = child.birt
-        if (fname,bdate) in childInfoSet:
+        if (fname, bdate) in childInfoSet:
             print("✘ children having same name or birth day date in the family")
             return False
-        childInfoSet.add((fname,bdate))
+        childInfoSet.add((fname, bdate))
     print("✔ children name nad birth day date is unique")
     return True
 
@@ -841,17 +849,17 @@ def partialDates(individual: Dict, family: Dict) -> List[str]:
     return fixedDates
 
 
-#US39 List of all upcoming anniversaries - List all living couples whose marriage anniversaries occur in the next 30 days
+# US39 List of all upcoming anniversaries - List all living couples whose marriage anniversaries occur in the next 30 days
 def List_anniversary(families: List[Family]):
-    today: datetime = datetime.now()   
-    print(today) 
+    today: datetime = datetime.now()
+    print(today)
     anniv_list = []
     for family in families:
         if family.marr is not None:
             if family.marr:
                 marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y")
                 marr_date = datetime(today.year, marr_date.month, marr_date.day)
-                upcoming_ann = (marr_date - today).days 
+                upcoming_ann = (marr_date - today).days
                 if upcoming_ann <= 30 and upcoming_ann >= 0:
                     anniv_list.append([family.id, family.husb, family.wife, family.marr["date"]])
                     print(f"✔ Family ({family.id}): Anniversary is in upcoming days")
@@ -865,4 +873,43 @@ def List_anniversary(families: List[Family]):
     return anniv_list
 
 
+# marriage date and child's birth date should not be same
+def marriage_date_and_child(family: Family, individuals: List[Individual]):
+    childIdsList = []
+    for childId in family.chil:
+        childIdsList.append(childId)
 
+    marriageDate = family.marr["date"]
+    marriageDate = datetime.strptime(marriageDate, "%d %b %Y")
+
+    chilBirthDates = []
+    for chil in childIdsList:
+        childBirth = next(ind.birt["date"] for ind in individuals if ind.id == chil)
+        child_birth_date = datetime.strptime(childBirth, "%d %b %Y")
+        chilBirthDates.append(child_birth_date)
+
+    dangerous_child = []
+    for chilBirt, childId in zip(chilBirthDates, childIdsList):
+        if chilBirt <= marriageDate:
+            dangerous_child.append(childId)
+            print(f"✘ Family ({family.id}): Child ({childId}) born before marriage")
+        else:
+            print(f"✔  Family ({family.id}): Child ({childId}) born after marriage")
+
+    return dangerous_child
+
+
+# grandparents can't marry their grandchildren
+def grandparents_marriage_and_grandchildren_birthday(families: List[Family], individuals: List[Individual]):
+    for family in families:
+        husband = next(ind.birt["date"] for ind in individuals if ind.id == family.husb)
+        wife = next(ind.birt["date"] for ind in individuals if ind.id == family.wife)
+        husband = datetime.strptime(husband, "%d %b %Y")
+        wife = datetime.strptime(wife, "%d %b %Y")
+        forbidden_marriages = []
+        if husband < wife + timedelta(days=18250):
+            forbidden_marriages.append(family.id)
+            print(f"✘ Child marriage alert!!! ({family.id})")
+        else:
+            print(f"✔ Not Child marriage ({family.id})")
+        return forbidden_marriages
