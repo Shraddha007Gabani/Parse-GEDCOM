@@ -1167,6 +1167,42 @@ class TestApp(unittest.TestCase):
         indi : List[Individual] = [indi1,indi2,indi3,indi4,indi5]
 
         self.assertEqual(us.all_alive_people(indi), ["I1","I3"])
+    
+    #US_37
+    def test_List_recent_death_family(self):
+
+
+        hub : Individual = Individual(_id = "I1",deat={'date': "30 oct 2020"})
+        wife : Individual = Individual(_id = "I2",deat={'date': "25 oct 2020"})
+        chid : Individual = Individual(_id = "I3",deat={'date': "28 oct 2020"})
+
+        fam1 : Family = Family(_id="I0", husb=hub.id,wife=wife.id,marr = {"28 oct 1998"})
+
+        hub1 : Individual = Individual(_id = "I4",deat={'date': "22 oct 2019"})
+        wife1 : Individual = Individual(_id = "I5",deat={'date': "21 oct 2020"})
+        chid1 : Individual = Individual(_id = "I6",deat={'date': "7 SEP 2020"})
+
+        fam2 : Family = Family(_id="I7", husb=hub.id,wife=wife.id)
+
+        indi : List[Individual] = [hub,wife,chid,hub1,wife1,chid1]
+        fami : List[Family] = [fam1,fam2]
+
+        
+        
+        self.assertEqual(us.List_recent_death_family(indi,fami),["I0"])
+
+     #US_38    
+    def test_List_Upcoming_birthday(self):
+        indi1: Individual = Individual(_id="I1", name="Janki Patel", birt={'date': "1 NOV 2019"})
+        indi2: Individual = Individual(_id="I2", name="Jigi Patel", birt={'date': "9 NOV 2019"})
+        indi3: Individual = Individual(_id="I3", name="Dinky kapadiya", birt={'date': "30 NOV 1978"})
+        indi4: Individual = Individual(_id="I4", name="Payal desai", birt={'date': "3 DEC 2019"})
+        indi5: Individual = Individual(_id="I5", name="Arjun tejani", birt={'date': "10 DEC 2020"})
+        indi6: Individual = Individual(_id="I6", name="Monty kanani")
+        individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5, indi6]
+        self.assertTrue(us.List_Upcoming_birthday(individuals))
+
+
         
 
 

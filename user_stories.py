@@ -983,3 +983,58 @@ def all_marr_couple(individuals: List[Individual], families:List[Family]):
             else:
                 print("{family.id}:: in this family hubs and wife are not alive")
     return mrra
+
+#US_37
+def List_recent_death_family(individuals: List[Individual],families:List[Family]):
+    today: datetime = datetime.now()    
+    death_list = []
+     
+    
+    for individual in individuals:
+        
+        if individual.deat:
+            death_date: datetime = datetime.strptime(individual.deat['date'], "%d %b %Y")
+            if today - death_date < timedelta(days=30):
+                death_list.append(individual.id)
+                print("✔ This is the recent death within last 30 days")
+                
+            else:
+                print("✘ This is not the recent death its not within 30 days")
+
+    print(death_list)
+  
+
+
+    fam_list = []
+    for family in families:
+        if family.marr:
+            if family.husb in death_list and family.wife in death_list or family.chil in death_list:
+                fam_list.append(family.id)
+    print(fam_list)
+    
+    return fam_list
+
+
+#US_38
+
+def List_Upcoming_birthday(individuals: List[Individual]):
+    today: datetime = datetime.now()   
+    print(today) 
+    birth_list = []
+    for individual in individuals:
+        if individual.birt is not None:
+            if individual.birt:
+                birt_date: datetime = datetime.strptime(individual.birt['date'], "%d %b %Y")
+                birt_date = datetime(today.year, birt_date.month, birt_date.day)
+                upcoming_birt = (birt_date - today).days 
+                if upcoming_birt <= 30 and upcoming_birt >= 0:
+                    birth_list.append([individual.id, individual.name, individual.birt["date"]])
+                    print(f"✔ ({individual.id}): birthday is in upcoming days")
+                else:
+                    print(f"✘ ({individual.id}): birthday is not in upcoming days")
+        else:
+            print(f"✘ ({individual.id}): birth didn't take place ")
+
+    
+    print(birth_list)
+    return birth_list
