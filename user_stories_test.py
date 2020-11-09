@@ -1203,6 +1203,17 @@ class TestApp(unittest.TestCase):
         self.assertTrue(us.List_Upcoming_birthday(individuals))
 
 
+        #us_40
+    def test_List_recent_divorce(self):
+        fam1: Family = Family(_id="I1", husb="John Doe1",wife="jennifer Doe1", div={'date': "1 NOV 2020"})
+        fam2: Family = Family(_id="I2", husb="Woody Bing",wife="Billy Smith", div={'date': "5 NOV 2020"})
+        fam3: Family = Family(_id="I3", husb="Anurag Kim",wife="Emma Green", div={'date': "30 NOV 2020"})
+        fam4: Family = Family(_id="I4", husb="Shrey Hill",wife="Olivia Kim", div={'date': "1 DEC 2019"})
+        fam5: Family = Family(_id="I5", husb="Parthik Smith",wife="Sophia Taylor", div={'date': "2 NOV 2020"})
+        fam6: family = Family(_id="I6", husb="Kamron Geller",wife="Katrina Green", div=None)
+        families: List[Family] = [fam1, fam2, fam3, fam4, fam5, fam6]
+        self.assertTrue(us.List_recent_divorce(families))
+
         
 
 

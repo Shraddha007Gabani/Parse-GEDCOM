@@ -1038,3 +1038,22 @@ def List_Upcoming_birthday(individuals: List[Individual]):
     
     print(birth_list)
     return birth_list
+
+def List_recent_divorce(families: List[Family]):
+    today: datetime = datetime.now()   
+    div_list = []
+    for family in families:
+        if family.div is not None:
+            if family.div:
+                div_date: datetime = datetime.strptime(family.div['date'], "%d %b %Y")
+                if today - div_date <= timedelta(days=30) and today - div_date >= timedelta(days=0):
+                    div_list.append([family.id, family.husb, family.wife, family.div["date"]])
+                    print(f"✔ Family ({family.id}): Divorce take place in last 30 days")
+                else:
+                    print(f"✘ Family ({family.id}): Divorce didn't take place in last 30 days")
+        else:
+            print(f"✘ Family ({family.id}): divorce didn't take place ")
+
+    print("List of couple who had recent divorce: ")
+    print(div_list)
+    return div_list
