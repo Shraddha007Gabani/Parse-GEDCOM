@@ -1137,5 +1137,38 @@ class TestApp(unittest.TestCase):
         individuals: List[Individual] = [In4]
         self.assertNotEqual(us.List_recent_birth(individuals),["Risha"])
 
+    def test_all_marr_couple(self):
+        
+        hub = Individual(_id="I0")
+        wife = Individual(_id="I1")
+        fam1= Family(_id = "p1",husb = hub.id,wife= wife.id,marr={"14 Nov 1998"})
+
+        hub1 = Individual(_id="I3")
+        wife1 = Individual(_id="I4")
+        fam2= Family(_id = "p1",husb = hub1.id,wife= wife1.id)
+
+        hub2 = Individual(_id="I5")
+        wife2 = Individual(_id="I6")
+        fam3= Family(_id = "p1",husb = hub.id,wife= wife.id,div={"14 Nov 1998"})
+
+        indivi: List[Individual] = [hub,wife,hub1,wife1,hub2,wife2]
+        fami = [fam1,fam2,fam3]
+
+        self.assertEqual(us.all_marr_couple(indivi,fami), ["p1"])
+
+    def test_all_alive_people(self):
+
+        indi1 = Individual(_id = "I0",alive = False)
+        indi2 = Individual(_id = "I1")
+        indi3 = Individual(_id = "I2",alive = False)
+        indi4 = Individual(_id = "I3",alive = True)
+        indi5 = Individual(_id = "I4",alive = False)
+
+        indi : List[Individual] = [indi1,indi2,indi3,indi4,indi5]
+
+        self.assertEqual(us.all_alive_people(indi), ["I1","I3"])
+        
+
+
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

@@ -952,3 +952,34 @@ def List_recent_birth(individuals: List[Individual]):
             
     
     return birth_list
+
+def all_alive_people(individuals: List[Individual]):
+    all_alive=[]
+    for indivi in individuals:
+        if indivi.alive:
+            all_alive.append(indivi.id)
+            print(f"{indivi.id}:: people is alive")
+        else:
+            print(f"{indivi.id}:: not alive")
+
+    return all_alive
+
+
+def all_marr_couple(individuals: List[Individual], families:List[Family]):
+    
+
+    ind = []
+
+    for indi in individuals:
+            ind.append(indi.id)
+
+    mrra = []
+    for family in families:
+        if family.marr:
+            if family.husb in ind and family.wife in ind:
+                mrra.append(family.id)
+                print("{family.id}:: in this family hubs and wife are alive")
+
+            else:
+                print("{family.id}:: in this family hubs and wife are not alive")
+    return mrra
