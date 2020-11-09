@@ -913,3 +913,42 @@ def grandparents_marriage_and_grandchildren_birthday(families: List[Family], ind
         else:
             print(f"✔ Not Child marriage ({family.id})")
         return forbidden_marriages
+
+
+#User_Story 35
+def List_recent_death(individuals: List[Individual]):
+    today: datetime = datetime.now()    
+    death_list = []
+    
+    for individual in individuals:
+        
+        if individual.deat:
+            death_date: datetime = datetime.strptime(individual.deat['date'], "%d %b %Y")
+            if today - death_date < timedelta(days=30):
+                death_list.append(individual.name)
+                print("✔ This is the recent death within last 30 days")
+                
+            else:
+                print("✘ This is not the recent death its not within 30 days")
+            
+
+    return death_list
+
+#User_Story 36
+def List_recent_birth(individuals: List[Individual]):
+    today: datetime = datetime.now()    
+    birth_list = []
+    
+    for individual in individuals:
+        
+        if individual.birt:
+            birth_date: datetime = datetime.strptime(individual.birt['date'], "%d %b %Y")
+            if today - birth_date <= timedelta(days=30):
+                birth_list.append(individual.name)
+                print("✔ This is the recent birth within last 30 days")
+                
+            else:
+                print("✘ This is not the recent birth its not within 30 days")
+            
+    
+    return birth_list
