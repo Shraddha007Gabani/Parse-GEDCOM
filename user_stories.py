@@ -1057,3 +1057,53 @@ def List_recent_divorce(families: List[Family]):
     print("List of couple who had recent divorce: ")
     print(div_list)
     return div_list
+#US 45
+def Parents_and_child(family: Family, individuals: List[Individual]):
+    childIdsList = []
+    for childId in family.chil:
+        childIdsList.append(childId)
+
+    ParentsBirthDate = family.parent["date"]
+    ParentsBirthDate = datetime.strptime(ParentsBirthDate, "%d %b %Y")
+
+    chilBirthDates = []
+    for chil in childIdsList:
+        childBirth = next(ind.birt["date"] for ind in individuals if ind.id == chil)
+        child_birth_date = datetime.strptime(childBirth, "%d %b %Y")
+        chilBirthDates.append(child_birth_date)
+
+    dangerous_child = []
+    for chilBirt, childId in zip(chilBirthDates, childIdsList):
+        if chilBirt <= ParentsBirthDate:
+            dangerous_child.append(childId)
+            print(f"✘ Family ({family.id}): Child ({childId}) parents and child birth date it is not same")
+        else:
+            print(f"✔  Family ({family.id}): Child ({childId}) Parents and child birth date it is same ")
+
+    return dangerous_child
+
+#US 46
+def Grand_Parents_and_Parents(family: Family, individuals: List[Individual]):
+    ParetntIdList = []
+    for parentID in family.chil:
+        ParetntIdList.append(parentID)
+
+    ParentsBirthDate = family.parent["date"]
+    ParentsBirthDate = datetime.strptime(ParentsBirthDate, "%d %b %Y")
+
+    parentBirthDates = []
+    for parent in ParetntIdList:
+        ParentBirth = next(ind.birt["date"] for ind in individuals if ind.id == parent)
+        parent_birth_date = datetime.strptime(ParentBirth, "%d %b %Y")
+        parentBirthDates.append(parent_birth_date)
+
+    dangerous_family = []
+    for parentBirth, parentID in zip(parentBirthDates, ParetntIdList):
+        if parentBirth <= ParentsBirthDate:
+            dangerous_family.append(parentID)
+            print(f"✘ Family ({family.id}): Child ({parentID}) Grand parents and parents birth date it is not same")
+        else:
+            print(f"✔  Family ({family.id}): Child ({parentID}) Grand Parents and parents birth date it is same ")
+
+    return dangerous_family
+

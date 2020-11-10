@@ -1076,7 +1076,7 @@ class TestApp(unittest.TestCase):
         fam3: Family = Family(_id="I3", husb="Anurag Kim", wife="Emma Green", marr={'date': "30 NOV 1978"})
         fam4: Family = Family(_id="I4", husb="Shrey Hill", wife="Olivia Kim", marr={'date': "1 DEC 2019"})
         fam5: Family = Family(_id="I5", husb="Parthik Smith", wife="Sophia Taylor", marr={'date': "2 NOV 2020"})
-        fam6: family = Family(_id="I6", husb="Kamron Geller", wife="Katrina Green")
+        fam6: Family = Family(_id="I6", husb="Kamron Geller", wife="Katrina Green")
         families: List[Family] = [fam1, fam2, fam3, fam4, fam5, fam6]
         self.assertTrue(us.List_anniversary(families))
 
@@ -1097,101 +1097,94 @@ class TestApp(unittest.TestCase):
         families: List[Family] = [family]
         self.assertEqual(us.grandparents_marriage_and_grandchildren_birthday(families, individuals), ['F1'])
 
-
     def test_List_recent_deat(self):
 
-
-        In1: Individual = Individual(name="Misha",deat={'date': "14 OCT 2020"})
+        In1: Individual = Individual(name="Misha", deat={'date': "14 OCT 2020"})
         individuals: List[Individual] = [In1]
-        self.assertEqual(us.List_recent_death(individuals),["Misha"])
+        self.assertEqual(us.List_recent_death(individuals), ["Misha"])
 
-        In2: Individual = Individual(name="Nisha",deat={'date': "14 OCT 2019"})
+        In2: Individual = Individual(name="Nisha", deat={'date': "14 OCT 2019"})
         individuals: List[Individual] = [In2]
-        self.assertNotEqual(us.List_recent_death(individuals),["Nisha"])
+        self.assertNotEqual(us.List_recent_death(individuals), ["Nisha"])
 
-        In3: Individual = Individual(name="Lisha",deat={'date': "12 OCT 2020"})
+        In3: Individual = Individual(name="Lisha", deat={'date': "12 OCT 2020"})
         individuals: List[Individual] = [In3]
-        self.assertEqual(us.List_recent_death(individuals),["Lisha"])
- 
-        In4: Individual = Individual(name="Risha",deat={'date': "7 SEP 2020"})
-        individuals: List[Individual] = [In4]
-        self.assertNotEqual(us.List_recent_death(individuals),["Risha"])
+        self.assertEqual(us.List_recent_death(individuals), ["Lisha"])
 
+        In4: Individual = Individual(name="Risha", deat={'date': "7 SEP 2020"})
+        individuals: List[Individual] = [In4]
+        self.assertNotEqual(us.List_recent_death(individuals), ["Risha"])
 
     def test_List_recent_birth(self):
 
-
-        In1: Individual = Individual(name="Misha",birt={'date': "14 OCT 2020"})
+        In1: Individual = Individual(name="Misha", birt={'date': "14 OCT 2020"})
         individuals: List[Individual] = [In1]
-        self.assertEqual(us.List_recent_birth(individuals),["Misha"])
+        self.assertEqual(us.List_recent_birth(individuals), ["Misha"])
 
-        In2: Individual = Individual(name="Nisha",birt={'date': "14 OCT 2019"})
+        In2: Individual = Individual(name="Nisha", birt={'date': "14 OCT 2019"})
         individuals: List[Individual] = [In2]
-        self.assertNotEqual(us.List_recent_birth(individuals),["Nisha"])
+        self.assertNotEqual(us.List_recent_birth(individuals), ["Nisha"])
 
-        In3: Individual = Individual(name="Lisha",birt={'date': "15 OCT 2020"})
+        In3: Individual = Individual(name="Lisha", birt={'date': "15 OCT 2020"})
         individuals: List[Individual] = [In3]
-        self.assertEqual(us.List_recent_birth(individuals),["Lisha"])
- 
-        In4: Individual = Individual(name="Risha",birt={'date': " 7 SEP 2020"})
+        self.assertEqual(us.List_recent_birth(individuals), ["Lisha"])
+
+        In4: Individual = Individual(name="Risha", birt={'date': " 7 SEP 2020"})
         individuals: List[Individual] = [In4]
-        self.assertNotEqual(us.List_recent_birth(individuals),["Risha"])
+        self.assertNotEqual(us.List_recent_birth(individuals), ["Risha"])
 
     def test_all_marr_couple(self):
-        
+
         hub = Individual(_id="I0")
         wife = Individual(_id="I1")
-        fam1= Family(_id = "p1",husb = hub.id,wife= wife.id,marr={"14 Nov 1998"})
+        fam1 = Family(_id="p1", husb=hub.id, wife=wife.id, marr={"14 Nov 1998"})
 
         hub1 = Individual(_id="I3")
         wife1 = Individual(_id="I4")
-        fam2= Family(_id = "p1",husb = hub1.id,wife= wife1.id)
+        fam2 = Family(_id="p1", husb=hub1.id, wife=wife1.id)
 
         hub2 = Individual(_id="I5")
         wife2 = Individual(_id="I6")
-        fam3= Family(_id = "p1",husb = hub.id,wife= wife.id,div={"14 Nov 1998"})
+        fam3 = Family(_id="p1", husb=hub.id, wife=wife.id, div={"14 Nov 1998"})
 
-        indivi: List[Individual] = [hub,wife,hub1,wife1,hub2,wife2]
-        fami = [fam1,fam2,fam3]
+        indivi: List[Individual] = [hub, wife, hub1, wife1, hub2, wife2]
+        fami = [fam1, fam2, fam3]
 
-        self.assertEqual(us.all_marr_couple(indivi,fami), ["p1"])
+        self.assertEqual(us.all_marr_couple(indivi, fami), ["p1"])
 
     def test_all_alive_people(self):
 
-        indi1 = Individual(_id = "I0",alive = False)
-        indi2 = Individual(_id = "I1")
-        indi3 = Individual(_id = "I2",alive = False)
-        indi4 = Individual(_id = "I3",alive = True)
-        indi5 = Individual(_id = "I4",alive = False)
+        indi1 = Individual(_id="I0", alive=False)
+        indi2 = Individual(_id="I1")
+        indi3 = Individual(_id="I2", alive=False)
+        indi4 = Individual(_id="I3", alive=True)
+        indi5 = Individual(_id="I4", alive=False)
 
-        indi : List[Individual] = [indi1,indi2,indi3,indi4,indi5]
+        indi: List[Individual] = [indi1, indi2, indi3, indi4, indi5]
 
-        self.assertEqual(us.all_alive_people(indi), ["I1","I3"])
-    
-    #US_37
+        self.assertEqual(us.all_alive_people(indi), ["I1", "I3"])
+
+    # US_37
     def test_List_recent_death_family(self):
 
+        hub: Individual = Individual(_id="I1", deat={'date': "30 oct 2020"})
+        wife: Individual = Individual(_id="I2", deat={'date': "25 oct 2020"})
+        chid: Individual = Individual(_id="I3", deat={'date': "28 oct 2020"})
 
-        hub : Individual = Individual(_id = "I1",deat={'date': "30 oct 2020"})
-        wife : Individual = Individual(_id = "I2",deat={'date': "25 oct 2020"})
-        chid : Individual = Individual(_id = "I3",deat={'date': "28 oct 2020"})
+        fam1: Family = Family(_id="I0", husb=hub.id, wife=wife.id, marr={"28 oct 1998"})
 
-        fam1 : Family = Family(_id="I0", husb=hub.id,wife=wife.id,marr = {"28 oct 1998"})
+        hub1: Individual = Individual(_id="I4", deat={'date': "22 oct 2019"})
+        wife1: Individual = Individual(_id="I5", deat={'date': "21 oct 2020"})
+        chid1: Individual = Individual(_id="I6", deat={'date': "7 SEP 2020"})
 
-        hub1 : Individual = Individual(_id = "I4",deat={'date': "22 oct 2019"})
-        wife1 : Individual = Individual(_id = "I5",deat={'date': "21 oct 2020"})
-        chid1 : Individual = Individual(_id = "I6",deat={'date': "7 SEP 2020"})
+        fam2: Family = Family(_id="I7", husb=hub.id, wife=wife.id)
 
-        fam2 : Family = Family(_id="I7", husb=hub.id,wife=wife.id)
+        indi: List[Individual] = [hub, wife, chid, hub1, wife1, chid1]
+        fami: List[Family] = [fam1, fam2]
 
-        indi : List[Individual] = [hub,wife,chid,hub1,wife1,chid1]
-        fami : List[Family] = [fam1,fam2]
+        self.assertEqual(us.List_recent_death_family(indi, fami), ["I0"])
 
-        
-        
-        self.assertEqual(us.List_recent_death_family(indi,fami),["I0"])
-
-     #US_38    
+    # US_38
     def test_List_Upcoming_birthday(self):
         indi1: Individual = Individual(_id="I1", name="Janki Patel", birt={'date': "1 NOV 2019"})
         indi2: Individual = Individual(_id="I2", name="Jigi Patel", birt={'date': "9 NOV 2019"})
@@ -1202,19 +1195,39 @@ class TestApp(unittest.TestCase):
         individuals: List[Individual] = [indi1, indi2, indi3, indi4, indi5, indi6]
         self.assertTrue(us.List_Upcoming_birthday(individuals))
 
+        # us_40
 
-        #us_40
     def test_List_recent_divorce(self):
-        fam1: Family = Family(_id="I1", husb="John Doe1",wife="jennifer Doe1", div={'date': "1 NOV 2020"})
-        fam2: Family = Family(_id="I2", husb="Woody Bing",wife="Billy Smith", div={'date': "5 NOV 2020"})
-        fam3: Family = Family(_id="I3", husb="Anurag Kim",wife="Emma Green", div={'date': "30 NOV 2020"})
-        fam4: Family = Family(_id="I4", husb="Shrey Hill",wife="Olivia Kim", div={'date': "1 DEC 2019"})
-        fam5: Family = Family(_id="I5", husb="Parthik Smith",wife="Sophia Taylor", div={'date': "2 NOV 2020"})
-        fam6: family = Family(_id="I6", husb="Kamron Geller",wife="Katrina Green", div=None)
+        fam1: Family = Family(_id="I1", husb="John Doe1", wife="jennifer Doe1", div={'date': "1 NOV 2020"})
+        fam2: Family = Family(_id="I2", husb="Woody Bing", wife="Billy Smith", div={'date': "5 NOV 2020"})
+        fam3: Family = Family(_id="I3", husb="Anurag Kim", wife="Emma Green", div={'date': "30 NOV 2020"})
+        fam4: Family = Family(_id="I4", husb="Shrey Hill", wife="Olivia Kim", div={'date': "1 DEC 2019"})
+        fam5: Family = Family(_id="I5", husb="Parthik Smith", wife="Sophia Taylor", div={'date': "2 NOV 2020"})
+        fam6: Family = Family(_id="I6", husb="Kamron Geller", wife="Katrina Green", div=None)
         families: List[Family] = [fam1, fam2, fam3, fam4, fam5, fam6]
         self.assertTrue(us.List_recent_divorce(families))
 
-        
+
+# US 45
+    def test_Parents_and_child(self):
+        indi1: Individual = Individual(_id="C1", name="John Doe1", birt={'date': "3 FEB 2001"})
+        indi2: Individual = Individual(_id="C2", name="Ohn Oka", birt={'date': "3 JAN 2001"})
+        family1: Family = Family(_id="M1")
+        family1.chil = [indi1.id, indi2.id]
+        family1.parent = {'date': "3 JAN 2001"}
+        individuals: List[Individual] = [indi1, indi2]
+        self.assertEqual(us.Parents_and_child(family1, individuals), ['C2'])
+
+
+# US 46
+    def test_Grand_Parents_and_Parents(self):
+        indi1: Individual = Individual(_id="C1", name="John Doe1", birt={'date': "3 FEB 1966"})
+        indi2: Individual = Individual(_id="C2", name="Ohn Oka", birt={'date': "3 JAN 1989"})
+        family1: Family = Family(_id="M1")
+        family1.parent = [indi1.id, indi2.id]
+        family1.parent = {'date': "3 JAN 2001"}
+        individuals: List[Individual] = [indi1, indi2]
+        self.assertEqual(us.Grand_Parents_and_Parents(family1, individuals), [])
 
 
 if __name__ == '__main__':

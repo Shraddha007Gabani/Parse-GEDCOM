@@ -1,2 +1,4 @@
 ERROR US12: Mother I07 is older than their child, I19 by over 60 years
 ERROR US12: Father I01 is older than their child, I19 by over 80 years
+ERROR US12: Mother I07 is older than their child, I19 by over 60 years
+ERROR US12: Father I01 is older than their child, I19 by over 80 years
