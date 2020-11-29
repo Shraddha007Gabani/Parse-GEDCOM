@@ -6,6 +6,9 @@
 import operator
 from typing import List, Dict, TextIO, Union
 from datetime import datetime, timedelta
+
+from dateutil.relativedelta import relativedelta
+
 from models import Individual, Family
 from app import get_lines, generate_classes, findParents, checkIfSiblings
 
@@ -629,7 +632,7 @@ def validSpouseExists(individId, spouseId, familyDict):
     spouseFound = False
     spouseFound = [True for i in sorted(familyDict.keys()) if
                    (familyDict[i].husbandId == individId and spouseId == familyDict[i].wifeId) or (
-                               familyDict[i].wifeId == individId and spouseId == familyDict[i].husbandId)]
+                           familyDict[i].wifeId == individId and spouseId == familyDict[i].husbandId)]
     return spouseFound
 
 
@@ -915,46 +918,46 @@ def grandparents_marriage_and_grandchildren_birthday(families: List[Family], ind
         return forbidden_marriages
 
 
-#User_Story 35
+# User_Story 35
 def List_recent_death(individuals: List[Individual]):
-    today: datetime = datetime.now()    
+    today: datetime = datetime.now()
     death_list = []
-    
+
     for individual in individuals:
-        
+
         if individual.deat:
             death_date: datetime = datetime.strptime(individual.deat['date'], "%d %b %Y")
             if today - death_date < timedelta(days=30):
                 death_list.append(individual.name)
                 print("✔ This is the recent death within last 30 days")
-                
+
             else:
                 print("✘ This is not the recent death its not within 30 days")
-            
 
     return death_list
 
-#User_Story 36
+
+# User_Story 36
 def List_recent_birth(individuals: List[Individual]):
-    today: datetime = datetime.now()    
+    today: datetime = datetime.now()
     birth_list = []
-    
+
     for individual in individuals:
-        
+
         if individual.birt:
             birth_date: datetime = datetime.strptime(individual.birt['date'], "%d %b %Y")
             if today - birth_date <= timedelta(days=30):
                 birth_list.append(individual.name)
                 print("✔ This is the recent birth within last 30 days")
-                
+
             else:
                 print("✘ This is not the recent birth its not within 30 days")
-            
-    
+
     return birth_list
 
+
 def all_alive_people(individuals: List[Individual]):
-    all_alive=[]
+    all_alive = []
     for indivi in individuals:
         if indivi.alive:
             all_alive.append(indivi.id)
@@ -965,13 +968,11 @@ def all_alive_people(individuals: List[Individual]):
     return all_alive
 
 
-def all_marr_couple(individuals: List[Individual], families:List[Family]):
-    
-
+def all_marr_couple(individuals: List[Individual], families: List[Family]):
     ind = []
 
     for indi in individuals:
-            ind.append(indi.id)
+        ind.append(indi.id)
 
     mrra = []
     for family in families:
@@ -984,26 +985,24 @@ def all_marr_couple(individuals: List[Individual], families:List[Family]):
                 print("{family.id}:: in this family hubs and wife are not alive")
     return mrra
 
-#US_37
-def List_recent_death_family(individuals: List[Individual],families:List[Family]):
-    today: datetime = datetime.now()    
+
+# US_37
+def List_recent_death_family(individuals: List[Individual], families: List[Family]):
+    today: datetime = datetime.now()
     death_list = []
-     
-    
+
     for individual in individuals:
-        
+
         if individual.deat:
             death_date: datetime = datetime.strptime(individual.deat['date'], "%d %b %Y")
             if today - death_date < timedelta(days=30):
                 death_list.append(individual.id)
                 print("✔ This is the recent death within last 30 days")
-                
+
             else:
                 print("✘ This is not the recent death its not within 30 days")
 
     print(death_list)
-  
-
 
     fam_list = []
     for family in families:
@@ -1011,22 +1010,22 @@ def List_recent_death_family(individuals: List[Individual],families:List[Family]
             if family.husb in death_list and family.wife in death_list or family.chil in death_list:
                 fam_list.append(family.id)
     print(fam_list)
-    
+
     return fam_list
 
 
-#US_38
+# US_38
 
 def List_Upcoming_birthday(individuals: List[Individual]):
-    today: datetime = datetime.now()   
-    print(today) 
+    today: datetime = datetime.now()
+    print(today)
     birth_list = []
     for individual in individuals:
         if individual.birt is not None:
             if individual.birt:
                 birt_date: datetime = datetime.strptime(individual.birt['date'], "%d %b %Y")
                 birt_date = datetime(today.year, birt_date.month, birt_date.day)
-                upcoming_birt = (birt_date - today).days 
+                upcoming_birt = (birt_date - today).days
                 if upcoming_birt <= 30 and upcoming_birt >= 0:
                     birth_list.append([individual.id, individual.name, individual.birt["date"]])
                     print(f"✔ ({individual.id}): birthday is in upcoming days")
@@ -1035,12 +1034,12 @@ def List_Upcoming_birthday(individuals: List[Individual]):
         else:
             print(f"✘ ({individual.id}): birth didn't take place ")
 
-    
     print(birth_list)
     return birth_list
 
+
 def List_recent_divorce(families: List[Family]):
-    today: datetime = datetime.now()   
+    today: datetime = datetime.now()
     div_list = []
     for family in families:
         if family.div is not None:
@@ -1057,7 +1056,9 @@ def List_recent_divorce(families: List[Family]):
     print("List of couple who had recent divorce: ")
     print(div_list)
     return div_list
-#US 45
+
+
+# US 45
 def Parents_and_child(family: Family, individuals: List[Individual]):
     childIdsList = []
     for childId in family.chil:
@@ -1136,3 +1137,27 @@ def list_of_twins(family: Family, individuals: List[Individual]) -> List:
 
     res = list(filter(lambda x: len(x) > 1, twins.values()))
     return res[0]
+
+
+def listExHusb(fam):
+    l = []
+    for i in fam:
+        if 'HUSB' in fam[i]:
+            l.append(fam[i]['HUSB'])
+    return [x for n, x in enumerate(l) if x in l[:n]]
+
+
+def mrgeAftr18(fam, ind):
+    l = set()
+    for i in fam:
+        mrg_date = datetime.strptime(fam[i]['MARR'], "%d %b %Y")
+        if 'WIFE' in fam[i]:
+            w_id = fam[i]['WIFE']
+        for j in ind:
+            if i == ind[j]['family']:
+                if j == w_id:
+                    birt_date = datetime.strptime(ind[j]['BIRT'], "%d %b %Y")
+                    diff = relativedelta(mrg_date, birt_date)
+                    if diff.years > 18:
+                        l.add(j)
+    return l

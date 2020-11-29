@@ -1249,5 +1249,42 @@ class TestApp(unittest.TestCase):
         self.assertEqual(us.list_of_twins(family1, individuals), {'I3', 'I1'})
 
 
+    def test_listExHusb(self):
+        fam3: Dict = {'F23':
+                          {'fam': 'F23', 'MARR': '14 FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07',
+                           'CHIL': ['I19', 'I26', 'I30']},
+                      'F16': {'fam': 'F16', 'MARR': '12 DEC 2007', 'HUSB': 'I01'}}
+        fam: Dict = {'F23':
+                         {'fam': 'F23', 'MARR': 'FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07',
+                          'CHIL': ['I19', 'I26', 'I30']},
+                     'F16': {'fam': 'F16', 'MARR': '12 DEC 2007'}}
+        self.assertEqual(us.listExHusb(fam3), ['I01'])
+        self.assertEqual(us.listExHusb(fam), [])
+
+    def test_mrgeAftr18(self):
+        fam: Dict = {'F23':
+                         {'fam': 'F23', 'MARR': '12 FEB 1977', 'HUSB': 'I01', 'WIFE': 'I07',
+                          'CHIL': ['I19', 'I26', 'I30']},
+                     'F16': {'fam': 'F16', 'MARR': '12 DEC 2007'}}
+
+        indi: Dict = {
+            'I01': {'id': 'I01', 'name': 'Joe /Smith/', 'BIRT': '15 MAR 1960', 'sex': 'M', 'family': 'F23',
+                    'DEAT': '31 DEC 2013'},
+            'I07': {'id': 'I07', 'name': 'Jennifer /Smith/', 'BIRT': '23 SEP 1965', 'sex': 'F',
+                    'family': 'F23'},
+            'I19': {'id': 'I19', 'name': 'Dick /Smith/', 'BIRT': '13 OCT 1981', 'sex': 'M', 'family': 'F23'},
+            'I26': {'id': 'I26', 'name': 'Jane /Smith/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+            'I30': {'id': 'I30', 'name': 'Mary /Test/', 'BIRT': '13 FEB 1981', 'sex': 'F', 'family': 'F23'},
+            'I32': {'id': 'I32', 'name': 'Nick /Tary/', 'BIRT': '13 JUL 1981', 'sex': 'M', 'family': 'F16'},
+            'I44': {'id': 'I44', 'name': 'Cersi /Lanister/', 'BIRT': '13 FEB 1981', 'sex': 'F',
+                    'family': 'F23'}}
+        fam2 = {'F23':
+                          {'fam': 'F23', 'MARR': '14 FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07',
+                           'CHIL': ['I19', 'I26', 'I30']},
+                      'F16': {'fam': 'F16', 'MARR': '12 DEC 2007', 'HUSB': 'I01', 'WIFE': 'I32'}}
+        self.assertEqual(us.mrgeAftr18(fam, indi), set())
+        self.assertEqual(us.mrgeAftr18(fam2, indi), {'I32'})
+
+
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)
