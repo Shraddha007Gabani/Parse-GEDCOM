@@ -1082,7 +1082,7 @@ def Parents_and_child(family: Family, individuals: List[Individual]):
 
     return dangerous_child
 
-#US 46
+
 def Grand_Parents_and_Parents(family: Family, individuals: List[Individual]):
     ParetntIdList = []
     for parentID in family.chil:
@@ -1107,3 +1107,32 @@ def Grand_Parents_and_Parents(family: Family, individuals: List[Individual]):
 
     return dangerous_family
 
+
+def girls_gender_check(individuals: List[Individual]) -> List:
+    """ US63: girls gender should be female """
+
+    girls = [ind for ind in individuals if ind.sex == 'F']
+    did_not_match = []
+
+    for girl in girls:
+        if girl.sex != 'F':
+            print(f"✘ {girl.id}: Gender does not match!")
+            did_not_match.append(girl.id)
+
+    return did_not_match
+
+
+def list_of_twins(family: Family, individuals: List[Individual]) -> List:
+    """ US63: find twins """
+
+    children_id_birthday = {}
+    for child_id in family.chil:
+        child = next(ind for ind in individuals if ind.id == child_id)
+        children_id_birthday[child_id] = child.birt['date']
+
+    twins = {}
+    for id, birthday in children_id_birthday.items():
+        twins.setdefault(birthday, set()).add(id)
+
+    res = list(filter(lambda x: len(x) > 1, twins.values()))
+    return res[0]

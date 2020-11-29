@@ -134,6 +134,8 @@ def main():
     families.sort(key=operator.attrgetter('id'))  # sort Family class list by ID
     pretty_print(individuals, families)
 
+    us.list_of_twins(families[0], individuals)
+
 
 if __name__ == '__main__':
     main()
