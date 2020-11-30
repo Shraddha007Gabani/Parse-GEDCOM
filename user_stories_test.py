@@ -1285,6 +1285,26 @@ class TestApp(unittest.TestCase):
         self.assertEqual(us.mrgeAftr18(fam, indi), set())
         self.assertEqual(us.mrgeAftr18(fam2, indi), {'I32'})
 
+    def test_boys_gender_check(self):
+        """ test boys_gender_check method """
+        indi1: Individual = Individual(_id="I1", sex='F')
+        indi2: Individual = Individual(_id="I2", sex='M')
+        indi3: Individual = Individual(_id="I3", sex='F')
+        individuals: List[Individual] = [indi1, indi2, indi3]
+        self.assertEqual(us.boys_gender_check(individuals), [])
+
+
+    def test_step_sib_birth_diff(self):
+        """ test step_sib_birth_diff method """
+        chil1: Individual = Individual(_id="I1", birt={'date': "3 JAN 2001"})
+        chil2: Individual = Individual(_id="I2", birt={'date': "22 NOV 1999"})
+        chil3: Individual = Individual(_id="I3", birt={'date': "3 JAN 2001"})
+
+        family1: Family = Family(_id="F1")
+        family1.chil = [chil1.id, chil2.id, chil3.id]
+        individuals: List[Individual] = [chil1, chil2, chil3]
+        self.assertEqual(us.step_sib_birth_diff(family1, individuals), False)
+
 
 if __name__ == '__main__':
     unittest.main(exit=False, verbosity=2)

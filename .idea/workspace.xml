@@ -20,9 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49e1d803-9cf3-4387-9f61-f7e212c3f74f" name="Default Changelist" comment="code formatting">
+      <change beforePath="$PROJECT_DIR$/.idea/Parse-GEDCOM.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Parse-GEDCOM.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SSW555-P1-fizgi.ged" beforeDir="false" afterPath="$PROJECT_DIR$/SSW555-P1-fizgi.ged" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user_stories.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_stories.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user_stories_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_stories_test.py" afterDir="false" />
     </list>
@@ -79,7 +79,7 @@
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python tests.Unittests for user_stories_test.TestApp.test_list_of_twins">
+  <component name="RunManager" selected="Python tests.Unittests for user_stories_test.TestApp.test_boys_gender_check">
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -156,26 +156,18 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="user_stories" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for user_stories_test.TestApp.test_boys_gender_check" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="Parse-GEDCOM" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/user_stories.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;user_stories_test.TestApp.test_boys_gender_check&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <configuration name="Unittests for user_stories_test.TestApp.test_girls_gender_check" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
@@ -206,7 +198,7 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests in user_stories_test.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for user_stories_test.TestApp.test_step_sib_birth_diff" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="Parse-GEDCOM" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -215,26 +207,25 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/user_stories_test.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <option name="_new_target" value="&quot;user_stories_test.TestApp.test_step_sib_birth_diff&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.user_stories" />
-      <item itemvalue="Python tests.Unittests in user_stories_test.py" />
       <item itemvalue="Python.app" />
       <item itemvalue="Python tests.Unittests for user_stories_test.TestApp.test_girls_gender_check" />
       <item itemvalue="Python tests.Unittests for user_stories_test.TestApp.test_list_of_twins" />
+      <item itemvalue="Python tests.Unittests for user_stories_test.TestApp.test_step_sib_birth_diff" />
+      <item itemvalue="Python tests.Unittests for user_stories_test.TestApp.test_boys_gender_check" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.Unittests for user_stories_test.TestApp.test_boys_gender_check" />
+        <item itemvalue="Python tests.Unittests for user_stories_test.TestApp.test_step_sib_birth_diff" />
         <item itemvalue="Python tests.Unittests for user_stories_test.TestApp.test_list_of_twins" />
         <item itemvalue="Python tests.Unittests for user_stories_test.TestApp.test_girls_gender_check" />
         <item itemvalue="Python.app" />
-        <item itemvalue="Python tests.Unittests in user_stories_test.py" />
-        <item itemvalue="Python.user_stories" />
       </list>
     </recent_temporary>
   </component>

@@ -1161,3 +1161,34 @@ def mrgeAftr18(fam, ind):
                     if diff.years > 18:
                         l.add(j)
     return l
+
+
+def boys_gender_check(individuals: List[Individual]) -> List:
+    """ US62: boys gender should be male """
+
+    boys = [ind for ind in individuals if ind.sex == 'M']
+    did_not_match = []
+
+    for boi in boys:
+        if boi.sex != 'M':
+            print(f"✘ {boi.id}: Gender does not match!")
+            did_not_match.append(boi.id)
+
+    return did_not_match
+
+
+def step_sib_birth_diff(family: Family, individuals: List[Individual]):
+    """ US61: step brother and sister should not have same birth date """
+
+    children_id_birthday = {}
+    for child_id in family.chil:
+        child = next(ind for ind in individuals if ind.id == child_id)
+        children_id_birthday[child_id] = child.birt['date']
+
+    twins = {}
+    for id, birthday in children_id_birthday.items():
+        twins.setdefault(birthday, set()).add(id)
+
+    res = list(filter(lambda x: len(x) > 1, twins.values()))
+
+    return False if len(res[0]) > 1 else True
