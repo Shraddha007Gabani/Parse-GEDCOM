@@ -1326,7 +1326,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(us.all_divorce_couple(indivi,fami), ["p1","p3"])
 
     #US52
-     def test_Birth_before_div(self):
+    def test_Birth_before_div(self):
         indi = Individual(_id="I20", birt={'date': "15 JAN 2020"})
         family = Family(
             div={'date': "15 JAN 2019"})  # divorce date is before birth date so result is fasle
@@ -1350,6 +1350,56 @@ class TestApp(unittest.TestCase):
         indi = Individual(_id="I24", birt={'date': "15 JAN 2020"})
         family = Family(div=None)  # divorce is not take place so result is by default true
         self.assertTrue(us.birth_before_div(family, indi))
+
+    #US53
+    def test_List_recent_anniversary(self):
+
+        fam1: Family = Family(_id="I1", husb="John Doe1", wife="jennifer Doe1", marr={'date': "11 NOV 2020"})
+        fam2: Family = Family(_id="I2", husb="Woody Bing", wife="Billy Smith", marr={'date': "15 NOV 2020"})
+        fam3: Family = Family(_id="I3", husb="Anurag Kim", wife="Emma Green", marr={'date': "13 DEC 2020"})
+        fam4: Family = Family(_id="I4", husb="Shrey Hill", wife="Olivia Kim", marr={'date': "1 DEC 2019"})
+        fam5: Family = Family(_id="I5", husb="Parthik Smith", wife="Sophia Taylor", marr={'date': "2 NOV 2021"})
+        fam6: Family = Family(_id="I6", husb="Kamron Geller", wife="Katrina Green", marr=None)
+        families: List[Family] = [fam1, fam2, fam3, fam4, fam5, fam6]
+        self.assertTrue(us.List_recent_anniversary(families))
+
+    #US54
+    def test_divorce_14(self):
+        
+        # husband 20, wife 14 -> Both are over 14 -> True
+        husband: Individual = Individual(_id="I0", birt={'date': "19 SEP 1995"})
+        wife: Individual = Individual(_id="I1", birt={'date': "3 JAN 2000"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id="F0", husb=husband.id, wife=wife.id, div={'date': "11 FEB 2015"})
+        self.assertTrue(us.divorce_14(family, individuals))
+
+        # husband 11, wife 20 -> Only wife is over 14 -> False
+        husband: Individual = Individual(_id="I2", birt={'date': "2 MAR 2007"})
+        wife: Individual = Individual(_id="I3", birt={'date': "11 FEB 2000"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id="F1", husb=husband.id, wife=wife.id, div={'date': "11 FEB 2019"})
+        self.assertFalse(us.divorce_14(family, individuals))
+
+        # husband 17, wife 10 -> Only husband is over 14 -> False
+        husband: Individual = Individual(_id="I4", birt={'date': "22 AUG 2000"})
+        wife: Individual = Individual(_id="I5", birt={'date': "5 DEC 2007"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id="F2", husb=husband.id, wife=wife.id, div={'date': "11 FEB 2018"})
+        self.assertFalse(us.divorce_14(family, individuals))
+
+        # husband 12, wife 12 -> Both are under 14 -> False
+        husband: Individual = Individual(_id="I6", birt={'date': "19 SEP 2008"})
+        wife: Individual = Individual(_id="I7", birt={'date': "3 JAN 2008"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id="F3", husb=husband.id, wife=wife.id, div={'date': "11 FEB 2020"})
+        self.assertFalse(us.divorce_14(family, individuals))
+
+        # husband 18, wife 16 -> Both are over 14 -> True
+        husband: Individual = Individual(_id="I8", birt={'date': "7 FEB 1970"})
+        wife: Individual = Individual(_id="I9", birt={'date': "8 FEB 1972"})
+        individuals: List[Individual] = [husband, wife]
+        family: Family = Family(_id="F4", husb=husband.id, wife=wife.id, div={'date': "11 FEB 1988"})
+        self.assertTrue(us.divorce_14(family, individuals))
 
 
 

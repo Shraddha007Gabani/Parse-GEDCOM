@@ -1224,3 +1224,53 @@ def birth_before_div(family: Family, individuals: Individual) -> bool:
     else:
         print(f"✘ ({individuals.id}):no divorce")
         return True
+
+#us53
+def List_recent_anniversary(families: List[Family]):
+    today: datetime = datetime.now()
+    marr_list = []
+    for family in families:
+        if family.marr is not None:
+            if family.marr:
+                marr_date: datetime = datetime.strptime(family.marr['date'], "%d %b %Y")
+                if today - marr_date <= timedelta(days=30) and today - marr_date >= timedelta(days=0):
+                    marr_list.append([family.id, family.husb, family.wife, family.marr["date"]])
+                    print(f"✔ Family ({family.id}): Anniversary come in last 30 days")
+                else:
+                    print(f"✘ Family ({family.id}): Anniversary didn't come in last 30 days")
+        else:
+            print(f"✘ Family ({family.id}): Marrige didn't take place ")
+
+    print("List of couple who had recent anniversaries: ")
+    print(marr_list)
+    return marr_list
+
+
+##US54
+def divorce_14(family: Family, individuals: List[Individual]) -> bool:
+    
+    divo_date: datetime = datetime.strptime(family.div['date'], "%d %b %Y")
+
+    husb_birthday = next(ind.birt['date'] for ind in individuals if ind.id == family.husb)
+    husb_birthday = datetime.strptime(husb_birthday, "%d %b %Y")
+    husb_divo_age = divo_date.year - husb_birthday.year - \
+                    ((divo_date.month, divo_date.day) < (husb_birthday.month, husb_birthday.day))
+
+    wife_birthday = next(ind.birt['date'] for ind in individuals if ind.id == family.wife)
+    wife_birthday = datetime.strptime(wife_birthday, "%d %b %Y")
+    wife_divo_age = divo_date.year - wife_birthday.year - \
+                    ((divo_date.month, divo_date.day) < (wife_birthday.month, wife_birthday.day))
+
+    if husb_divo_age >= 14 and wife_divo_age >= 14:
+        print(f"✔ Family ({family.id}): Both parents were at least 14 at the divorce date")
+        return True
+
+    if husb_divo_age < 14 and wife_divo_age < 14:
+        print(f"✘ Family ({family.id}): Husband ({husb_divo_age}) "
+              f"and Wife ({wife_divo_age}) can not be less than 14")
+    elif husb_divo_age < 14:
+        print(f"✘ Family ({family.id}): Husband ({husb_divo_age}) can not be less than 14")
+    elif wife_divo_age < 14:
+        print(f"✘ Family ({family.id}): Wife ({wife_divo_age}) can not be less than 14")
+
+    return False    
