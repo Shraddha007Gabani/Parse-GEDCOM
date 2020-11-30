@@ -1287,6 +1287,21 @@ def all_sister(individuals: List[Individual]) -> List:
             sis.append(boi.name)
 
     return sis
+def mrgeAfter18(fam, ind):
+        l = set()
+        for i in fam:
+            mrg_date = datetime.strptime(fam[i]['MARR'], "%d %b %Y")
+            if 'husb' in fam[i]:
+                h_id = fam[i]['husb']
+            for j in ind:
+                if i == ind[j]['family']:
+                    if j == w_id:
+                        birt_date = datetime.strptime(ind[j]['BIRT'], "%d %b %Y")
+                        diff = relativedelta(mrg_date, birt_date)
+                        if diff.years > 18:
+                            l.add(j)
+        return l
+
 
 
 ##US56
