@@ -1403,26 +1403,22 @@ class TestApp(unittest.TestCase):
 
 
     ##US55
-    def all_sister(self):
+    def test_all_sister(self):
         indi1: Individual = Individual(name="Janki", sex='F')
         indi2: Individual = Individual(name="Dhruvil", sex='M')
         indi3: Individual = Individual(name="Dinky", sex='F')
         individuals: List[Individual] = [indi1, indi2, indi3]
         self.assertEqual(us.all_sister(individuals), [])
 
-    def test_List_death_family(self):
-        hub : Individual = Individual(_id = "I1",deat={'date': "30 oct 2020"})
-        wife : Individual = Individual(_id = "I2",deat={'date': "25 oct 2020"})
-        chid : Individual = Individual(_id = "I3",deat={'date': "28 oct 2020"})
-        fam1 : Family = Family(_id="I0", husb=hub.id,wife=wife.id,marr = {"28 oct 1998"})
-        hub1 : Individual = Individual(_id = "I4",deat={'date': "22 oct 2019"})
-        wife1 : Individual = Individual(_id = "I5",deat={'date': "21 oct 2020"})
-        chid1 : Individual = Individual(_id = "I6",deat={'date': "7 SEP 2020"})
-        fam2 : Family = Family(_id="I7", husb=hub.id,wife=wife.id)
-        indi : List[Individual] = [hub,wife,chid,hub1,wife1,chid1]
-        fami : List[Family] = [fam1,fam2]
-        self.assertEqual(List_death_family(indi,fami),["I0"])
-
+    
+    def test_listExwife(self):
+    
+        fam: Dict = {'F23':
+                         {'fam': 'F23', 'MARR': 'FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07',
+                          'CHIL': ['I19', 'I26', 'I30']},
+                     'F16': {'fam': 'F16', 'MARR': '12 DEC 2007'}}
+      
+        self.assertEqual(us.listExwife(fam), [])
 
     def test_list_male(self):
 

@@ -1290,34 +1290,15 @@ def all_sister(individuals: List[Individual]) -> List:
 
 
 ##US56
-def List_death_family(individuals: List[Individual],families:List[Family]):
-    today: datetime = datetime.now()    
-    death_list = []
-    for individual in individuals:
-        
-        if individual.deat:
-            death_date: datetime = datetime.strptime(individual.deat['date'], "%d %b %Y")
+def listExwife(fam):
+    l = []
+    for i in fam:
+        if 'WIFE' in fam[i]:
+            l.append(fam[i]['WIFE'])
+    return [x for n, x in enumerate(l) if x in l[:n]]
 
-            if today - death_date < timedelta(days=60):
-                death_list.append(individual.id)
-                print("✔ This death of last 60 days")
-                
-            else:
-                print("✘ This death of  not within 60 days")
 
-    print(death_list)
-    fam_list = []
-    for family in families:
-        if family.marr:
-
-            if family.husb in death_list and family.wife in death_list or family.chil in death_list:
-
-                fam_list.append(family.id)
-
-    print(fam_list)
     
-    return fam_list
-
 def list_male(individuals: List[Individual]):
     
     male = []
