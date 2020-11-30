@@ -1304,6 +1304,54 @@ class TestApp(unittest.TestCase):
         family1.chil = [chil1.id, chil2.id, chil3.id]
         individuals: List[Individual] = [chil1, chil2, chil3]
         self.assertEqual(us.step_sib_birth_diff(family1, individuals), False)
+    
+    #US51
+    def test_all_divorce_couple(self):
+        
+        hub = Individual(_id="I0")
+        wife = Individual(_id="I1")
+        fam1= Family(_id = "p1",husb = hub.id,wife= wife.id,div={"14 Nov 1998"})
+
+        hub1 = Individual(_id="I3")
+        wife1 = Individual(_id="I4")
+        fam2= Family(_id = "p2",husb = hub1.id,wife= wife1.id)
+
+        hub2 = Individual(_id="I5")
+        wife2 = Individual(_id="I6")
+        fam3= Family(_id = "p3",husb = hub.id,wife= wife.id,div={"14 Nov 1998"})
+
+        indivi: List[Individual] = [hub,wife,hub1,wife1,hub2,wife2]
+        fami = [fam1,fam2,fam3]
+
+        self.assertEqual(us.all_divorce_couple(indivi,fami), ["p1","p3"])
+
+    #US52
+     def test_Birth_before_div(self):
+        indi = Individual(_id="I20", birt={'date': "15 JAN 2020"})
+        family = Family(
+            div={'date': "15 JAN 2019"})  # divorce date is before birth date so result is fasle
+        self.assertFalse(us.birth_before_div(family, indi))
+
+        indi = Individual(_id="I21", birt={'date': "5 JUL 2000"})
+        family = Family(
+            div={'date': "1 JAN 2010"})  # divorce date is after birth date so result is true
+        self.assertTrue(us.birth_before_div(family, indi))
+
+        indi = Individual(_id="I22", birt={'date': "7 JUN 2000"})
+        family = Family(
+            div={'date': "9 JAN 1995"})  # divorce date is before birth date so result is false
+        self.assertFalse(us.birth_before_div(family, indi))
+
+        indi = Individual(_id="I23", birt={'date': "15 MAY 1989"})
+        family = Family(
+            div={'date': "15 FEB 2000"})  # divorce date is after birth date so result is true
+        self.assertTrue(us.birth_before_div(family, indi))
+
+        indi = Individual(_id="I24", birt={'date': "15 JAN 2020"})
+        family = Family(div=None)  # divorce is not take place so result is by default true
+        self.assertTrue(us.birth_before_div(family, indi))
+
+
 
 
 if __name__ == '__main__':

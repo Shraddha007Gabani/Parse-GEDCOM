@@ -1192,3 +1192,35 @@ def step_sib_birth_diff(family: Family, individuals: List[Individual]):
     res = list(filter(lambda x: len(x) > 1, twins.values()))
 
     return False if len(res[0]) > 1 else True
+
+#US_51
+def all_divorce_couple(individuals: List[Individual], families:List[Family]):
+    ind = []
+    for indi in individuals:
+        ind.append(indi.id)
+    div = []
+    for family in families:
+        if family.div:
+            if family.husb in ind and family.wife in ind:
+                div.append(family.id)
+                print("✔{family.id}:: in this family hubs and wife have no divorce")
+
+            else:
+                print("✘{family.id}:: in this family hubs and wife have divorce")
+    return div
+
+#US52
+def birth_before_div(family: Family, individuals: Individual) -> bool:
+    birth_date: datetime = datetime.strptime(individuals.birt['date'], "%d %b %Y")
+
+    if family.div:  # condition for the divorce
+        div_date: datetime = datetime.strptime(family.div['date'], "%d %b %Y")
+        if div_date - birth_date > timedelta(minutes=0):
+            print(f"✔ ({individuals.id}):birth is before divorce")
+            return True
+        else:
+            print(f"✘ ({individuals.id}):birth is not before divorce")
+            return False
+    else:
+        print(f"✘ ({individuals.id}):no divorce")
+        return True
