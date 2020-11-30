@@ -1,4 +1,4 @@
-""" Implement user stories for GEDCOM parser
+    """ Implement user stories for GEDCOM parser
 
     date: 30-Sep-2020
     python: v3.8.4
@@ -1318,5 +1318,26 @@ def List_death_family(individuals: List[Individual],families:List[Family]):
     
     return fam_list
 
-  
+def list_male(individuals: List[Individual]):
     
+    male = []
+    for indivi in individuals:
+        if indivi.sex == "Male":
+            male.append(indivi.id)
+            print(f"{indivi.id}:: people is male")
+        else:
+            print(f"{indivi.id}:: not male")
+
+    return male
+
+def list_female(individuals: List[Individual]):
+    
+    female = []
+    for indivi in individuals:
+        if indivi.sex == "Female":
+            female.append(indivi.id)
+            print(f"{indivi.id}:: people is female")
+        else:
+            print(f"{indivi.id}:: not female")
+
+    return female   

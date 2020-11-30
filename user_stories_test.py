@@ -1424,6 +1424,33 @@ class TestApp(unittest.TestCase):
         self.assertEqual(List_death_family(indi,fami),["I0"])
 
 
+    def test_list_male(self):
+
+        indi1 = Individual(_id="I0", sex="Male")
+        indi2 = Individual(_id="I1", sex="Female")
+        indi3 = Individual(_id="I2", sex="Female")
+        indi4 = Individual(_id="I3", sex="Male")
+        indi5 = Individual(_id="I4", sex="Male")
+
+        indi: List[Individual] = [indi1, indi2, indi3, indi4, indi5]
+
+        self.assertEqual(us.list_male(indi), ["I0","I3", "I4"])
+
+    def test_list_female(self):
+
+        indi1 = Individual(_id="I0", sex="Male")
+        indi2 = Individual(_id="I1", sex="Female")
+        indi3 = Individual(_id="I2", sex="Female")
+        indi4 = Individual(_id="I3", sex="Male")
+        indi5 = Individual(_id="I4", sex="Male")
+
+        indi: List[Individual] = [indi1, indi2, indi3, indi4, indi5]
+
+        self.assertEqual(us.list_female(indi), ["I1","I2"])
+
+
+
+
  
 
 
