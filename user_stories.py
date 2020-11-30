@@ -1,4 +1,4 @@
-    """ Implement user stories for GEDCOM parser
+""" Implement user stories for GEDCOM parser
 
     date: 30-Sep-2020
     python: v3.8.4
@@ -1295,7 +1295,7 @@ def mrgeAfter18(fam, ind):
                 h_id = fam[i]['husb']
             for j in ind:
                 if i == ind[j]['family']:
-                    if j == w_id:
+                    if j == h_id:
                         birt_date = datetime.strptime(ind[j]['BIRT'], "%d %b %Y")
                         diff = relativedelta(mrg_date, birt_date)
                         if diff.years > 18:
