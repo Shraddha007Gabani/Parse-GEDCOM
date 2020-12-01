@@ -1469,11 +1469,14 @@ class TestApp(unittest.TestCase):
         self.assertEqual(us.list_female(indi), ["I1","I2"])
 
 
-
-
- 
-
-
+def test_twins_birth_date(self):
+    """ test twins birthdate same method """
+    chil1: Individual = Individual(_id="I1", birt={'date': "3 JAN 2001"})
+    chil2: Individual = Individual(_id="I2", birt={'date': "3 JAN 2001"})
+    family1: Family = Family(_id="F1")
+    family1.chil = [chil1.id, chil2.id]
+    individuals: List[Individual] = [chil1, chil2]
+    self.assertEqual(us.twins_birth_date(family1, individuals), True)
 
 
 if __name__ == '__main__':

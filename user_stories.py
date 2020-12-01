@@ -1302,6 +1302,20 @@ def mrgeAfter18(fam, ind):
                             l.add(j)
         return l
 
+def twins_birth_date(family: Family, individuals: List[Individual]):
+
+    children_id_birthday = {}
+    for child_id in family.chil:
+        child = next(ind for ind in individuals if ind.id == child_id)
+        children_id_birthday[child_id] = child.birt['date']
+
+    twins = {}
+    for id, birthday in children_id_birthday.items():
+        twins.setdefault(birthday, set()).add(id)
+
+        res = list(filter(lambda x: len(x) > 1, twins.values()))
+        return True if len(res[0]) > 1 else False
+
 
 
 ##US56
