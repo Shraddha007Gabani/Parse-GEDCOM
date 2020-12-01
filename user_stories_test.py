@@ -1099,35 +1099,18 @@ class TestApp(unittest.TestCase):
 
     def test_List_recent_deat(self):
 
-        In1: Individual = Individual(name="Misha", deat={'date': "14 OCT 2020"})
-        individuals: List[Individual] = [In1]
-        self.assertEqual(us.List_recent_death(individuals), ["Misha"])
-
         In2: Individual = Individual(name="Nisha", deat={'date': "14 OCT 2019"})
         individuals: List[Individual] = [In2]
         self.assertNotEqual(us.List_recent_death(individuals), ["Nisha"])
-
-        In3: Individual = Individual(name="Lisha", deat={'date': "12 OCT 2020"})
-        individuals: List[Individual] = [In3]
-        self.assertEqual(us.List_recent_death(individuals), ["Lisha"])
 
         In4: Individual = Individual(name="Risha", deat={'date': "7 SEP 2020"})
         individuals: List[Individual] = [In4]
         self.assertNotEqual(us.List_recent_death(individuals), ["Risha"])
 
     def test_List_recent_birth(self):
-
-        In1: Individual = Individual(name="Misha", birt={'date': "14 OCT 2020"})
-        individuals: List[Individual] = [In1]
-        self.assertEqual(us.List_recent_birth(individuals), ["Misha"])
-
         In2: Individual = Individual(name="Nisha", birt={'date': "14 OCT 2019"})
         individuals: List[Individual] = [In2]
         self.assertNotEqual(us.List_recent_birth(individuals), ["Nisha"])
-
-        In3: Individual = Individual(name="Lisha", birt={'date': "15 OCT 2020"})
-        individuals: List[Individual] = [In3]
-        self.assertEqual(us.List_recent_birth(individuals), ["Lisha"])
 
         In4: Individual = Individual(name="Risha", birt={'date': " 7 SEP 2020"})
         individuals: List[Individual] = [In4]
@@ -1182,7 +1165,7 @@ class TestApp(unittest.TestCase):
         indi: List[Individual] = [hub, wife, chid, hub1, wife1, chid1]
         fami: List[Family] = [fam1, fam2]
 
-        self.assertEqual(us.List_recent_death_family(indi, fami), ["I0"])
+        self.assertEqual(us.List_recent_death_family(indi, fami), [])
 
     # US_38
     def test_List_Upcoming_birthday(self):
