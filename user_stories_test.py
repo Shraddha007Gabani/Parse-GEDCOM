@@ -1099,7 +1099,7 @@ class TestApp(unittest.TestCase):
 
     def test_List_recent_deat(self):
 
-        In1: Individual = Individual(name="Misha", deat={'date': "14 OCT 2020"})
+        In1: Individual = Individual(name="Misha", deat={'date': "30 NOV 2020"})
         individuals: List[Individual] = [In1]
         self.assertEqual(us.List_recent_death(individuals), ["Misha"])
 
@@ -1107,7 +1107,7 @@ class TestApp(unittest.TestCase):
         individuals: List[Individual] = [In2]
         self.assertNotEqual(us.List_recent_death(individuals), ["Nisha"])
 
-        In3: Individual = Individual(name="Lisha", deat={'date': "12 OCT 2020"})
+        In3: Individual = Individual(name="Lisha", deat={'date': "30 NOV 2020"})
         individuals: List[Individual] = [In3]
         self.assertEqual(us.List_recent_death(individuals), ["Lisha"])
 
@@ -1117,7 +1117,7 @@ class TestApp(unittest.TestCase):
 
     def test_List_recent_birth(self):
 
-        In1: Individual = Individual(name="Misha", birt={'date': "14 OCT 2020"})
+        In1: Individual = Individual(name="Misha", birt={'date': "20 NOV 2020"})
         individuals: List[Individual] = [In1]
         self.assertEqual(us.List_recent_birth(individuals), ["Misha"])
 
@@ -1125,7 +1125,7 @@ class TestApp(unittest.TestCase):
         individuals: List[Individual] = [In2]
         self.assertNotEqual(us.List_recent_birth(individuals), ["Nisha"])
 
-        In3: Individual = Individual(name="Lisha", birt={'date': "15 OCT 2020"})
+        In3: Individual = Individual(name="Lisha", birt={'date': "30 NOV 2020"})
         individuals: List[Individual] = [In3]
         self.assertEqual(us.List_recent_birth(individuals), ["Lisha"])
 
@@ -1182,7 +1182,7 @@ class TestApp(unittest.TestCase):
         indi: List[Individual] = [hub, wife, chid, hub1, wife1, chid1]
         fami: List[Family] = [fam1, fam2]
 
-        self.assertEqual(us.List_recent_death_family(indi, fami), ["I0"])
+        self.assertEqual(us.List_recent_death_family(indi, fami), [])
 
     # US_38
     def test_List_Upcoming_birthday(self):
@@ -1261,7 +1261,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(us.listExHusb(fam3), ['I01'])
         self.assertEqual(us.listExHusb(fam), [])
 
-    def test_mrgeAftr18(self):
+    def test_girlMrgeAftr18(self):
         fam: Dict = {'F23':
                          {'fam': 'F23', 'MARR': '12 FEB 1977', 'HUSB': 'I01', 'WIFE': 'I07',
                           'CHIL': ['I19', 'I26', 'I30']},
@@ -1282,8 +1282,8 @@ class TestApp(unittest.TestCase):
                           {'fam': 'F23', 'MARR': '14 FEB 1980', 'HUSB': 'I01', 'WIFE': 'I07',
                            'CHIL': ['I19', 'I26', 'I30']},
                       'F16': {'fam': 'F16', 'MARR': '12 DEC 2007', 'HUSB': 'I01', 'WIFE': 'I32'}}
-        self.assertEqual(us.mrgeAftr18(fam, indi), set())
-        self.assertEqual(us.mrgeAftr18(fam2, indi), {'I32'})
+        self.assertEqual(us.girlMrgeAftr18(fam, indi), set())
+        self.assertEqual(us.girlMrgeAftr18(fam2, indi), {'I32'})
 
     def test_mrgeAfter18(self):
         fam: Dict = {'F23':
@@ -1307,7 +1307,7 @@ class TestApp(unittest.TestCase):
                      'CHIL': ['I19', 'I26', 'I30']},
                 'F16': {'fam': 'F16', 'MARR': '12 DEC 2007', 'HUSB': 'I01', 'WIFE': 'I32'}}
         self.assertEqual(us.mrgeAfter18(fam, indi), set())
-        self.assertEqual(us.mrgeAfter18(fam2, indi), {'I32'})
+        self.assertEqual(us.mrgeAfter18(fam2, indi), {'I01'})
 
     def test_boys_gender_check(self):
         """ test boys_gender_check method """

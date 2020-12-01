@@ -1147,7 +1147,7 @@ def listExHusb(fam):
     return [x for n, x in enumerate(l) if x in l[:n]]
 
 
-def mrgeAftr18(fam, ind):
+def girlMrgeAftr18(fam, ind):
     l = set()
     for i in fam:
         mrg_date = datetime.strptime(fam[i]['MARR'], "%d %b %Y")
@@ -1291,8 +1291,8 @@ def mrgeAfter18(fam, ind):
         l = set()
         for i in fam:
             mrg_date = datetime.strptime(fam[i]['MARR'], "%d %b %Y")
-            if 'husb' in fam[i]:
-                h_id = fam[i]['husb']
+            if 'HUSB' in fam[i]:
+                h_id = fam[i]['HUSB']
             for j in ind:
                 if i == ind[j]['family']:
                     if j == h_id:
